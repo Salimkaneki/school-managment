@@ -449,7 +449,7 @@
 <!-- Add this JavaScript to handle the icon color when the menu is expanded -->
 
             <li class="nav-item mt-2">
-                <div class="d-flex align-items-center nav-link">
+                <div class="d-flex align-items-center nav-link ">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet2 ms-2" viewBox="0 0 16 16">
                     <path d="M3 4a2 2 0 0 0-2 2v7.5a1.5 1.5 0 0 0 1.5 1.5h10a1.5 1.5 0 0 0 1.5-1.5V6a2 2 0 0 0-2-2H3zm12 1H1a1 1 0 0 1 0-2h14a1 1 0 0 1 0 2z"/>
                 </svg>

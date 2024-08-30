@@ -157,6 +157,22 @@ Route::middleware(['auth'])->group(function () {
             });
         });
 
+        Route::prefix('course')->group(function (){
+
+            Route::get('create',function(){
+                return view ('courses.create');
+            });
+
+            Route::get('list',function(){
+                return view ('courses.index');
+            });
+
+        });
+
+        Route::prefix('schedule')->group(function (){
+            
+        });
+
 
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
 

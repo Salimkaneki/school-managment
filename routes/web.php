@@ -115,7 +115,6 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/create-student', [StudentController::class, 'create'])->name('create-student');
             Route::get('/student-list', [StudentController::class, 'index'])->name('student-list');
 
-
         });
 
         Route::prefix('payment')->group(function (){
@@ -170,7 +169,19 @@ Route::middleware(['auth'])->group(function () {
         });
 
         Route::prefix('schedule')->group(function (){
-            
+
+            Route::get('/create', function() {
+                return view ('schedules.create');
+            })->name('create-schedule');
+
+            Route::get('/list',function(){
+                return view ('schedules.');
+            });
+
+            Route::get('/',function(){
+                return view ('schedules.');
+            });
+
         });
 
 

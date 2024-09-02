@@ -12,11 +12,19 @@
                                     <p class="text-sm">Voici la liste des classes enregistrées</p>
                                 </div>
                                 <div class="ms-auto d-flex">
+                                    <!-- Bouton pour ajouter une classe -->
                                     <a href="{{ route('create-class') }}" class="btn btn-sm btn-dark btn-icon d-flex align-items-center me-2">
                                         <span class="btn-inner--icon">
                                             <i class="fas fa-plus"></i>
                                         </span>
                                         <span class="btn-inner--text">Ajouter une Classe</span>
+                                    </a>
+                                    <!-- Nouveau bouton pour rediriger vers la liste des salles de classes -->
+                                    <a href="{{ route('list-classrooms') }}" class="btn btn-sm btn-info btn-icon d-flex align-items-center">
+                                        <span class="btn-inner--icon">
+                                            <i class="fas fa-door-open"></i>
+                                        </span>
+                                        <span class="btn-inner--text">Voir les Salles de Classe</span>
                                     </a>
                                 </div>
                             </div>
@@ -52,7 +60,7 @@
                                             {{ $class->name }}
                                         </td>
                                         <td class="align-middle bg-transparent border-bottom text-xs">
-                                            {{ $class->fees }} <!-- Affichage des frais de scolarité -->
+                                            {{ $class->fees }}
                                         </td>
                                         <td class="align-middle bg-transparent border-bottom text-xs text-center">
                                             {{ $class->classrooms_count }}

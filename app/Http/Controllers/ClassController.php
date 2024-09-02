@@ -47,7 +47,7 @@ class ClassController extends Controller
             ]);
         }
     
-        return redirect()->route('create-class')->with('success', 'Classe créée avec succès.');
+        return redirect()->route('class-list')->with('success', 'Classe créée avec succès.');
     }
     
 

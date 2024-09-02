@@ -248,7 +248,6 @@
                 </a>
             </li>
 
-
             <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'index-teacher' ? 'active' : '' }}" href="{{ route('index-teacher') }}">
                     <div class="icon icon-shape icon-sm px-0 text-center d-flex align-items-center justify-content-center">
@@ -277,7 +276,6 @@
                     <span class="nav-link-text ms-1">Professeurs</span>
                 </a>
             </li>
-
 
             <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'class-list' ? 'active' : '' }}" href="{{ route('class-list') }}">
@@ -339,50 +337,6 @@
 
             
 
-            <!-- <li class="nav-item mt-2">
-                <div class="d-flex align-items-center nav-link">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-badge ms-2" viewBox="0 0 16 16">
-                    <path d="M10.5 2a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0zM5.216 14A2.238 2.238 0 0 1 7.248 13h1.504c.708 0 1.379.291 1.827.766a4.992 4.992 0 0 0 2.237-.756c.07-.045.137-.093.206-.143A2.223 2.223 0 0 0 12 12h-1a.5.5 0 0 1-.5-.5v-1.707c0-.26.105-.512.293-.707l.853-.853a.5.5 0 0 0 0-.707L10 6.793V5.5a.5.5 0 0 0-.5-.5H6.5a.5.5 0 0 0-.5.5v1.293l-1.646 1.646a.5.5 0 0 0 0 .707l.853.853c.188.195.293.447.293.707v1.707a.5.5 0 0 1-.5.5H4c-1.105 0-2 .672-2 1.5V13a4.992 4.992 0 0 0 2.237.756c.07.05.136.098.206.143A2.223 2.223 0 0 1 5.216 14zM12 10.5V12h1c.553 0 1-.448 1-1V6.793l-1.646-1.646a.5.5 0 0 0-.707 0l-.853.853a.5.5 0 0 0 0 .707L12 7.793V10.5z"/>
-                    <path fill-rule="evenodd" d="M1 2.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5V5a.5.5 0 0 1-.5.5h-13A.5.5 0 0 1 1 5V2.5zM2 3v1h12V3H2z"/>
-                </svg>
-                    <span class="font-weight-normal text-md ms-2">Professeurs</span>
-                </div>
-            </li>
-
-            <li class="nav-item border-start my-0 pt-2">
-                <a class="nav-link position-relative ms-0 ps-2 py-2 {{ Route::currentRouteName() == 'create-teacher' ? 'active' : '' }}"
-                    href="{{ route('create-teacher') }}">
-                    <span class="nav-link-text ms-1">Ajouter un professeur</span>
-                </a>
-            </li>
-            <li class="nav-item border-start my-0 pt-2">
-                <a class="nav-link position-relative ms-0 ps-2 py-2 {{ Route::currentRouteName() == 'index-teacher' ? 'active' : '' }}"
-                    href="{{ route('index-teacher') }}">
-                    <span class="nav-link-text ms-1">Liste des professeur</span>
-                </a>
-            </li> -->
-
-
-            <!-- <li class="nav-item mt-2">
-                <div class="d-flex align-items-center nav-link">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people ms-2" viewBox="0 0 16 16">
-                    <path d="M13 7c0-1.105-1.343-2-3-2s-3 .895-3 2 1.343 2 3 2 3-.895 3-2zm-6 2c-1.657 0-3-.895-3-2s1.343-2 3-2 3 .895 3 2-1.343 2-3 2zm6 1a3 3 0 0 1-3 3v2H3v-2a3 3 0 0 1-3-3v-1a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1h8v-1a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1zM1 14a2 2 0 0 0 2 2h2v-1H3a1 1 0 0 1-1-1H1v1z"/>
-                </svg>
-                    <span class="font-weight-normal text-md ms-2">Elèves</span>
-                </div>
-            </li>
-            <li class="nav-item border-start my-0 pt-2">
-                <a class="nav-link position-relative ms-0 ps-2 py-2 {{ is_current_route('users.profile') ? 'active' : '' }}"
-                    href="#">
-                    <span class="nav-link-text ms-1">inscription</span>
-                </a>
-            </li>
-            <li class="nav-item border-start my-0 pt-2">
-                <a class="nav-link position-relative ms-0 ps-2 py-2 {{ is_current_route('') ? 'active' : '' }}"
-                    href="#">
-                    <span class="nav-link-text ms-1">Liste des elèves</span>
-                </a>
-            </li> -->
 
             <li class="nav-item mt-2">
                 <div class="d-flex align-items-center nav-link" style="cursor: pointer;" data-bs-toggle="collapse" data-bs-target="#financeMenu" aria-expanded="false">
@@ -406,66 +360,24 @@
             </li>
 
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const financeIcon = document.getElementById('financeIcon');
-        const financeMenu = document.getElementById('financeMenu');
-        
-        financeMenu.addEventListener('show.bs.collapse', function () {
-            financeIcon.style.fill = 'white';
-        });
-        
-        financeMenu.addEventListener('hide.bs.collapse', function () {
-            financeIcon.style.fill = 'currentColor'; // Couleur par défaut
-        });
-    });
-</script>
-
-
-
-
-
-            <!-- <li class="nav-item mt-2">
-                <div class="d-flex align-items-center nav-link" style="cursor: pointer;" data-bs-toggle="collapse" data-bs-target="#financeMenu" aria-expanded="false">
-                    <svg id="financeIcon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet2 ms-2" viewBox="0 0 16 16">
-                        <path d="M3 4a2 2 0 0 0-2 2v7.5a1.5 1.5 0 0 0 1.5 1.5h10a1.5 1.5 0 0 0 1.5-1.5V6a2 2 0 0 0-2-2H3zm12 1H1a1 1 0 0 1 0-2h14a1 1 0 0 1 0 2z"/>
-                    </svg>
-                    <span class="font-weight-normal text-md ms-2">Finance</span>
-                </div>
-                <ul id="financeMenu" class="collapse list-unstyled ms-3">
-                    <li class="nav-item border-start my-0 pt-2">
-                        <a class="nav-link position-relative ms-0 ps-2 py-2 {{ is_current_route('users.profile') ? 'active' : '' }}" href="#">
-                            <span class="nav-link-text ms-1">Frais Scolarités</span>
-                        </a>
-                    </li>
-                    <li class="nav-item border-start my-0 pt-2">
-                        <a class="nav-link position-relative ms-0 ps-2 py-2 {{ is_current_route('') ? 'active' : '' }}" href="#">
-                            <span class="nav-link-text ms-1">Dépenses</span>
-                        </a>
-                    </li>
-                </ul>
-            </li> -->
-
-<!-- Add this JavaScript to handle the icon color when the menu is expanded -->
-
             <li class="nav-item mt-2">
                 <div class="d-flex align-items-center nav-link ">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet2 ms-2" viewBox="0 0 16 16">
                     <path d="M3 4a2 2 0 0 0-2 2v7.5a1.5 1.5 0 0 0 1.5 1.5h10a1.5 1.5 0 0 0 1.5-1.5V6a2 2 0 0 0-2-2H3zm12 1H1a1 1 0 0 1 0-2h14a1 1 0 0 1 0 2z"/>
                 </svg>
-                    <span class="font-weight-normal text-md ms-2">Élèves</span>
+                    <span class="font-weight-normal text-md ms-2">Programme</span>
                 </div>
             </li>
             <li class="nav-item border-start my-0 pt-2">
-                <a class="nav-link position-relative ms-0 ps-2 py-2 {{ is_current_route('users.profile') ? 'active' : '' }}"
-                    href="#">
-                    <span class="nav-link-text ms-1">Ajouter un élève</span>
+                <a class="nav-link position-relative ms-0 ps-2 py-2 {{ Route::currentRouteName() == 'create-schedule' ? 'active' : '' }}"
+                    href="{{route ('create-schedule') }}">
+                    <span class="nav-link-text ms-1">Programmer un cours</span>
                 </a>
             </li>
             <li class="nav-item border-start my-0 pt-2">
-                <a class="nav-link position-relative ms-0 ps-2 py-2 {{ is_current_route('') ? 'active' : '' }}"
+                <a class="nav-link position-relative ms-0 ps-2 py-2 {{ Route::currentRouteName() == '#' ? 'active' : '' }}"
                     href="#">
-                    <span class="nav-link-text ms-1">Liste des elèves</span>
+                    <span class="nav-link-text ms-1">Liste de Programmes</span>
                 </a>
             </li>
 

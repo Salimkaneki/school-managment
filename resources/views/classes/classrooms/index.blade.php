@@ -18,6 +18,13 @@
                                         </span>
                                         <span class="btn-inner--text">Ajouter une Salle de Classe</span>
                                     </a>
+
+                                    <a href="{{ route('class-list') }}" class="btn btn-sm btn-info btn-icon d-flex align-items-center">
+                                        <span class="btn-inner--icon">
+                                            <i class="fas fa-door-open"></i>
+                                        </span>
+                                        <span class="btn-inner--text">Voir les Classe</span>
+                                    </a>
                                 </div>
                             </div>
                         </div>

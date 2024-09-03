@@ -12,14 +12,14 @@
                                     <p class="text-sm mb-0">Veuillez remplir les informations ci-dessous</p>
                                 </div>
                                 <div class="col-6 text-end">
-                                    <a href="#" class="btn btn-light text-dark border-dark">
+                                    <a href="{{ route('course-list') }}" class="btn btn-light text-dark border-dark">
                                         <i class="fas fa-list me-2"></i> Liste des Cours
                                     </a>
                                 </div>
                             </div>
                         </div>
                         <div class="card-body px-4 py-4">
-                            <form action="#" method="POST">
+                            <form action="{{ route('store-course') }}" method="POST">
                                 @csrf
 
                                 <div class="row mb-3">
@@ -29,17 +29,12 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label for="professor_id" class="form-label">Professeur</label>
-                                        <select class="form-select" id="professor_id" name="professor_id" required>
+                                        <select class="form-select" id="teacher_id" name="teacher_id" required>
                                             <option value="" selected disabled>Choisissez un professeur</option>
-                                            <!-- Options de professeur -->
+                                            @foreach($teachers as $teacher)
+                                                <option value="{{ $teacher->id }}">{{ $teacher->first_name }} {{ $teacher->last_name }}</option>
+                                            @endforeach
                                         </select>
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <div class="col-md-12">
-                                        <label for="description" class="form-label">Description</label>
-                                        <textarea class="form-control" id="description" name="description" placeholder="Entrez une description" rows="3"></textarea>
                                     </div>
                                 </div>
 
@@ -47,7 +42,7 @@
                                     <div class="col-md-12 d-flex align-items-end justify-content-end">
                                         <div class="d-flex">
                                             <button type="submit" class="btn btn-light text-dark border-dark">Créer le Cours</button>
-                                            <a href="#" class="btn btn-secondary ms-2">Annuler</a>
+                                            <a href="{{ route('course-list') }}" class="btn btn-secondary ms-2">Annuler</a>
                                         </div>
                                     </div>
                                 </div>

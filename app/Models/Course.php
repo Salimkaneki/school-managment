@@ -9,6 +9,16 @@ class Course extends Model
 {
     use HasFactory;
 
+        /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'teacher_id',
+    ];
+
     public function subject()
     {
         return $this->belongsTo(Subject::class);
@@ -18,6 +28,12 @@ class Course extends Model
     {
         return $this->belongsToMany(Teacher::class, 'teacher_course');
     }
+
+    public function teacher()
+    {
+        return $this->belongsTo(Teacher::class);
+    }
+    
 
     public function classes()
     {

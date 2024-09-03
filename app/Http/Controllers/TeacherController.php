@@ -9,17 +9,11 @@ use App\Http\Requests\StoreTeacherRequest;
 
 class TeacherController extends Controller
 {
-    // public function index() {
-    //     $teachers = Teacher::all(); // 
-    //     return view('teachers.index', compact('teachers'));
-    // }
 
     public function index()
     {
-        // Récupérer tous les enseignants
         $teachers = Teacher::all();
     
-        // Retourner la vue avec les enseignants
         return view('teachers.index', ['teachers' => $teachers]);
     }
 

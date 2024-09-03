@@ -335,10 +335,22 @@
                 </a>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link {{ Route::currentRouteName() == 'create-course' ? 'active' : '' }}" href="{{ route('create-course') }}">
+                    <div class="icon icon-shape icon-sm px-0 text-center d-flex align-items-center justify-content-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" width="17px" height="17px">
+                            <path d="M249.6 471.5c10.8 3.8 22.4-4.1 22.4-15.5l0-377.4c0-4.2-1.6-8.4-5-11C247.4 52 202.4 32 144 32C93.5 32 46.3 45.3 18.1 56.1C6.8 60.5 0 71.7 0 83.8L0 454.1c0 11.9 12.8 20.2 24.1 16.5C55.6 460.1 105.5 448 144 448c33.9 0 79 14 105.6 23.5zm76.8 0C353 462 398.1 448 432 448c38.5 0 88.4 12.1 119.9 22.6c11.3 3.8 24.1-4.6 24.1-16.5l0-370.3c0-12.1-6.8-23.3-18.1-27.6C529.7 45.3 482.5 32 432 32c-58.4 0-103.4 20-123 35.6c-3.3 2.6-5 6.8-5 11L304 456c0 11.4 11.7 19.3 22.4 15.5z" 
+                            fill="{{ Route::currentRouteName() == 'create-course' ? '#9b6fdd' : '#FFFFFF' }}"></path>
+                        </svg>
+                    </div>
+                    <span class="nav-link-text ms-1">Matières</span>
+                </a>
+            </li>
+
+
+
             
-
-
-            <li class="nav-item mt-2">
+            <!-- <li class="nav-item mt-2">
                 <div class="d-flex align-items-center nav-link" style="cursor: pointer;" data-bs-toggle="collapse" data-bs-target="#financeMenu" aria-expanded="false">
                     <svg id="financeIcon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet2 ms-2" viewBox="0 0 16 16">
                         <path d="M3 4a2 2 0 0 0-2 2v7.5a1.5 1.5 0 0 0 1.5 1.5h10a1.5 1.5 0 0 0 1.5-1.5V6a2 2 0 0 0-2-2H3zm12 1H1a1 1 0 0 1 0-2h14a1 1 0 0 1 0 2z"/>
@@ -357,7 +369,7 @@
                         </a>
                     </li>
                 </ul>
-            </li>
+            </li> -->
 
 
             <li class="nav-item mt-2">
@@ -376,47 +388,13 @@
             </li>
             <li class="nav-item border-start my-0 pt-2">
                 <a class="nav-link position-relative ms-0 ps-2 py-2 {{ Route::currentRouteName() == '#' ? 'active' : '' }}"
-                    href="#">
+                    href="{{route ('schedule-list')}}">
                     <span class="nav-link-text ms-1">Liste de Programmes</span>
                 </a>
             </li>
 
 
 
-            <li class="nav-item">
-                <a class="nav-link {{ is_current_route('subjects') ? 'active' : '' }}" href="#">
-                    <div class="icon icon-shape icon-sm px-0 text-center d-flex align-items-center justify-content-center">
-                        <svg width="30px" height="30px" viewBox="0 0 48 48" version="1.1"
-                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                            <title>subjects</title>
-                            <g id="subjects" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <g id="view-grid" transform="translate(12.000000, 12.000000)" fill="#FFFFFF"
-                                    fill-rule="nonzero">
-                                    <path class="color-foreground"
-                                        d="M6.85714286,1.71428571 C6.85714286,0.76752 7.62465714,0 8.57142857,0 L11.4285714,0 C12.3753429,0 13.1428571,0.76752 13.1428571,1.71428571 L13.1428571,3.42857143 C13.1428571,4.37534286 12.3753429,5.14285714 11.4285714,5.14285714 L8.57142857,5.14285714 C7.62465714,5.14285714 6.85714286,4.37534286 6.85714286,3.42857143 L6.85714286,1.71428571 Z"
-                                        id="Path"></path>
-                                    <path class="color-background"
-                                        d="M1.71428571,1.71428571 C1.71428571,0.76752 2.48179929,0 3.42857143,0 L6.28571429,0 C7.23248543,0 8,0.76752 8,1.71428571 L8,3.42857143 C8,4.37534286 7.23248543,5.14285714 6.28571429,5.14285714 L3.42857143,5.14285714 C2.48179929,5.14285714 1.71428571,4.37534286 1.71428571,3.42857143 L1.71428571,1.71428571 Z"
-                                        id="Path"></path>
-                                    <path class="color-background"
-                                        d="M6.85714286,7.42857143 C6.85714286,6.48179929 7.62465714,5.71428571 8.57142857,5.71428571 L11.4285714,5.71428571 C12.3753429,5.71428571 13.1428571,6.48179929 13.1428571,7.42857143 L13.1428571,9.14285714 C13.1428571,10.0896229 12.3753429,10.8571429 11.4285714,10.8571429 L8.57142857,10.8571429 C7.62465714,10.8571429 6.85714286,10.0896229 6.85714286,9.14285714 L6.85714286,7.42857143 Z"
-                                        id="Path"></path>
-                                    <path class="color-foreground"
-                                        d="M1.71428571,7.42857143 C1.71428571,6.48179929 2.48179929,5.71428571 3.42857143,5.71428571 L6.28571429,5.71428571 C7.23248543,5.71428571 8,6.48179929 8,7.42857143 L8,9.14285714 C8,10.0896229 7.23248543,10.8571429 6.28571429,10.8571429 L3.42857143,10.8571429 C2.48179929,10.8571429 1.71428571,10.0896229 1.71428571,9.14285714 L1.71428571,7.42857143 Z"
-                                        id="Path"></path>
-                                    <path class="color-background"
-                                        d="M6.85714286,13.1428571 C6.85714286,12.1960857 7.62465714,11.4285714 8.57142857,11.4285714 L11.4285714,11.4285714 C12.3753429,11.4285714 13.1428571,12.1960857 13.1428571,13.1428571 L13.1428571,14.8571429 C13.1428571,15.8039143 12.3753429,16.5714286 11.4285714,16.5714286 L8.57142857,16.5714286 C7.62465714,16.5714286 6.85714286,15.8039143 6.85714286,14.8571429 L6.85714286,13.1428571 Z"
-                                        id="Path"></path>
-                                    <path class="color-foreground"
-                                        d="M1.71428571,13.1428571 C1.71428571,12.1960857 2.48179929,11.4285714 3.42857143,11.4285714 L6.28571429,11.4285714 C7.23248543,11.4285714 8,12.1960857 8,13.1428571 L8,14.8571429 C8,15.8039143 7.23248543,16.5714286 6.28571429,16.5714286 L3.42857143,16.5714286 C2.48179929,16.5714286 1.71428571,15.8039143 1.71428571,14.8571429 L1.71428571,13.1428571 Z"
-                                        id="Path"></path>
-                                </g>
-                            </g>
-                        </svg>
-                    </div>
-                    <span class="nav-link-text ms-1">Matières</span>
-                </a>
-            </li>
             <li class="nav-item">
                 <a class="nav-link {{ is_current_route('timetables') ? 'active' : '' }}" href="#">
                     <div class="icon icon-shape icon-sm px-0 text-center d-flex align-items-center justify-content-center">

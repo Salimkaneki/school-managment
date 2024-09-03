@@ -158,25 +158,22 @@ Route::middleware(['auth'])->group(function () {
 
         Route::prefix('course')->group(function (){
 
-            Route::get('create',function(){
-                return view ('courses.create');
-            });
+            Route::get('create', [\App\Http\Controllers\CourseController::class, 'create'])->name('create-course');
 
-            Route::get('list',function(){
-                return view ('courses.index');
-            });
+            Route::post('store', [\App\Http\Controllers\CourseController::class, 'store'])->name('store-course');
+
+            Route::get('list', [\App\Http\Controllers\CourseController::class, 'index'])->name('course-list');
 
         });
 
         Route::prefix('schedule')->group(function (){
+            Route::get('/list',function(){
+                return view ('schedules.dashboard');
+            })->name('schedule-list');
 
             Route::get('/create', function() {
                 return view ('schedules.create');
             })->name('create-schedule');
-
-            Route::get('/list',function(){
-                return view ('schedules.');
-            });
 
             Route::get('/',function(){
                 return view ('schedules.');

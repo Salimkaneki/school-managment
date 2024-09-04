@@ -12,6 +12,9 @@ use App\Http\Controllers\ClassController;
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\SchoolEventController;
+use App\Http\Controllers\NotificationController;
+
 use PHPUnit\Framework\Attributes\Group;
 
 /*
@@ -53,57 +56,52 @@ Route::middleware(['auth'])->group(function () {
         return view('account-pages.profile');
     })->name('profile');
 
-    Route::prefix('/teacher')->group(function () {
-        Route::get('/create', function () {
-            return view('teachers.create');
-        })->name('create-teacher');
+        Route::prefix('/teacher')->group(function () {
+            Route::get('/create', function () {
+                return view('teachers.create');
+            })->name('create-teacher');
 
-        Route::get('/list', [TeacherController::class, 'index'])->name('index-teacher');
+            Route::get('/list', [TeacherController::class, 'index'])->name('index-teacher');
 
 
-        Route::get('/edit', function () {
-            return view('teachers.edit');
-        })->name('edit-teacher');
+            Route::get('/edit', function () {
+                return view('teachers.edit');
+            })->name('edit-teacher');
 
-        Route::post('/teachers', [TeacherController::class, 'store'])->name('teachers.store');
-        Route::get('/teachers', [TeacherController::class, 'index'])->name('teachers.index');
+            Route::post('/teachers', [TeacherController::class, 'store'])->name('teachers.store');
+            Route::get('/teachers', [TeacherController::class, 'index'])->name('teachers.index');
 
-    });
+        });
 
-    Route::prefix('/class')->group(function () {
+        Route::prefix('/class')->group(function () {
 
-        Route::get('/create-class', function () {
-            return view('classes.add-Classes');
-        })->name('create-class');
+            Route::get('/create-class', function () {
+                return view('classes.add-Classes');
+            })->name('create-class');
 
-        Route::get('/class-list', [ClassController::class, 'index'])->name('class-list');
+            Route::get('/class-list', [ClassController::class, 'index'])->name('class-list');
+            
+            Route::post('/store-class', [ClassController::class, 'store'])->name('store-class');
+
+            Route::get('/edit-class/{id}', [ClassController::class, 'edit'])->name('edit-class');
+
+            Route::put('/update-class/{id}', [ClassController::class, 'update'])->name('update-class');
         
-        Route::post('/store-class', [ClassController::class, 'store'])->name('store-class');
+            Route::delete('/delete-class/{id}', [ClassController::class, 'destroy'])->name('delete-class');
 
-        Route::get('/edit-class/{id}', [ClassController::class, 'edit'])->name('edit-class');
+        });
 
-        Route::put('/update-class/{id}', [ClassController::class, 'update'])->name('update-class');
-    
-        Route::delete('/delete-class/{id}', [ClassController::class, 'destroy'])->name('delete-class');
-
-    });
-
-    Route::prefix('/classroom')->group(function () {
+        Route::prefix('/classroom')->group(function () {
 
             Route::get('/create-classroom', function () {
                 return view('classes.classrooms.create');
             })->name('create-classroom');
-
             // Route::get('/classroom-list', function () {
             //     return view('classes.classrooms.index-classrooms');
             // })->name('classroom-list');
-
-
             Route::get('/create-classroom', [ClassroomController::class, 'create'])->name('create-classroom');
             Route::post('/create-classroom', [ClassroomController::class, 'store'])->name('store-classroom');
             Route::get('/classrooms-list', [ClassroomController::class, 'listClassrooms'])->name('list-classrooms');
-
-
         });
 
         Route::prefix('student')->group(function (){
@@ -113,7 +111,16 @@ Route::middleware(['auth'])->group(function () {
             })->name('detail-student');
 
             Route::get('/create-student', [StudentController::class, 'create'])->name('create-student');
+
             Route::get('/student-list', [StudentController::class, 'index'])->name('student-list');
+
+            Route::post('/by-class', [StudentController::class, 'getStudentsByClass'])->name('students-by-class');
+
+            Route::get('/students-by-class', [StudentController::class, 'showStudentsByClass'])->name('show-students-by-class');
+
+            Route::post('/download-by-class/{classId}', [StudentController::class, 'downloadByClass'])->name('download-by-class');
+
+            Route::get('/download-by-class/{classId}', [StudentController::class, 'downloadByClass'])->name('download-by-class');
 
         });
 
@@ -180,6 +187,25 @@ Route::middleware(['auth'])->group(function () {
             });
 
         });
+
+    // Define the route prefix for events
+    Route::prefix('event')->group(function () {
+
+        // Route to show the form for creating a new event
+        Route::get('/create', function () {
+            return view('events.create');
+        })->name('create-event');
+
+        // Route to handle form submission and store the event
+        Route::post('/store', [SchoolEventController::class, 'store'])->name('store-event');
+
+        // Route to show the list of events
+        Route::get('/list', [SchoolEventController::class, 'index'])->name('event-list');
+
+    });
+
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+
 
 
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');

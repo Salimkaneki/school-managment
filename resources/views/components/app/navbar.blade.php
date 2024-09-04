@@ -50,7 +50,9 @@
                         </svg>
                     </a>
                 </li>
-                <li class="nav-item dropdown pe-2 d-flex align-items-center">
+
+                <!-- Notifications -->
+                <!-- <li class="nav-item dropdown pe-2 d-flex align-items-center">
                     <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -138,7 +140,11 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> -->
+
+
+
+                
                 <li class="nav-item ps-2 d-flex align-items-center">
                     <a href="javascript:;" class="nav-link text-body p-0">
                         <img src="../assets/img/team-2.jpg" class="avatar avatar-sm" alt="avatar" />

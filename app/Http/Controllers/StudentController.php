@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ClassModel;
 use App\Models\Student;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 
 class StudentController extends Controller
@@ -45,6 +47,37 @@ class StudentController extends Controller
         Student::create($validatedData);
 
         return redirect()->route('student-list')->with('success', 'Élève ajouté avec succès.');
+    }
+
+    public function getStudentsByClass(Request $request)
+    {
+        $classId = $request->input('class_id');
+    
+        if (!$classId) {
+            return response()->json(['error' => 'ID de la classe manquant'], 400);
+        }
+    
+        $students = Student::where('class_id', $classId)->get();
+    
+        if ($students->isEmpty()) {
+            return response()->json(['error' => 'Aucun élève trouvé'], 404);
+        }
+    
+        return response()->json($students);
+    }
+    
+    public function showStudentsByClass()
+    {
+        $classes = ClassModel::all(); // Assurez-vous que vous avez un modèle `ClassModel`
+        return view('students.by_class', compact('classes'));
+    }
+
+    public function downloadByClass($classId)
+    {
+        $students = Student::where('class_id', $classId)->get();
+
+        $pdf = Pdf::loadView('students.pdf', compact('students'));
+        return $pdf->download('students_class_' . $classId . '.pdf');
     }
 
 }

@@ -27,13 +27,57 @@
                                     <!-- Périodes de la journée -->
                                     <tr>
                                         <td class="align-middle bg-gray-100 text-xs font-weight-semibold">08:00 - 09:00</td>
-                                        <!-- Cours programmés -->
+                                        <td class="align-middle text-xs">
+                                            <strong>Mathématiques</strong><br>
+                                            <small>Prof. Dupont</small>
+                                        </td>
+                                        <td class="align-middle text-xs">
+                                            <strong>Sciences</strong><br>
+                                            <small>Prof. Durand</small>
+                                        </td>
+                                        <td class="align-middle text-xs">
+                                            <strong>Anglais</strong><br>
+                                            <small>Prof. Smith</small>
+                                        </td>
+                                        <td class="align-middle text-xs">
+                                            <strong>Histoire</strong><br>
+                                            <small>Prof. Martin</small>
+                                        </td>
+                                        <td class="align-middle text-xs">
+                                            <strong>Géographie</strong><br>
+                                            <small>Prof. Leroy</small>
+                                        </td>
+                                        <td class="align-middle text-xs">
+                                            <strong>Philosophie</strong><br>
+                                            <small>Prof. Rousseau</small>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td class="align-middle bg-gray-100 text-xs font-weight-semibold">09:00 - 10:00</td>
-                                        <!-- Cours programmés -->
+                                        <td class="align-middle text-xs">
+                                            <strong>Chimie</strong><br>
+                                            <small>Prof. Blanc</small>
+                                        </td>
+                                        <td class="align-middle text-xs">
+                                            <!-- Pas de cours -->
+                                        </td>
+                                        <td class="align-middle text-xs">
+                                            <strong>Musique</strong><br>
+                                            <small>Prof. Rousseau</small>
+                                        </td>
+                                        <td class="align-middle text-xs">
+                                            <!-- Pas de cours -->
+                                        </td>
+                                        <td class="align-middle text-xs">
+                                            <strong>Physique</strong><br>
+                                            <small>Prof. Laplace</small>
+                                        </td>
+                                        <td class="align-middle text-xs">
+                                            <strong>Informatique</strong><br>
+                                            <small>Prof. Turing</small>
+                                        </td>
                                     </tr>
-                                    <!-- Autres périodes -->
+                                    <!-- Ajoutez d'autres périodes de la journée ici -->
                                 </tbody>
                             </table>
                         </div>

@@ -12,17 +12,17 @@
                                     <p class="text-sm mb-0">Veuillez remplir les informations ci-dessous</p>
                                 </div>
                                 <div class="col-6 text-end">
-                                    <a href="{{route('student-list')}}" class="btn btn-light text-dark border-dark">
+                                    <a href="{{ route('student-list') }}" class="btn btn-light text-dark border-dark">
                                         <i class="fas fa-list me-2"></i> Liste des Élèves
                                     </a>
                                 </div>
                             </div>
                         </div>
                         <div class="card-body px-4 py-4">
-                            <form action="{{route('students.store')}}" method="POST">
+                            <form action="{{ route('students.store') }}" method="POST">
                                 @csrf
-                                <!-- Formulaire pour la création d'un élève -->
 
+                                <!-- Informations générales -->
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="first_name" class="form-label">Prénom</label>
@@ -40,16 +40,12 @@
                                         <input type="email" class="form-control" id="email" name="email" placeholder="Entrez l'email" required>
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="password" class="form-label">Mot de passe</label>
-                                        <input type="password" class="form-control" id="password" name="password" placeholder="Entrez le mot de passe" required>
+                                        <label for="phone_number" class="form-label">Téléphone</label>
+                                        <input type="text" class="form-control" id="phone_number" name="phone_number" placeholder="Entrez le numéro de téléphone">
                                     </div>
                                 </div>
 
                                 <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="date_of_birth" class="form-label">Date de naissance</label>
-                                        <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" required>
-                                    </div>
                                     <div class="col-md-6">
                                         <label for="gender" class="form-label">Genre</label>
                                         <select class="form-control" id="gender" name="gender" required>
@@ -58,27 +54,53 @@
                                             <option value="other">Autre</option>
                                         </select>
                                     </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <div class="col-md-12">
-                                        <label for="phone_number" class="form-label">Téléphone</label>
-                                        <input type="text" class="form-control" id="phone_number" name="phone_number" placeholder="Entrez le numéro de téléphone">
+                                    <div class="col-md-6">
+                                        <label for="date_of_birth" class="form-label">Date de naissance</label>
+                                        <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" required>
                                     </div>
                                 </div>
 
+                                <!-- Adresse -->
                                 <div class="row mb-3">
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <label for="address" class="form-label">Adresse</label>
                                         <input type="text" class="form-control" id="address" name="address" placeholder="Entrez l'adresse">
                                     </div>
+                                    <div class="col-md-6">
+                                        <label for="nationality" class="form-label">Nationalité</label>
+                                        <input type="text" class="form-control" id="nationality" name="nationality" placeholder="Entrez la nationalité">
+                                    </div>
                                 </div>
 
+                                <!-- Informations de contact d'urgence -->
                                 <div class="row mb-3">
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
+                                        <label for="emergency_contact_name" class="form-label">Nom du contact d'urgence</label>
+                                        <input type="text" class="form-control" id="emergency_contact_name" name="emergency_contact_name" placeholder="Entrez le nom du contact d'urgence">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="emergency_contact_phone" class="form-label">Téléphone du contact d'urgence</label>
+                                        <input type="text" class="form-control" id="emergency_contact_phone" name="emergency_contact_phone" placeholder="Entrez le téléphone du contact d'urgence">
+                                    </div>
+                                </div>
+
+                                <!-- Informations sur l'école précédente -->
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="previous_school_name" class="form-label">Nom de l'école précédente</label>
+                                        <input type="text" class="form-control" id="previous_school_name" name="previous_school_name" placeholder="Entrez le nom de l'école précédente">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="previous_school_address" class="form-label">Adresse de l'école précédente</label>
+                                        <input type="text" class="form-control" id="previous_school_address" name="previous_school_address" placeholder="Entrez l'adresse de l'école précédente">
+                                    </div>
+                                </div>
+
+                                <!-- Classe -->
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
                                         <label for="class_id" class="form-label">Classe</label>
                                         <select class="form-control" id="class_id" name="class_id" required>
-                                            <!-- Dynamically load class options -->
                                             @foreach ($classes as $class)
                                                 <option value="{{ $class->id }}">{{ $class->name }}</option>
                                             @endforeach
@@ -86,11 +108,12 @@
                                     </div>
                                 </div>
 
+                                <!-- Boutons d'action -->
                                 <div class="row mb-3">
                                     <div class="col-md-12 d-flex align-items-end justify-content-end">
                                         <div class="d-flex">
                                             <button type="submit" class="btn btn-light text-dark border-dark">Ajouter</button>
-                                            <a href="#" class="btn btn-secondary ms-2">Annuler</a>
+                                            <a href="{{ route('student-list') }}" class="btn btn-secondary ms-2">Annuler</a>
                                         </div>
                                     </div>
                                 </div>
@@ -103,8 +126,3 @@
         <x-app.footer />
     </main>
 </x-app-layout>
-
-<script src="/assets/js/plugins/datatables.js"></script>
-<script>
-    // Placeholder for future DataTable integration if needed
-</script>

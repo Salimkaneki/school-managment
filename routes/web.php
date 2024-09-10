@@ -107,7 +107,7 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('student')->group(function (){
 
             Route::get('/detail', function() {
-                return view ('students.detail');
+                return view ('students.show');
             })->name('detail-student');
 
             Route::get('/create-student', [StudentController::class, 'create'])->name('create-student');
@@ -179,12 +179,13 @@ Route::middleware(['auth'])->group(function () {
             })->name('schedule-list');
 
             Route::get('/create', function() {
-                return view ('schedules.create');
+                return view ('schedules.create-schedule');
             })->name('create-schedule');
 
-            Route::get('/',function(){
-                return view ('schedules.');
-            });
+            Route::get('/view',function(){
+                return view ('schedules.weekly-schedule');
+            })->name('view-schedule');
+            
 
         });
 
@@ -203,8 +204,21 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/list', [SchoolEventController::class, 'index'])->name('event-list');
 
     });
+    Route::prefix('attendance')->group(function () {
 
-    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+        // Route to show the form for creating a new event
+        Route::get('/create', function () {
+            return view('attendances.create');
+        })->name('create-attendance');
+
+        // Route to handle form submission and store the event
+        // Route::post('/store', [SchoolEventController::class, 'store'])->name('store-event');
+
+        // // Route to show the list of events
+        // Route::get('/list', [SchoolEventController::class, 'index'])->name('event-list');
+
+    });
+
 
 
 

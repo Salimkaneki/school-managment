@@ -13,6 +13,8 @@ use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SchoolEventController;
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\TimetableController;
 use App\Http\Controllers\NotificationController;
 
 use PHPUnit\Framework\Attributes\Group;
@@ -173,22 +175,45 @@ Route::middleware(['auth'])->group(function () {
 
         });
 
-        Route::prefix('schedule')->group(function (){
-            Route::get('/list',function(){
-                return view ('schedules.dashboard');
-            })->name('schedule-list');
+        // Route::prefix('schedule')->group(function () {
+        //     // Affiche la liste des emplois du temps créés (dashboard)
+        //     Route::get('/list', [TimetableController::class, 'index'])->name('schedule-list');
+        
+        //     // Formulaire de création d'un emploi du temps
+        //     Route::get('/create', [TimetableController::class, 'create'])->name('create-schedule');
+        
+        //     // Sauvegarde un emploi du temps nouvellement créé
+        //     Route::post('/store', [TimetableController::class, 'store'])->name('store-schedule');
+        
+        //     // Vue d'un emploi du temps
+        //     Route::get('/view/{timetable}', [TimetableController::class, 'show'])->name('view-schedule');
+        
+        //     // Ajouter des cours à un emploi du temps existant
+        //     Route::post('/add-course/{timetable}', [TimetableController::class, 'addCourse'])->name('add-course');
+        
+        //     // Modifier un emploi du temps
+        //     Route::get('/edit/{timetable}', [TimetableController::class, 'edit'])->name('edit-schedule');
+        //     Route::put('/update/{timetable}', [TimetableController::class, 'update'])->name('update-schedule');
+        
+        //     // Supprimer un emploi du temps
+        //     Route::delete('/delete/{timetable}', [TimetableController::class, 'destroy'])->name('delete-schedule');
+        // });
 
-            Route::get('/create', function() {
-                return view ('schedules.create-schedule');
-            })->name('create-schedule');
-
-            Route::get('/view',function(){
-                return view ('schedules.weekly-schedule');
-            })->name('view-schedule');
-            
-
+        Route::prefix('timetables')->group(function () {
+            Route::get('/', [TimetableController::class, 'index'])->name('timetables.index');
+            Route::get('/create', [TimetableController::class, 'create'])->name('timetables.create');
+            Route::post('/store', [TimetableController::class, 'store'])->name('timetables.store');
+            Route::get('/{id}', [TimetableController::class, 'weeklyView'])->name('timetables.weekly-view');
+            Route::delete('/{id}', [TimetableController::class, 'destroy'])->name('timetables.destroy');
         });
+        
 
+        Route::get('/add-course/{id}', [TimetableController::class, 'showAddCourseForm'])->name('timetables.showAddCourseForm');
+        Route::post('/add-course/{id}', [TimetableController::class, 'addCourse'])->name('timetables.addCourse');
+
+        
+
+        
     // Define the route prefix for events
     Route::prefix('event')->group(function () {
 
@@ -263,9 +288,9 @@ Route::get('/class', function () {
 });
 // Route::get('/student', function () {
 //     return view('sdraft');
-// Route::get('/student', function () {
-//     return view('sdraft');
-// });
+Route::get('/student', function () {
+    return view('sdraft');
+});
 Route::get('/teacher', function () {
     return view('tlistdraft');
 });

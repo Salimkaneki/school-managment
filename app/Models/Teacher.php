@@ -33,4 +33,6 @@ class Teacher extends Model
     }
 
 
+
+
 }

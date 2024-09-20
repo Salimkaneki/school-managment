@@ -381,26 +381,26 @@
                 </div>
             </li>
             <li class="nav-item border-start my-0 pt-2">
-                <a class="nav-link position-relative ms-0 ps-2 py-2 {{ Route::currentRouteName() == 'create-schedule' ? 'active' : '' }}"
-                    href="{{route ('create-schedule') }}">
+                <a class="nav-link position-relative ms-0 ps-2 py-2 {{ Route::currentRouteName() == 'timetables.create' ? 'active' : '' }}"
+                    href="{{ route('timetables.create') }}">
                     <span class="nav-link-text ms-1">Programmer un cours</span>
                 </a>
             </li>
             <li class="nav-item border-start my-0 pt-2">
-                <a class="nav-link position-relative ms-0 ps-2 py-2 {{ Route::currentRouteName() == '#' ? 'active' : '' }}"
-                    href="{{route ('schedule-list')}}">
+                <a class="nav-link position-relative ms-0 ps-2 py-2 {{ Route::currentRouteName() == 'timetables.index' ? 'active' : '' }}"
+                    href="{{ route('timetables.index') }}">
                     <span class="nav-link-text ms-1">Liste de Programmes</span>
                 </a>
             </li>
 
 
 
-            <li class="nav-item">
-                <a class="nav-link {{ is_current_route('timetables') ? 'active' : '' }}" href="#">
+            <!-- <li class="nav-item">
+                <a class="nav-link {{ is_current_route('event-list') ? 'active' : '' }}" href="{{ route('event-list') }}">
                     <div class="icon icon-shape icon-sm px-0 text-center d-flex align-items-center justify-content-center">
                         <svg width="30px" height="30px" viewBox="0 0 48 48" version="1.1"
                             xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                            <title>timetables</title>
+                            <title>events</title>
                             <g id="timetables" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                 <g id="view-grid" transform="translate(12.000000, 12.000000)" fill="#FFFFFF"
                                     fill-rule="nonzero">
@@ -420,9 +420,20 @@
                             </g>
                         </svg>
                     </div>
-                    <span class="nav-link-text ms-1">Emploi du Temps</span>
+                    <span class="nav-link-text ms-1">Évènements</span>
+                </a>
+            </li> -->
+
+            <li class="nav-item">
+                <a class="nav-link d-flex align-items-center {{ is_current_route('event-list') ? 'active' : '' }}" href="{{ route('event-list') }}">
+                    <div class="icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center" style="width: 30px;">
+                        <i class="fas fa-calendar-alt" style="font-size: 17px; color: #fff;"></i>
+                    </div>
+                    <span class="nav-link-text ms-2">Évènements</span>
                 </a>
             </li>
+
+
             
             
             

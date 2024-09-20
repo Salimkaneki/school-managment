@@ -33,7 +33,6 @@ class Course extends Model
     {
         return $this->belongsTo(Teacher::class);
     }
-    
 
     public function classes()
     {
@@ -53,5 +52,12 @@ class Course extends Model
     public function trimester()
     {
         return $this->belongsTo(Trimester::class);
+    }
+
+    public function timetables()
+    {
+        return $this->belongsToMany(Timetable::class, 'timetable_courses')
+                    ->withPivot('teacher_id', 'start_time', 'end_time', 'day', 'classroom_id')
+                    ->withTimestamps();
     }
 }

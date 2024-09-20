@@ -12,13 +12,18 @@
                 </a>
             </li>
             <li class="nav-item px-3 py-3 border-radius-sm  d-flex align-items-center">
-                <a href="{{ route('tables') }}" class="nav-link text-white p-0">
-                    Tables
+                <a href="{{ route('index-teacher') }}" class="nav-link text-white p-0">
+                    Professeurs
                 </a>
             </li>
             <li class="nav-item px-3 py-3 border-radius-sm bg-slate-800 d-flex align-items-center">
                 <a href="{{ route('wallet') }}" class="nav-link text-white p-0">
                     Wallet
+                </a>
+            </li>
+            <li class="nav-item px-3 py-3 border-radius-sm bg-slate-800 d-flex align-items-center">
+                <a href="{{ route('student-list') }}" class="nav-link text-white p-0">
+                    Élèves
                 </a>
             </li>
             <li class="nav-item px-3 py-3 border-radius-sm  d-flex align-items-center">

@@ -6,46 +6,78 @@
                 <div class="col-12">
                     <div class="card shadow-sm border-light" style="border-radius: 8px;">
                         <div class="card-header text-dark" style="border-radius: 8px 8px 0 0;">
-                            <div class="row">
-                                <div class="col-6">
-                                    <h6 class="mb-0">Liste des Emplois du Temps</h6>
-                                    <p class="text-sm mb-0">Vue de tous les emplois du temps créés</p>
-                                </div>
-                                <div class="col-6 text-end">
-                                    <a href="#" class="btn btn-primary">
-                                        <i class="fas fa-plus me-2"></i> Créer un Emploi du Temps
-                                    </a>
-                                </div>
-                            </div>
+                            <h6 class="mb-0">Emploi du Temps Hebdomadaire</h6>
+                            <p class="text-sm mb-0">Vue de l'emploi du temps pour la semaine</p>
                         </div>
                         <div class="card-body px-4 py-4">
-                            <!-- Tableau des emplois du temps -->
+                            <!-- Tableau de l'emploi du temps -->
                             <table class="table table-bordered text-center">
                                 <thead>
                                     <tr>
-                                        <th class="text-secondary text-xs font-weight-semibold opacity-7">Classe</th>
-                                        <th class="text-secondary text-xs font-weight-semibold opacity-7">Date de Création</th>
-                                        <th class="text-secondary text-xs font-weight-semibold opacity-7">Actions</th>
+                                        <th class="text-secondary text-xs font-weight-semibold opacity-7"></th>
+                                        <th class="text-secondary text-xs font-weight-semibold opacity-7">Lundi</th>
+                                        <th class="text-secondary text-xs font-weight-semibold opacity-7">Mardi</th>
+                                        <th class="text-secondary text-xs font-weight-semibold opacity-7">Mercredi</th>
+                                        <th class="text-secondary text-xs font-weight-semibold opacity-7">Jeudi</th>
+                                        <th class="text-secondary text-xs font-weight-semibold opacity-7">Vendredi</th>
+                                        <th class="text-secondary text-xs font-weight-semibold opacity-7">Samedi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- Exemple de ligne pour un emploi du temps -->
+                                    <!-- Périodes de la journée -->
                                     <tr>
-                                        <td class="align-middle text-xs">Classe de 1ère A</td>
-                                        <td class="align-middle text-xs">01/09/2024</td>
+                                        <td class="align-middle bg-gray-100 text-xs font-weight-semibold">08:00 - 09:00</td>
                                         <td class="align-middle text-xs">
-                                            <a href="#" class="btn btn-info btn-sm">
-                                                <i class="fas fa-eye"></i> Voir
-                                            </a>
-                                            <a href="#" class="btn btn-warning btn-sm ms-2">
-                                                <i class="fas fa-edit"></i> Modifier
-                                            </a>
-                                            <a href="#" class="btn btn-danger btn-sm ms-2">
-                                                <i class="fas fa-trash"></i> Supprimer
-                                            </a>
+                                            <strong>Mathématiques</strong><br>
+                                            <small>Prof. Dupont</small>
+                                        </td>
+                                        <td class="align-middle text-xs">
+                                            <strong>Sciences</strong><br>
+                                            <small>Prof. Durand</small>
+                                        </td>
+                                        <td class="align-middle text-xs">
+                                            <strong>Anglais</strong><br>
+                                            <small>Prof. Smith</small>
+                                        </td>
+                                        <td class="align-middle text-xs">
+                                            <strong>Histoire</strong><br>
+                                            <small>Prof. Martin</small>
+                                        </td>
+                                        <td class="align-middle text-xs">
+                                            <strong>Géographie</strong><br>
+                                            <small>Prof. Leroy</small>
+                                        </td>
+                                        <td class="align-middle text-xs">
+                                            <strong>Philosophie</strong><br>
+                                            <small>Prof. Rousseau</small>
                                         </td>
                                     </tr>
-                                    <!-- Répétez les lignes pour chaque emploi du temps -->
+                                    <tr>
+                                        <td class="align-middle bg-gray-100 text-xs font-weight-semibold">09:00 - 10:00</td>
+                                        <td class="align-middle text-xs">
+                                            <strong>Chimie</strong><br>
+                                            <small>Prof. Blanc</small>
+                                        </td>
+                                        <td class="align-middle text-xs">
+                                            <!-- Pas de cours -->
+                                        </td>
+                                        <td class="align-middle text-xs">
+                                            <strong>Musique</strong><br>
+                                            <small>Prof. Rousseau</small>
+                                        </td>
+                                        <td class="align-middle text-xs">
+                                            <!-- Pas de cours -->
+                                        </td>
+                                        <td class="align-middle text-xs">
+                                            <strong>Physique</strong><br>
+                                            <small>Prof. Laplace</small>
+                                        </td>
+                                        <td class="align-middle text-xs">
+                                            <strong>Informatique</strong><br>
+                                            <small>Prof. Turing</small>
+                                        </td>
+                                    </tr>
+                                    <!-- Ajoutez d'autres périodes de la journée ici -->
                                 </tbody>
                             </table>
                         </div>

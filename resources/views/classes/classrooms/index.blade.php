@@ -12,7 +12,7 @@
                                     <p class="text-sm">Voici la liste des salles de classe enregistrées</p>
                                 </div>
                                 <div class="ms-auto d-flex">
-                                    <a href="#" class="btn btn-dark btn-icon d-flex align-items-center me-2">
+                                    <a href="{{ route('create-classroom') }}" class="btn btn-dark btn-icon d-flex align-items-center me-2">
                                         <span class="btn-inner--icon">
                                             <i class="fas fa-plus"></i>
                                         </span>

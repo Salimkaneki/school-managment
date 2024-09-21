@@ -34,13 +34,9 @@
                                 </div>
 
                                 <div class="row mb-3">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <label for="email" class="form-label">Email</label>
                                         <input type="email" class="form-control" id="email" name="email" placeholder="Entrez l'email" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="password" class="form-label">Mot de passe</label>
-                                        <input type="password" class="form-control" id="password" name="password" placeholder="Entrez le mot de passe" required>
                                     </div>
                                 </div>
 
@@ -62,7 +58,14 @@
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="nationality" class="form-label">Nationalité</label>
-                                        <input type="text" class="form-control" id="nationality" name="nationality" placeholder="Entrez la nationalité">
+                                        <select class="form-control" id="nationality" name="nationality" required>
+                                            <option value="" disabled selected>Choisissez une nationalité</option>
+                                            <option value="Togo">Togo</option>
+                                            <option value="Bénin">Bénin</option>
+                                            <option value="Cameroun">Cameroun</option>
+                                            <option value="Ghana">Ghana</option>
+                                            <option value="Sénégal">Sénégal</option>
+                                        </select>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="seniority" class="form-label">Années d'expérience</label>
@@ -94,8 +97,3 @@
         <x-app.footer />
     </main>
 </x-app-layout>
-
-<script src="/assets/js/plugins/datatables.js"></script>
-<script>
-    // Placeholder for future DataTable integration if needed
-</script>

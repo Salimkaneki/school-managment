@@ -30,9 +30,9 @@ return new class extends Migration
             $table->string('relationship_to_emergency_contact')->nullable();
             $table->string('previous_school')->nullable();
             $table->string('previous_school_address')->nullable();
-            $table->decimal('average_grade', 5, 2)->nullable(); // Champ pour les notes moyennes
-            $table->json('subjects')->nullable(); // Champ pour les matières suivies
-            $table->text('notes')->nullable(); // Champ pour les remarques
+            $table->decimal('average_grade', 5, 2)->nullable();
+            $table->json('subjects')->nullable();
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }

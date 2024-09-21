@@ -197,7 +197,7 @@
                                             <span class="text-sm text-success font-weight-bolder">
                                                 <i class="fa fa-chevron-up text-xs me-1"></i>10.5%
                                             </span>
-                                            <span class="text-sm ms-1">from $89,740.00</span>
+                                            <span class="text-sm ms-1">d'augmentation</span>
                                         </div>
                                     </div>
                                 </div>

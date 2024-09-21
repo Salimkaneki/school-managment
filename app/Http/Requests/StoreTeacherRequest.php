@@ -26,7 +26,6 @@ class StoreTeacherRequest extends FormRequest
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:teachers,email',
-            'password' => 'required|string|min:6',
             'phone_number' => 'nullable|string|max:20',
             'gender' => 'required|string|in:male,female,other',
             'nationality' => 'nullable|string|max:255',

@@ -32,11 +32,11 @@
                             @endif
 
                             <div class="card-body px-0 py-0 ">
-                            @if($teachers->isEmpty())
-                                <div class="text-center py-2">
-                                    <p class="font-weight-semibold text-lg mb-0">Aucun professeur enregistré</p>
-                                </div>
-                            @else
+                                @if($teachers->isEmpty())
+                                    <div class="text-center py-2">
+                                        <p class="font-weight-semibold text-lg mb-0">Aucun professeur enregistré</p>
+                                    </div>
+                                @else
                                 <div class="table-responsive p-0">
                                     <table class="table align-items-center mb-0 table-bordered text-center">
                                         <thead class="bg-gray-100">

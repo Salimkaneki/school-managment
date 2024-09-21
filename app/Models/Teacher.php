@@ -18,7 +18,7 @@ class Teacher extends Model
         'first_name',
         'last_name',
         'email',
-        'password',
+        // 'password',
         'phone_number',
         'gender',
         'nationality',
@@ -26,11 +26,11 @@ class Teacher extends Model
         'subject'
     ];
 
-    public function courses()
+    public function course()
     {
         return $this->belongsToMany(Course::class, 'teacher_course');
-        return $this->hasMany(Course::class);
     }
+    
 
 
 

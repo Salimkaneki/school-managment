@@ -34,6 +34,7 @@
                                     </div>
                                 </div>
 
+                                <!-- Autres informations -->
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="email" class="form-label">Email</label>
@@ -45,59 +46,12 @@
                                     </div>
                                 </div>
 
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="gender" class="form-label">Genre</label>
-                                        <select class="form-control" id="gender" name="gender" required>
-                                            <option value="male">Masculin</option>
-                                            <option value="female">Féminin</option>
-                                            <option value="other">Autre</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="date_of_birth" class="form-label">Date de naissance</label>
-                                        <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" required>
-                                    </div>
-                                </div>
-
-                                <!-- Adresse -->
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="address" class="form-label">Adresse</label>
-                                        <input type="text" class="form-control" id="address" name="address" placeholder="Entrez l'adresse">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="nationality" class="form-label">Nationalité</label>
-                                        <input type="text" class="form-control" id="nationality" name="nationality" placeholder="Entrez la nationalité">
-                                    </div>
-                                </div>
-
-                                <!-- Informations de contact d'urgence -->
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="emergency_contact_name" class="form-label">Nom du contact d'urgence</label>
-                                        <input type="text" class="form-control" id="emergency_contact_name" name="emergency_contact_name" placeholder="Entrez le nom du contact d'urgence">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="emergency_contact_phone" class="form-label">Téléphone du contact d'urgence</label>
-                                        <input type="text" class="form-control" id="emergency_contact_phone" name="emergency_contact_phone" placeholder="Entrez le téléphone du contact d'urgence">
-                                    </div>
-                                </div>
-
-                                <!-- Informations sur l'école précédente -->
+                                <!-- Informations sur l'école précédente et Classe (sur la même ligne) -->
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="previous_school_name" class="form-label">Nom de l'école précédente</label>
                                         <input type="text" class="form-control" id="previous_school_name" name="previous_school_name" placeholder="Entrez le nom de l'école précédente">
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="previous_school_address" class="form-label">Adresse de l'école précédente</label>
-                                        <input type="text" class="form-control" id="previous_school_address" name="previous_school_address" placeholder="Entrez l'adresse de l'école précédente">
-                                    </div>
-                                </div>
-
-                                <!-- Classe -->
-                                <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="class_id" class="form-label">Classe</label>
                                         <select class="form-control" id="class_id" name="class_id" required>
@@ -106,6 +60,21 @@
                                             @endforeach
                                         </select>
                                     </div>
+                                </div>
+
+                                <!-- Contacts d'urgence dynamiques (placés à la fin) -->
+                                <div class="row mb-3" id="emergency-contacts">
+                                    <div class="col-md-6">
+                                        <label for="emergency_contact_name" class="form-label">Nom du contact d'urgence</label>
+                                        <input type="text" class="form-control" name="emergency_contact_name[]" placeholder="Entrez le nom du contact d'urgence">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="emergency_contact_phone" class="form-label">Téléphone du contact d'urgence</label>
+                                        <input type="text" class="form-control" name="emergency_contact_phone[]" placeholder="Entrez le téléphone du contact d'urgence">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <button type="button" class="btn btn-sm btn-primary" id="add-contact">Ajouter un autre contact</button>
                                 </div>
 
                                 <!-- Boutons d'action -->
@@ -126,3 +95,22 @@
         <x-app.footer />
     </main>
 </x-app-layout>
+
+<script>
+    document.getElementById('add-contact').addEventListener('click', function() {
+        var container = document.getElementById('emergency-contacts');
+        var contactGroup = `
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="emergency_contact_name" class="form-label">Nom du contact d'urgence</label>
+                    <input type="text" class="form-control" name="emergency_contact_name[]" placeholder="Entrez le nom du contact d'urgence">
+                </div>
+                <div class="col-md-6">
+                    <label for="emergency_contact_phone" class="form-label">Téléphone du contact d'urgence</label>
+                    <input type="text" class="form-control" name="emergency_contact_phone[]" placeholder="Entrez le téléphone du contact d'urgence">
+                </div>
+            </div>
+        `;
+        container.insertAdjacentHTML('beforeend', contactGroup);
+    });
+</script>

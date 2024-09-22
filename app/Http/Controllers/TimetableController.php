@@ -57,31 +57,7 @@ class TimetableController extends Controller
         return view('timetables.add-course', compact('timetable', 'courses', 'teachers', 'classrooms'));
     }
 
-    // Ajouter un cours à l'emploi du temps
-    // public function addCourse(Request $request, $id)
-    // {
-    //     $request->validate([
-    //         'course_id' => 'required|exists:courses,id',
-    //         'teacher_id' => 'required|exists:teachers,id',
-    //         'start_time' => 'required|date_format:H:i',
-    //         'end_time' => 'required|date_format:H:i',    
-    //         'day' => 'required|in:Lundi,Mardi,Mercredi,Jeudi,Vendredi,Samedi', 
-    //         'classroom_id' => 'required|exists:classrooms,id',
-    //     ]);
-    
 
-    //     Timetable::create([
-    //         'class_id' => $id, 
-    //         'course_id' => $request->course_id,
-    //         'teacher_id' => $request->teacher_id,
-    //         'start_time' => $request->start_time,
-    //         'end_time' => $request->end_time,
-    //         'day' => $request->day,
-    //         'classroom_id' => $request->classroom_id,
-    //     ]);
-    
-    //     return redirect()->route('timetables.index')->with('success', 'Cours ajouté avec succès.');
-    // }
 
     public function addCourse(Request $request, $timetable_id)
     {
@@ -90,7 +66,7 @@ class TimetableController extends Controller
             'teacher_id' => 'required|exists:teachers,id',
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i',
-            'day' => 'required|in:Lundi,Mardi,Mercredi,Jeudi,Vendredi,Samedi',
+            'day' => 'required|in:Lundi,Mardi,Mercredi,Jeudi,Vendredi',
             'classroom_id' => 'required|exists:classrooms,id',
         ]);
     

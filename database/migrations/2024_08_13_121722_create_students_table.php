@@ -16,25 +16,16 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique();
-            $table->string('nationality')->nullable();
             $table->string('phone_number')->nullable();
             $table->enum('gender', ['male', 'female', 'other']);
             $table->date('date_of_birth');
             $table->foreignId('class_id')->constrained('class_models')->onDelete('cascade');
-            $table->string('address')->nullable();
-            $table->string('city')->nullable();
-            $table->string('postal_code')->nullable();
-            $table->string('country')->nullable();
+            $table->string('previous_school_name')->nullable();
             $table->string('emergency_contact_name')->nullable();
             $table->string('emergency_contact_phone')->nullable();
-            $table->string('relationship_to_emergency_contact')->nullable();
-            $table->string('previous_school')->nullable();
-            $table->string('previous_school_address')->nullable();
-            $table->decimal('average_grade', 5, 2)->nullable();
-            $table->json('subjects')->nullable();
-            $table->text('notes')->nullable();
+            $table->string('photo')->nullable(); // Ajout du champ pour la photo de l'élève
             $table->timestamps();
-        });
+        });        
     }
 
     /**

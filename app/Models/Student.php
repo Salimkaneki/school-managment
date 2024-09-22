@@ -9,28 +9,19 @@ class Student extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'first_name',
-        'last_name',
-        'email',
-        'phone_number',
-        'gender',
-        'date_of_birth',
-        'class_id',
-        'academic_year_id', // Optionnel, si vous voulez lier l'élève à une année scolaire
-        'address',
-        'city',
-        'postal_code',
-        'country',
-        'emergency_contact_name',
-        'emergency_contact_phone',
-        'relationship_to_emergency_contact',
-        'previous_school',
-        'previous_school_address',
-        'average_grade',
-        'subjects',
-        'notes',
-    ];
+protected $fillable = [
+    'first_name',
+    'last_name',
+    'email',
+    'date_of_birth',
+    'phone_number',
+    'class_id',
+    'previous_school_name',
+    'emergency_contact_name',
+    'emergency_contact_phone',
+    'photo', 
+];
+
 
     public function classModel()
     {

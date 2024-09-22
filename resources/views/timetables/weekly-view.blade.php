@@ -29,7 +29,6 @@
                                                     @if (isset($courses[$day]))
                                                         <strong>{{ $courses[$day]['course_name'] }}</strong><br>
                                                         <small>Prof. {{ $courses[$day]['teacher_name'] }}</small><br>
-                                                        <small>Salle: {{ $courses[$day]['classroom_name'] }}</small>
                                                     @else
                                                         <span class="text-muted">-</span>
                                                     @endif

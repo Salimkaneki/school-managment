@@ -2,62 +2,62 @@
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
         <x-app.navbar />
         <div class="container-fluid py-4">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card border shadow-xs mb-4">
-                        <div class="card-header border-bottom pb-0">
-                            <div class="d-sm-flex align-items-center">
-                                <div>
-                                    <h6 class="font-weight-semibold text-lg mb-0">Liste des Paiements</h6>
-                                    <p class="text-sm">Voici la liste des paiements effectués</p>
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-10 mb-4">
+                    <div class="card border shadow-xs" style="border-radius: 8px;">
+                        <div class="card-header pb-0 p-3">
+                            <div class="row">
+                                <div class="col-md-8 col-9">
+                                    <h6 class="mb-0 font-weight-semibold text-lg">Reçu de Paiement</h6>
+                                    <p class="text-sm mb-1">Détails du paiement effectué.</p>
                                 </div>
-                                <div class="ms-auto d-flex">
-                                    <a href="#" class="btn btn-sm btn-dark btn-icon d-flex align-items-center me-2">
-                                        <span class="btn-inner--icon">
-                                            <i class="fas fa-plus"></i>
-                                        </span>
-                                        <span class="btn-inner--text">Ajouter un Paiement</span>
-                                    </a>
+                                <div class="col-md-4 col-3 text-end">
+                                    <button type="button" class="btn btn-white btn-icon px-2 py-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z" />
+                                        </svg>
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                        <div class="table-responsive p-0">
-                            <table class="table align-items-center mb-0 table-bordered text-center">
-                                <thead class="bg-gray-100">
-                                    <tr>
-                                        <th class="text-secondary text-xs font-weight-semibold opacity-7">ID</th>
-                                        <th class="text-secondary text-xs font-weight-semibold opacity-7">Élève</th>
-                                        <th class="text-secondary text-xs font-weight-semibold opacity-7">Montant dû</th>
-                                        <th class="text-secondary text-xs font-weight-semibold opacity-7">Montant payé</th>
-                                        <th class="text-secondary text-xs font-weight-semibold opacity-7">Solde</th>
-                                        <th class="text-secondary text-xs font-weight-semibold opacity-7">État</th>
-                                        <th class="text-secondary text-xs font-weight-semibold opacity-7">Date</th>
-                                        <th class="text-secondary text-xs font-weight-semibold opacity-7">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="align-middle bg-transparent border-bottom text-xs">1</td>
-                                        <td class="align-middle bg-transparent border-bottom text-xs">John Doe</td>
-                                        <td class="align-middle bg-transparent border-bottom text-xs">500.00</td>
-                                        <td class="align-middle bg-transparent border-bottom text-xs">250.00</td>
-                                        <td class="align-middle bg-transparent border-bottom text-xs">250.00</td>
-                                        <td class="align-middle bg-transparent border-bottom text-xs">
-                                            <span class="badge bg-warning">Partiellement payé</span>
-                                        </td>
-                                        <td class="align-middle bg-transparent border-bottom text-xs">01/01/2024</td>
-                                        <td class="align-middle bg-transparent border-bottom text-xs">
-                                            <a href="#" class="text-secondary font-weight-bold text-xs">Modifier</a>
-                                            <form action="#" method="POST" style="display:inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="text-danger font-weight-bold text-xs border-0 bg-transparent p-0 ms-2">Supprimer</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                    <!-- Répétez ce bloc pour chaque paiement -->
-                                </tbody>
-                            </table>
+                        <div class="card-body p-3">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <ul class="list-group">
+                                        <li class="list-group-item border-0 ps-0 text-dark font-weight-semibold pt-0 pb-1 text-sm">
+                                            <span class="text-secondary">Élève:</span> &nbsp; John Doe
+                                        </li>
+                                        <li class="list-group-item border-0 ps-0 text-dark font-weight-semibold pb-1 text-sm">
+                                            <span class="text-secondary">Montant dû:</span> &nbsp; 500.00
+                                        </li>
+                                        <li class="list-group-item border-0 ps-0 text-dark font-weight-semibold pb-1 text-sm">
+                                            <span class="text-secondary">Montant payé:</span> &nbsp; 250.00
+                                        </li>
+                                        <li class="list-group-item border-0 ps-0 text-dark font-weight-semibold pb-1 text-sm">
+                                            <span class="text-secondary">Solde:</span> &nbsp; 250.00
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <ul class="list-group">
+                                        <li class="list-group-item border-0 ps-0 text-dark font-weight-semibold pb-1 text-sm">
+                                            <span class="text-secondary">État:</span> &nbsp; Partiellement payé
+                                        </li>
+                                        <li class="list-group-item border-0 ps-0 text-dark font-weight-semibold pb-1 text-sm">
+                                            <span class="text-secondary">Date:</span> &nbsp; 01/01/2024
+                                        </li>
+                                        <li class="list-group-item border-0 ps-0 text-dark font-weight-semibold pb-1 text-sm">
+                                            <span class="text-secondary">Mode de paiement:</span> &nbsp; Virement bancaire
+                                        </li>
+                                        <li class="list-group-item border-0 ps-0 text-dark font-weight-semibold pb-1 text-sm">
+                                            <span class="text-secondary">Commentaires:</span> &nbsp; Paiement pour les frais de scolarité du trimestre
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex justify-content-end">
+                            <a href="#" class="btn btn-outline-secondary ms-2">Retour à la liste</a>
                         </div>
                     </div>
                 </div>

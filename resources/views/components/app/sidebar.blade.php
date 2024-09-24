@@ -374,9 +374,9 @@
 
             <li class="nav-item mt-2">
                 <div class="d-flex align-items-center nav-link ">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet2 ms-2" viewBox="0 0 16 16">
-                    <path d="M3 4a2 2 0 0 0-2 2v7.5a1.5 1.5 0 0 0 1.5 1.5h10a1.5 1.5 0 0 0 1.5-1.5V6a2 2 0 0 0-2-2H3zm12 1H1a1 1 0 0 1 0-2h14a1 1 0 0 1 0 2z"/>
-                </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet2 ms-2" viewBox="0 0 448 512">
+                        <path d="M96 32l0 32L48 64C21.5 64 0 85.5 0 112l0 48 448 0 0-48c0-26.5-21.5-48-48-48l-48 0 0-32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 32L160 64l0-32c0-17.7-14.3-32-32-32S96 14.3 96 32zM448 192L0 192 0 464c0 26.5 21.5 48 48 48l352 0c26.5 0 48-21.5 48-48l0-272zM224 248c13.3 0 24 10.7 24 24l0 56 56 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-56 0 0 56c0 13.3-10.7 24-24 24s-24-10.7-24-24l0-56-56 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l56 0 0-56c0-13.3 10.7-24 24-24z"/>
+                    </svg>
                     <span class="font-weight-normal text-md ms-2">Programme</span>
                 </div>
             </li>
@@ -430,6 +430,27 @@
                         <i class="fas fa-calendar-alt" style="font-size: 17px; color: #fff;"></i>
                     </div>
                     <span class="nav-link-text ms-2">Évènements</span>
+                </a>
+            </li>
+
+            <li class="nav-item mt-2">
+                <div class="d-flex align-items-center nav-link ">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet2 ms-2" viewBox="0 0 576 512">
+                    <path d="M512 80c8.8 0 16 7.2 16 16l0 32L48 128l0-32c0-8.8 7.2-16 16-16l448 0zm16 144l0 192c0 8.8-7.2 16-16 16L64 432c-8.8 0-16-7.2-16-16l0-192 480 0zM64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l448 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64L64 32zm56 304c-13.3 0-24 10.7-24 24s10.7 24 24 24l48 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-48 0zm128 0c-13.3 0-24 10.7-24 24s10.7 24 24 24l112 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-112 0z"/>
+                </svg>
+                    <span class="font-weight-normal text-md ms-2">Paiements</span>
+                </div>
+            </li>
+            <li class="nav-item border-start my-0 pt-2">
+                <a class="nav-link position-relative ms-0 ps-2 py-2 {{ Route::currentRouteName() == 'make-payment' ? 'active' : '' }}"
+                    href="{{ route('make-payment') }}">
+                    <span class="nav-link-text ms-1">Effectuer un paiement</span>
+                </a>
+            </li>
+            <li class="nav-item border-start my-0 pt-2">
+                <a class="nav-link position-relative ms-0 ps-2 py-2 {{ Route::currentRouteName() == 'payment-list' ? 'active' : '' }}"
+                    href="{{ route('payment-list') }}">
+                    <span class="nav-link-text ms-1">Liste des paiements</span>
                 </a>
             </li>
 

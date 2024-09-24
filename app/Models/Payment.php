@@ -9,6 +9,16 @@ class Payment extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'class_id',
+        'student_id',
+        'amount_due',
+        'amount_paid',
+        'balance',
+        'payment_date',
+        'is_paid_off',
+    ];
+
     public function class()
     {
         return $this->belongsTo(ClassModel::class);
@@ -27,5 +37,10 @@ class Payment extends Model
     public function parents()
     {
         return $this->hasMany(StudentsParent::class);
+    }
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class, 'student_id');
     }
 }

@@ -13,6 +13,7 @@ use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SchoolEventController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\TimetableController;
 use App\Http\Controllers\NotificationController;
@@ -35,10 +36,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/', function () {
         return redirect('/dashboard');
     });
-
-    // Route::get('/dashboard', function () {
-    //     return view('dashboard');
-    // })->name('dashboard');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -98,11 +95,11 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/create-classroom', function () {
                 return view('classes.classrooms.create');
             })->name('create-classroom');
-            // Route::get('/classroom-list', function () {
-            //     return view('classes.classrooms.index-classrooms');
-            // })->name('classroom-list');
+ 
             Route::get('/create-classroom', [ClassroomController::class, 'create'])->name('create-classroom');
+
             Route::post('/create-classroom', [ClassroomController::class, 'store'])->name('store-classroom');
+            
             Route::get('/classrooms-list', [ClassroomController::class, 'listClassrooms'])->name('list-classrooms');
         });
 
@@ -126,29 +123,21 @@ Route::middleware(['auth'])->group(function () {
 
         });
 
-        Route::prefix('payment')->group(function (){
 
-            Route::get('/create', function() {
-                return view ('payments.payments');
-            })->name('make-payment');
-
-            Route::get('/list', function() {
-                return view ('payments.index');
-            })->name('payment-list');
-
-            Route::get('/detail', function() {
-                return view ('payments.detail');
-            })->name('detail-payment');
-
+        Route::prefix('payment')->group(function () {
+            // Route pour créer un paiement
+            Route::get('/create', [PaymentController::class, 'create'])->name('make-payment');
+            
+            // Route pour lister les paiements
+            Route::get('/list', [PaymentController::class, 'index'])->name('payment-list');
+            
+            // Route pour stocker un paiement
+            Route::post('/', [PaymentController::class, 'store'])->name('payment.store');
         });
 
-        // Route::prefix('wallet')->group(function (){
+        Route::get('/detail/{id}', [PaymentController::class, 'show'])->name('detail-payment');
+        
 
-        //     Route::get('/', function() {
-        //         return view ('');
-        //     })->name('');
-
-        // });
 
         Route::prefix('academic-years')->group(function (){
 
@@ -175,29 +164,6 @@ Route::middleware(['auth'])->group(function () {
 
         });
 
-        // Route::prefix('schedule')->group(function () {
-        //     // Affiche la liste des emplois du temps créés (dashboard)
-        //     Route::get('/list', [TimetableController::class, 'index'])->name('schedule-list');
-        
-        //     // Formulaire de création d'un emploi du temps
-        //     Route::get('/create', [TimetableController::class, 'create'])->name('create-schedule');
-        
-        //     // Sauvegarde un emploi du temps nouvellement créé
-        //     Route::post('/store', [TimetableController::class, 'store'])->name('store-schedule');
-        
-        //     // Vue d'un emploi du temps
-        //     Route::get('/view/{timetable}', [TimetableController::class, 'show'])->name('view-schedule');
-        
-        //     // Ajouter des cours à un emploi du temps existant
-        //     Route::post('/add-course/{timetable}', [TimetableController::class, 'addCourse'])->name('add-course');
-        
-        //     // Modifier un emploi du temps
-        //     Route::get('/edit/{timetable}', [TimetableController::class, 'edit'])->name('edit-schedule');
-        //     Route::put('/update/{timetable}', [TimetableController::class, 'update'])->name('update-schedule');
-        
-        //     // Supprimer un emploi du temps
-        //     Route::delete('/delete/{timetable}', [TimetableController::class, 'destroy'])->name('delete-schedule');
-        // });
 
         Route::prefix('timetables')->group(function () {
             Route::get('/', [TimetableController::class, 'index'])->name('timetables.index');

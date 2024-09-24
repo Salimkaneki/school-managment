@@ -12,29 +12,30 @@
                                     <p class="text-sm mb-0">Veuillez entrer les détails du paiement ci-dessous</p>
                                 </div>
                                 <div class="col-6 text-end">
-                                    <a href="#" class="btn btn-light text-dark border-dark">
+                                    <a href="{{ route('payment-list') }}" class="btn btn-light text-dark border-dark">
                                         <i class="fas fa-list me-2"></i> Liste des Paiements
                                     </a>
                                 </div>
                             </div>
                         </div>
                         <div class="card-body px-4 py-4">
-                            <form action="#" method="POST">
+                            <form action="{{ route('payment.store') }}" method="POST">
                                 @csrf
 
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="class_id" class="form-label">Classe</label>
-                                        <select class="form-select" id="class_id" name="class_id" required onchange="updateStudents(this.value)">
+                                        <select class="form-select" id="class_id" name="class_id" required onchange="filterStudents(this)">
                                             <option value="" disabled selected>Choisir une classe</option>
-                                            <!-- Dynamically populate class options -->
+                                            @foreach($classes as $class)
+                                                <option value="{{ $class->id }}" data-fees="{{ $class->fees }}">{{ $class->name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="student_id" class="form-label">Élève</label>
                                         <select class="form-select" id="student_id" name="student_id" required>
                                             <option value="" disabled selected>Choisir un élève</option>
-                                            <!-- Options will be added dynamically -->
                                         </select>
                                     </div>
                                 </div>
@@ -42,7 +43,7 @@
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="amount_due" class="form-label">Montant dû</label>
-                                        <input type="number" step="0.01" class="form-control" id="amount_due" name="amount_due" placeholder="Montant dû" required>
+                                        <input type="number" step="0.01" class="form-control" id="amount_due" name="amount_due" placeholder="Montant dû" required readonly>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="amount_paid" class="form-label">Montant payé</label>
@@ -51,21 +52,10 @@
                                 </div>
 
                                 <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="balance" class="form-label">Solde</label>
-                                        <input type="number" step="0.01" class="form-control" id="balance" name="balance" placeholder="Solde" readonly>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="payment_date" class="form-label">Date</label>
-                                        <input type="date" class="form-control" id="payment_date" name="payment_date" required>
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
                                     <div class="col-md-12 d-flex align-items-end justify-content-end">
                                         <div class="d-flex">
                                             <button type="submit" class="btn btn-dark text-white">Enregistrer</button>
-                                            <a href="#" class="btn btn-secondary ms-2">Annuler</a>
+                                            <a href="{{ route('payment-list') }}" class="btn btn-secondary ms-2">Annuler</a>
                                         </div>
                                     </div>
                                 </div>
@@ -79,25 +69,37 @@
     </main>
 
     <script>
-        function updateStudents(classId) {
-            const studentSelect = document.getElementById('student_id');
-            studentSelect.innerHTML = '<option value="" disabled selected>Choisir un élève</option>';
+        const students = @json($students); // Convertir la liste des élèves en un tableau JS
 
-            if (classId) {
-                fetch(`/api/students?class_id=${classId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        data.forEach(student => {
-                            const option = document.createElement('option');
-                            option.value = student.id;
-                            option.textContent = student.name;
-                            studentSelect.appendChild(option);
-                        });
-                    })
-                    .catch(error => {
-                        console.error('Error fetching students:', error);
-                    });
-            }
+        // Filtrer les élèves en fonction de la classe sélectionnée
+        function filterStudents(classSelect) {
+            const classId = classSelect.value;
+            const studentSelect = document.getElementById('student_id');
+            const amountDueInput = document.getElementById('amount_due');
+
+            // Mettre à jour le montant dû en fonction des frais de la classe
+            const selectedClass = classSelect.options[classSelect.selectedIndex];
+            const fees = selectedClass.getAttribute('data-fees');
+            amountDueInput.value = fees;
+
+            // Filtrer les élèves
+            studentSelect.innerHTML = '<option value="" disabled selected>Choisir un élève</option>';
+            students.forEach(student => {
+                if (student.class_id == classId) {
+                    const option = document.createElement('option');
+                    option.value = student.id;
+                    option.textContent = `${student.first_name} ${student.last_name}`;
+                    studentSelect.appendChild(option);
+                }
+            });
         }
+
+        // Calculer le solde à chaque changement du montant payé
+        document.getElementById('amount_paid').addEventListener('input', function() {
+            const amountDue = parseFloat(document.getElementById('amount_due').value) || 0;
+            const amountPaid = parseFloat(this.value) || 0;
+            const balance = amountDue - amountPaid;
+            document.getElementById('balance').value = balance.toFixed(2); // Met à jour le solde
+        });
     </script>
 </x-app-layout>

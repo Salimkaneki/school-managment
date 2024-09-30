@@ -176,9 +176,22 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/add-course/{id}', [TimetableController::class, 'showAddCourseForm'])->name('timetables.showAddCourseForm');
         Route::post('/add-course/{id}', [TimetableController::class, 'addCourse'])->name('timetables.addCourse');
+    
+        // Routes pour la gestion des présences
 
+        Route::prefix('attendances')->group(function () {
+            // Afficher la liste des présences pour une classe spécifique et un emploi du temps
+            Route::get('/', [AttendanceController::class, 'index'])->name('attendances.index');
+            
+            // Afficher le formulaire pour marquer les présences
+            Route::get('/create', [AttendanceController::class, 'create'])->name('attendances.create');
+            
+            // Enregistrer les présences
+            Route::post('/', [AttendanceController::class, 'store'])->name('attendances.store');
+        });
         
-
+        
+        
         
     // Define the route prefix for events
     Route::prefix('event')->group(function () {
@@ -195,20 +208,21 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/list', [SchoolEventController::class, 'index'])->name('event-list');
 
     });
-    Route::prefix('attendance')->group(function () {
 
-        // Route to show the form for creating a new event
-        Route::get('/create', function () {
-            return view('attendances.create');
-        })->name('create-attendance');
+    // Route::prefix('attendance')->group(function () {
 
-        // Route to handle form submission and store the event
-        // Route::post('/store', [SchoolEventController::class, 'store'])->name('store-event');
+    //     // Route to show the form for creating a new event
+    //     Route::get('/create', function () {
+    //         return view('attendances.create');
+    //     })->name('create-attendance');
 
-        // // Route to show the list of events
-        // Route::get('/list', [SchoolEventController::class, 'index'])->name('event-list');
+    //     // Route to handle form submission and store the event
+    //     // Route::post('/store', [SchoolEventController::class, 'store'])->name('store-event');
 
-    });
+    //     // // Route to show the list of events
+    //     // Route::get('/list', [SchoolEventController::class, 'index'])->name('event-list');
+
+    // });
 
 
 

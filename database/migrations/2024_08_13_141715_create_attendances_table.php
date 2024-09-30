@@ -15,10 +15,12 @@ return new class extends Migration
             $table->id();
             $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
             $table->foreignId('class_id')->constrained('class_models')->onDelete('cascade');
+            $table->foreignId('timetable_course_id')->constrained('timetable_courses')->onDelete('cascade'); // Lien avec le cours programmé
             $table->date('date');
             $table->boolean('present')->default(false);
             $table->timestamps();
         });
+        
     }
 
     /**

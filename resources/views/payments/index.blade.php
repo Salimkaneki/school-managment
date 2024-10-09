@@ -33,10 +33,10 @@
                                 <tbody>
                                     @foreach($payments as $payment)
                                         <tr>
-                                            <td class="align-middle bg-transparent border-bottom text-xs">{{ $payment->student->name }}</td>
-                                            <td class="align-middle bg-transparent border-bottom text-xs">{{ number_format($payment->amount_due, 2) }} USD</td>
-                                            <td class="align-middle bg-transparent border-bottom text-xs">{{ number_format($payment->amount_paid, 2) }} USD</td>
-                                            <td class="align-middle bg-transparent border-bottom text-xs">{{ number_format($payment->balance, 2) }} USD</td>
+                                            <td class="align-middle bg-transparent border-bottom text-xs">{{ $payment->student->last_name }} {{ $payment->student->first_name }}</td>
+                                            <td class="align-middle bg-transparent border-bottom text-xs">{{ number_format($payment->amount_due, 2) }} XoF</td>
+                                            <td class="align-middle bg-transparent border-bottom text-xs">{{ number_format($payment->amount_paid, 2) }} XoF</td>
+                                            <td class="align-middle bg-transparent border-bottom text-xs">{{ number_format($payment->balance, 2) }} XoF</td>
                                             <td class="align-middle bg-transparent border-bottom text-xs">{{ $payment->balance == 0 ? 'Payé en totalité' : 'Partiellement payé' }}</td>
                                             <td class="align-middle bg-transparent border-bottom text-xs">{{ $payment->payment_date ? $payment->payment_date->format('d/m/Y') : 'Date non spécifiée' }}</td>
                                             <td class="align-middle bg-transparent border-bottom text-xs">{{ $payment->payment_method ?? 'Non spécifié' }}</td>

@@ -48,7 +48,7 @@
                                         </td>
                                         <td class="align-middle bg-transparent border-bottom text-xs">
                                             <!-- Tronquer la description si elle est trop longue -->
-                                            {{ \Illuminate\Support\Str::limit($event->description, 50, '...') }}
+                                            {{ $event->description }}
                                         </td>
                                         <td class="align-middle bg-transparent border-bottom text-xs text-center">
                                             {{ $event->event_date ? $event->event_date->format('d/m/Y') : 'N/A' }}

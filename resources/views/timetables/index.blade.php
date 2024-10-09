@@ -54,22 +54,22 @@
                                                     <td class="text-sm">{{ $timetable->class->name }}</td>
                                                     <td class="text-sm">{{ $timetable->classroom->name }}</td>
                                                     <td class="align-middle text-center">
-                                                        <!-- Voir icon -->
+                                                        <!-- Voir text -->
                                                         <a href="{{ route('timetables.weekly-view', $timetable->id) }}" class="text-secondary font-weight-bold text-xs me-2" title="Voir">
-                                                            <i class="fas fa-eye"></i>
+                                                            Voir
                                                         </a>
 
-                                                        <!-- Ajouter Cours icon -->
+                                                        <!-- Ajouter Cours text -->
                                                         <a href="{{ route('timetables.addCourse', $timetable->id) }}" class="text-primary font-weight-bold text-xs me-2" title="Ajouter Cours">
-                                                            <i class="fas fa-plus-circle"></i>
+                                                            Ajouter Cours
                                                         </a>
 
-                                                        <!-- Supprimer icon sans cadre -->
+                                                        <!-- Supprimer text sans cadre -->
                                                         <form action="{{ route('timetables.destroy', $timetable->id) }}" method="POST" style="display:inline;">
                                                             @csrf
                                                             @method('DELETE')
                                                             <a href="javascript:void(0);" class="text-danger font-weight-bold text-xs" title="Supprimer" onclick="if(confirm('Êtes-vous sûr de vouloir supprimer cet emploi du temps ?')) { this.closest('form').submit(); }">
-                                                                <i class="fas fa-trash"></i>
+                                                                Supprimer
                                                             </a>
                                                         </form>
                                                     </td>

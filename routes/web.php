@@ -254,20 +254,17 @@ Route::middleware(['guest'])->group(function () {
 });
 
 
-// Route accessible without middleware
 Route::get('/signin', function () {
     return view('account-pages.signin');
 })->name('signin');
 
-// Example of a route that does not require any specific middleware
 Route::get('/prof', function () {
     return view('tlistdraft');
 });
 Route::get('/class', function () {
     return view('cdraft');
 });
-// Route::get('/student', function () {
-//     return view('sdraft');
+
 Route::get('/student', function () {
     return view('sdraft');
 });

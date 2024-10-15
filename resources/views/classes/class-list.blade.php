@@ -12,6 +12,15 @@
                                     <p class="text-sm">Voici la liste des classes enregistrées</p>
                                 </div>
                                 <div class="ms-auto d-flex">
+                                    <!-- Bouton de retour vers le tableau de bord -->
+                                    <a href="{{ route('dashboard') }}" class="btn btn-sm btn-secondary d-flex align-items-center me-2">
+                                        <span class="btn-inner--icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="16" height="16" class="me-1">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                            </svg>
+                                        </span>
+                                        <span class="btn-inner--text">Retour</span>
+                                    </a>
                                     <!-- Bouton pour ajouter une classe -->
                                     <a href="{{ route('create-class') }}" class="btn btn-sm btn-dark btn-icon d-flex align-items-center me-2">
                                         <span class="btn-inner--icon">
@@ -19,7 +28,7 @@
                                         </span>
                                         <span class="btn-inner--text">Ajouter une Classe</span>
                                     </a>
-                                    <!-- Nouveau bouton pour rediriger vers la liste des salles de classes -->
+                                    <!-- Bouton pour rediriger vers la liste des salles de classes -->
                                     <a href="{{ route('list-classrooms') }}" class="btn btn-sm btn-info btn-icon d-flex align-items-center">
                                         <span class="btn-inner--icon">
                                             <i class="fas fa-door-open"></i>
@@ -30,7 +39,6 @@
                             </div>
                         </div>
                         <div class="table-responsive p-0">
-
                             <table class="table align-items-center mb-0 table-bordered text-center">
                                 <thead class="bg-gray-100 text-center">
                                     <tr class="table  text-center">

@@ -20,7 +20,9 @@ class StudentController extends Controller
     // Méthode pour afficher la liste des élèves
     public function index()
     {
-        $students = Student::with('classModel')->get(); // Récupération des élèves avec leur classe
+        // $students = Student::with('classModel')->get(); // Récupération des élèves avec leur classe
+        $students = Student::paginate(10); // 10 élèves par page
+
         return view('students.index', compact('students')); // Retourne la vue de la liste des élèves
     }
 

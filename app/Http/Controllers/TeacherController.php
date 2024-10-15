@@ -11,9 +11,14 @@ class TeacherController extends Controller
     // Affiche la liste des professeurs
     public function index()
     {
-        $teachers = Teacher::all();
+        // Récupère la liste des professeurs triée par nom de famille avec pagination
+        $teachers = Teacher::orderBy('last_name', 'asc')->paginate(10);
+        
+        // Passe la liste des professeurs à la vue
         return view('teachers.index', ['teachers' => $teachers]);
     }
+    
+    
 
     // Enregistre un nouveau professeur
     public function store(StoreTeacherRequest $request)

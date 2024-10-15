@@ -28,12 +28,20 @@
                                 <!-- Les élèves seront affichés ici -->
                             </div>
                         </div>
+                        <div class="card-footer text-end">
+                            <a href="{{ route('student-list') }}" class="btn btn-secondary">Retour</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
 </x-app-layout>
+
+
+
+
+
 
 <script>
     document.getElementById('class-select').addEventListener('change', function() {
@@ -89,7 +97,7 @@
                                             <span class="text-secondary text-sm font-weight-normal">${student.email || 'Non précisé'}</span>
                                         </td>
                                         <td class="align-middle text-center">
-                                            <span class="text-secondary text-sm font-weight-normal">${student.class_name || 'Aucune'}</span>
+                                            <span class="text-secondary text-sm font-weight-normal">${student.classModel || 'Aucune'}</span>
                                         </td>
                                         <td class="align-middle text-center">
                                             <a href="#" class="text-secondary font-weight-bold text-xs me-2" data-bs-toggle="tooltip" data-bs-title="Modifier">

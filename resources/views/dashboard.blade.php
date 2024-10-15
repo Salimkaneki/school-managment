@@ -299,31 +299,68 @@
                 </div>
             </div>
 
-                <div class="col-lg-4 col-md-6 mb-md-0 mb-4">
-                    <div class="card shadow-xs border h-100">
-                        <div class="card-header pb-0">
-                            <h6 class="font-weight-semibold text-lg mb-0">Balances over time</h6>
-                            <p class="text-sm">Here you have details about the balance.</p>
-                            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                <input type="radio" class="btn-check" name="btnradio" id="btnradio1"
-                                    autocomplete="off" checked>
-                                <label class="btn btn-white px-3 mb-0" for="btnradio1">12 months</label>
-                                <input type="radio" class="btn-check" name="btnradio" id="btnradio2"
-                                    autocomplete="off">
-                                <label class="btn btn-white px-3 mb-0" for="btnradio2">30 days</label>
-                                <input type="radio" class="btn-check" name="btnradio" id="btnradio3"
-                                    autocomplete="off">
-                                <label class="btn btn-white px-3 mb-0" for="btnradio3">7 days</label>
-                            </div>
+            <div class="col-lg-4 col-md-6 mb-md-0 mb-4">
+                <div class="card shadow-xs border h-100">
+                    <div class="card-header pb-0">
+                        <h6 class="font-weight-semibold text-lg mb-0">Distribution des Élèves</h6>
+                        <p class="text-sm">Répartition par sexe des étudiants inscrits.</p>
+                    </div>
+                    <div class="card-body d-flex flex-column align-items-center justify-content-center py-3">
+                        <div class="chart mb-2" style="position: relative; height: 240px; width: 100%; max-width: 300px;">
+                            <canvas id="chart-pie" class="chart-canvas"></canvas>
                         </div>
-                        <div class="card-body py-3">
-                            <div class="chart mb-2">
-                                <canvas id="chart-bars" class="chart-canvas" height="240"></canvas>
-                            </div>
-                            <button class="btn btn-white mb-0 ms-auto">View report</button>
-                        </div>
+                        <!-- Centrage du bouton et espace en haut -->
+                        <button class="btn btn-white mb-0 mt-3">Voir le rapport</button>
                     </div>
                 </div>
+            </div>
+
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var ctx = document.getElementById('chart-pie').getContext('2d');
+                    var myPieChart = new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                            labels: ['Filles', 'Garçons'],
+                            datasets: [{
+                                label: 'Taux d\'élèves inscrits',
+                                data: [60, 40], // Remplace ces valeurs par les données réelles
+                                backgroundColor: [
+                                    'rgba(255, 159, 64, 0.6)',  // Filles : Orange
+                                    'rgba(75, 192, 192, 0.6)'   // Garçons : Cyan
+                                ],
+                                borderColor: [
+                                    'rgba(255, 159, 64, 1)',    // Bordure pour Filles
+                                    'rgba(75, 192, 192, 1)'     // Bordure pour Garçons
+                                ],
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,  // Permet de garder la flexibilité de l'aspect ratio
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(tooltipItem) {
+                                            var label = tooltipItem.label || '';
+                                            var value = tooltipItem.raw || 0;
+                                            var total = tooltipItem.dataset.data.reduce((a, b) => a + b, 0);
+                                            var percentage = ((value / total) * 100).toFixed(2) + '%';
+                                            return label + ': ' + percentage;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                });
+            </script>
+
                 <!-- <div class="col-lg-8 col-md-6">
                     <div class="card shadow-xs border">
                         <div class="card-header border-bottom pb-0">
@@ -575,7 +612,7 @@
                 </div> -->
 <!--------------------------------------------->
                 {{--Liste des Professeurs--}}
-                <div class="col-lg-8 col-md-6">
+                <!-- <div class="col-lg-8 col-md-6">
                     <div class="card">
                         <div class="card-header pb-0">
                             <h6>Liste des Professeurs</h6>
@@ -626,12 +663,64 @@
                         </div>
                     </div>
 
+                </div> -->
+                <div class="col-lg-8 col-md-6">
+                    <div class="card">
+                        <div class="card-header pb-0">
+                            <h6>Liste des Professeurs</h6>
+                        </div>
+                        <div class="card-body px-0 pt-0 pb-2">
+                            <div class="table-responsive">
+                                <table class="table align-items-center mb-0 table-bordered text-center">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Professeur</th>
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Département</th>
+                                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Email</th>
+                                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Téléphone</th>
+                                            <th class="text-secondary opacity-7"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($teachers as $teacher)
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex px-3 py-2"> <!-- Augmenté le padding ici -->
+                                                    <div class="my-auto">
+                                                        <h6 class="mb-0 text-sm">{{$teacher->last_name }}</h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <p class="text-sm font-weight-normal mb-0">-</p>
+                                            </td>
+                                            <td class="text-center">
+                                                <span class="text-sm font-weight-normal">{{ $teacher->email }}</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <span class="text-sm font-weight-normal">{{ $teacher->phone_number }}</span>
+                                            </td>
+                                            <td class="align-middle">
+                                                <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-bs-toggle="tooltip" data-bs-title="Modifier le professeur">
+                                                    <svg width="14" height="14" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M11.2201 2.02495C10.8292 1.63482 10.196 1.63545 9.80585 2.02636C9.41572 2.41727 9.41635 3.05044 9.80726 3.44057L11.2201 2.02495ZM12.5572 6.18502C12.9481 6.57516 13.5813 6.57453 13.9714 6.18362C14.3615 5.79271 14.3609 5.15954 13.97 4.7694L12.5572 6.18502ZM11.6803 1.56839L12.3867 2.2762L12.3867 2.27619L11.6803 1.56839ZM14.4302 4.31284L15.1367 5.02065L15.1367 5.02064L14.4302 4.31284ZM3.72198 15V16C3.98686 16 4.24091 15.8949 4.42839 15.7078L3.72198 15ZM0.999756 15H-0.000244141C-0.000244141 15.5523 0.447471 16 0.999756 16L0.999756 15ZM0.999756 12.2279L0.293346 11.5201C0.105383 11.7077 -0.000244141 11.9624 -0.000244141 12.2279H0.999756ZM9.80726 3.44057L12.5572 6.18502L13.97 4.7694L11.2201 2.02495L9.80726 3.44057ZM12.3867 2.27619C12.7557 1.90794 13.3549 1.90794 13.7238 2.27619L15.1367 0.860593C13.9869 -0.286864 12.1236 -0.286864 10.9739 0.860593L12.3867 2.27619ZM13.7238 2.27619C14.0917 2.64337 14.0917 3.23787 13.7238 3.60504L15.1367 5.02064C16.2875 3.8721 16.2875 2.00913 15.1367 0.860593L13.7238 2.27619ZM13.7238 3.60504L3.01557 14.2922L4.42839 15.7078L15.1367 5.02065L13.7238 3.60504ZM3.72198 14H0.999756V16H3.72198V14ZM1.70617 15.7078L0.293346 14.2922L-0.000244141 14.5561V15H1.99976V12.2279H-0.000244141V15H0.999756V15.2928L2.41258 13.8772L1.70617 15.7078ZM1.70617 15.7078C1.89469 15.8951 2.14868 16 2.41258 16L3.72198 15L1.70617 15.7078Z" fill="#9393A4" />
+                                                    </svg>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
             </div>
 
 
             <!-- Overview balance -->
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-lg-12">
                     <div class="card shadow-xs border">
                         <div class="card-header pb-0">
@@ -667,7 +756,73 @@
                         </div>
                     </div>
                 </div>
+            </div> -->
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card shadow-xs border">
+                        <div class="card-header pb-0">
+                            <div class="d-sm-flex align-items-center mb-3">
+                                <div>
+                                    <h6 class="font-weight-semibold text-lg mb-0">Courbes d'absences</h6>
+                                    <p class="text-sm mb-sm-0 mb-2">Voici les détails sur les absences au fil du temps.</p>
+                                </div>
+                                <div class="ms-auto d-flex">
+                                    <button type="button" class="btn btn-sm btn-white mb-0 me-2">
+                                        Voir le rapport
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="d-sm-flex align-items-center">
+                                <!-- <h3 class="mb-0 font-weight-semibold">1500 hrs</h3> -->
+                                <!-- <span class="badge badge-sm border border-success text-success bg-success border-radius-sm ms-sm-3 px-2">
+                                    <svg width="9" height="9" viewBox="0 0 10 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M0.46967 4.46967C0.176777 4.76256 0.176777 5.23744 0.46967 5.53033C0.762563 5.82322 1.23744 5.82322 1.53033 5.53033L0.46967 4.46967ZM5.53033 1.53033C5.82322 1.23744 5.82322 0.762563 5.53033 0.46967C5.23744 0.176777 4.76256 0.176777 4.46967 0.46967L5.53033 1.53033ZM5.53033 0.46967C5.23744 0.176777 4.76256 0.176777 4.46967 0.46967C4.17678 0.762563 4.17678 1.23744 4.46967 1.53033L5.53033 0.46967ZM8.46967 5.53033C8.76256 5.82322 9.23744 5.82322 9.53033 5.53033C9.82322 5.23744 9.82322 4.76256 9.53033 4.46967L8.46967 5.53033ZM1.53033 5.53033L5.53033 1.53033L4.46967 0.46967L0.46967 4.46967L1.53033 5.53033ZM4.46967 1.53033L8.46967 5.53033L9.53033 4.46967L5.53033 0.46967L4.46967 1.53033Z" fill="#67C23A"></path>
+                                    </svg>
+                                    10.5%
+                                </span> -->
+                                
+                            </div>
+                        </div>
+                        <div class="card-body p-3">
+                            <div class="chart mt-n6">
+                                <canvas id="chart-line" class="chart-canvas" height="300"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var ctx = document.getElementById('chart-line').getContext('2d');
+                    var myLineChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'], // Remplace ces labels par tes données
+                            datasets: [{
+                                label: 'Heures d\'absence',
+                                data: [200, 300, 400, 350, 600, 700, 800], // Remplace ces données par tes données réelles
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)', // Couleur de fond
+                                borderColor: 'rgba(75, 192, 192, 1)', // Couleur de la ligne
+                                borderWidth: 2,
+                                fill: true, // Remplir sous la courbe
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false, // Permet de maintenir l'aspect ratio
+                            scales: {
+                                y: {
+                                    beginAtZero: true // Commencer l'axe Y à zéro
+                                }
+                            }
+                        }
+                    });
+                });
+            </script>
+
 
             <!-- <div class="row">
                 <div class="col-lg-12">

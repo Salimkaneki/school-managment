@@ -309,7 +309,6 @@
                         <div class="chart mb-2" style="position: relative; height: 240px; width: 100%; max-width: 300px;">
                             <canvas id="chart-pie" class="chart-canvas"></canvas>
                         </div>
-                        <!-- Centrage du bouton et espace en haut -->
                         <button class="btn btn-white mb-0 mt-3">Voir le rapport</button>
                     </div>
                 </div>
@@ -325,7 +324,7 @@
                             labels: ['Filles', 'Garçons'],
                             datasets: [{
                                 label: 'Taux d\'élèves inscrits',
-                                data: [60, 40], // Remplace ces valeurs par les données réelles
+                                data: [{{ $femalePercentage }}, {{ $malePercentage }}], // Utiliser les pourcentages passés depuis le contrôleur
                                 backgroundColor: [
                                     'rgba(255, 159, 64, 0.6)',  // Filles : Orange
                                     'rgba(75, 192, 192, 0.6)'   // Garçons : Cyan
@@ -339,7 +338,7 @@
                         },
                         options: {
                             responsive: true,
-                            maintainAspectRatio: false,  // Permet de garder la flexibilité de l'aspect ratio
+                            maintainAspectRatio: false,
                             plugins: {
                                 legend: {
                                     position: 'top',
@@ -360,6 +359,7 @@
                     });
                 });
             </script>
+
 
                 <!-- <div class="col-lg-8 col-md-6">
                     <div class="card shadow-xs border">

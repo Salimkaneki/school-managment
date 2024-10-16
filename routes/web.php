@@ -119,8 +119,6 @@ Route::middleware(['auth'])->group(function () {
 
             Route::post('/download-by-class/{classId}', [StudentController::class, 'downloadByClass'])->name('download-by-class');
 
-            Route::get('/download-by-class/{classId}', [StudentController::class, 'downloadByClass'])->name('download-by-class');
-
         });
 
 
@@ -133,7 +131,14 @@ Route::middleware(['auth'])->group(function () {
             
             // Route pour stocker un paiement
             Route::post('/', [PaymentController::class, 'store'])->name('payment.store');
+            
+            // Route pour récupérer un paiement existant pour l'édition
+            Route::get('/{id}/edit', [PaymentController::class, 'edit'])->name('payment.edit');
+            
+            // Route pour mettre à jour un paiement
+            Route::put('/{id}', [PaymentController::class, 'update'])->name('payment.update');
         });
+        
 
         Route::get('/detail/{id}', [PaymentController::class, 'show'])->name('detail-payment');
         

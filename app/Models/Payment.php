@@ -16,6 +16,7 @@ class Payment extends Model
         'amount_paid',
         'balance',
         'payment_date',
+        'remaining_balance',
         'is_paid_off',
     ];
 

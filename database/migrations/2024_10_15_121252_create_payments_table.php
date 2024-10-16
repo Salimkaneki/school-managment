@@ -14,10 +14,9 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
-            $table->decimal('amount_due', 10, 2);
-            $table->decimal('amount_paid', 10, 2);
-            $table->decimal('balance', 10, 2)->default(0);
-            $table->boolean('is_paid_off')->default(false);
+            $table->decimal('amount_due', 8, 2); // Montant dû
+            $table->decimal('amount_paid', 8, 2); // Montant payé
+            $table->decimal('remaining_balance', 10, 2)->default(0); // Solde restant avec valeur par défaut
             $table->timestamps();
         });
     }

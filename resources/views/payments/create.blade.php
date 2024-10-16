@@ -18,6 +18,25 @@
                                 </div>
                             </div>
                         </div>
+
+                        @if(session('success'))
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                {{ session('success') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        @endif
+
+                        @if($errors->any())
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <ul class="mb-0">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        @endif
+
                         <div class="card-body px-4 py-4">
                             <form action="{{ route('payment.store') }}" method="POST">
                                 @csrf
@@ -34,7 +53,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label for="student_id" class="form-label">Élève</label>
-                                        <select class="form-select" id="student_id" name="student_id" required>
+                                        <select class="form-select" id="student_id" name="student_id" required onchange="updatePaymentInfo(this)">
                                             <option value="" disabled selected>Choisir un élève</option>
                                         </select>
                                     </div>
@@ -46,8 +65,19 @@
                                         <input type="number" step="0.01" class="form-control" id="amount_due" name="amount_due" placeholder="Montant dû" required readonly>
                                     </div>
                                     <div class="col-md-6">
+                                        <label for="previous_payment" class="form-label">Versement précédent</label>
+                                        <input type="number" step="0.01" class="form-control" id="previous_payment" name="previous_payment" placeholder="Versement précédent" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
                                         <label for="amount_paid" class="form-label">Montant payé</label>
                                         <input type="number" step="0.01" class="form-control" id="amount_paid" name="amount_paid" placeholder="Montant payé" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="remaining_balance" class="form-label">Solde restant</label>
+                                        <input type="text" class="form-control" id="remaining_balance" name="remaining_balance" placeholder="Solde" readonly>
                                     </div>
                                 </div>
 
@@ -69,20 +99,21 @@
     </main>
 
     <script>
-        const students = @json($students); // Convertir la liste des élèves en un tableau JS
+        const students = @json($students);
 
-        // Filtrer les élèves en fonction de la classe sélectionnée
         function filterStudents(classSelect) {
             const classId = classSelect.value;
             const studentSelect = document.getElementById('student_id');
             const amountDueInput = document.getElementById('amount_due');
+            const previousPaymentInput = document.getElementById('previous_payment');
+            const remainingBalanceInput = document.getElementById('remaining_balance');
 
-            // Mettre à jour le montant dû en fonction des frais de la classe
+            // Récupérer les frais de la classe sélectionnée
             const selectedClass = classSelect.options[classSelect.selectedIndex];
             const fees = selectedClass.getAttribute('data-fees');
             amountDueInput.value = fees;
 
-            // Filtrer les élèves
+            // Filtrer les étudiants appartenant à la classe sélectionnée
             studentSelect.innerHTML = '<option value="" disabled selected>Choisir un élève</option>';
             students.forEach(student => {
                 if (student.class_id == classId) {
@@ -92,14 +123,28 @@
                     studentSelect.appendChild(option);
                 }
             });
+
+            // Réinitialiser les champs des paiements
+            previousPaymentInput.value = '';
+            remainingBalanceInput.value = '';
         }
 
-        // Calculer le solde à chaque changement du montant payé
+        function updatePaymentInfo(studentSelect) {
+            const studentId = studentSelect.value;
+            const selectedStudent = students.find(student => student.id == studentId);
+
+            // Mettre à jour le "Versement précédent" et le solde restant de l'élève
+            document.getElementById('previous_payment').value = selectedStudent ? selectedStudent.previous_payment : 0;
+            document.getElementById('remaining_balance').value = selectedStudent ? selectedStudent.remaining_balance : 0;
+        }
+
+        // Calcul du solde restant après paiement
         document.getElementById('amount_paid').addEventListener('input', function() {
             const amountDue = parseFloat(document.getElementById('amount_due').value) || 0;
+            const previousPayment = parseFloat(document.getElementById('previous_payment').value) || 0;
             const amountPaid = parseFloat(this.value) || 0;
-            const balance = amountDue - amountPaid;
-            document.getElementById('balance').value = balance.toFixed(2); // Met à jour le solde
+            const remainingBalance = Math.max(0, amountDue - previousPayment - amountPaid);
+            document.getElementById('remaining_balance').value = remainingBalance.toFixed(2);
         });
     </script>
 </x-app-layout>

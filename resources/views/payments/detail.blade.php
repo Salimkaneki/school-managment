@@ -49,9 +49,9 @@
                                             @endif
                                         </li>
                                         <li class="list-group-item border-0 ps-0 text-dark font-weight-semibold pb-1 text-sm">
-    <span class="text-secondary">Date:</span> &nbsp; 
-    {{ $payment->payment_date ? $payment->payment_date->format('d/m/Y') : 'Date non spécifiée' }}
-</li>
+                                            <span class="text-secondary">Date:</span> &nbsp; 
+                                            {{ $payment->payment_date ? $payment->payment_date->format('d/m/Y') : 'Date non spécifiée' }}
+                                        </li>
 
                                         <li class="list-group-item border-0 ps-0 text-dark font-weight-semibold pb-1 text-sm">
                                             <span class="text-secondary">Mode de paiement:</span> &nbsp; {{ $payment->payment_method ?? 'Non spécifié' }}

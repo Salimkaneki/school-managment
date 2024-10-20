@@ -12,6 +12,14 @@
                                     <p class="text-sm">Voici la liste des emplois du temps créés.</p>
                                 </div>
                                 <div class="ms-auto d-flex">
+                                    <a href="{{ route('dashboard') }}" class="btn btn-sm btn-secondary d-flex align-items-center me-2">
+                                        <span class="btn-inner--icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="16" height="16" class="me-1">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                            </svg>
+                                        </span>
+                                        <span class="btn-inner--text">Retour</span>
+                                    </a>
                                     <a href="{{ route('timetables.create') }}" class="btn btn-sm btn-dark btn-icon d-flex align-items-center me-2">
                                         <span class="btn-inner--icon">
                                             <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="d-block me-2">
@@ -25,13 +33,6 @@
                         </div>
 
                         <div class="card-body px-0 py-0">
-                            @if(session('success'))
-                                <div class="alert alert-success" role="alert">
-                                    {{ session('success') }}
-                                </div>
-                            @endif
-
-                            <div class="card-body px-0 py-0">
                             @if($timetables->isEmpty())
                                 <div class="text-center py-2">
                                     <p class="font-weight-semibold text-lg mb-0">Aucun emploi du temps enregistré</p>
@@ -54,17 +55,12 @@
                                                     <td class="text-sm">{{ $timetable->class->name }}</td>
                                                     <td class="text-sm">{{ $timetable->classroom->name }}</td>
                                                     <td class="align-middle text-center">
-                                                        <!-- Voir text -->
                                                         <a href="{{ route('timetables.weekly-view', $timetable->id) }}" class="text-secondary font-weight-bold text-xs me-2" title="Voir">
                                                             Voir
                                                         </a>
-
-                                                        <!-- Ajouter Cours text -->
                                                         <a href="{{ route('timetables.addCourse', $timetable->id) }}" class="text-primary font-weight-bold text-xs me-2" title="Ajouter Cours">
                                                             Ajouter Cours
                                                         </a>
-
-                                                        <!-- Supprimer text sans cadre -->
                                                         <form action="{{ route('timetables.destroy', $timetable->id) }}" method="POST" style="display:inline;">
                                                             @csrf
                                                             @method('DELETE')
@@ -77,6 +73,40 @@
                                             @endforeach
                                         </tbody>
                                     </table>
+                                </div>
+
+                                <!-- Pagination personnalisée -->
+                                <div class="border-top py-3 px-3 d-flex align-items-center">
+                                    <!-- Bouton Previous -->
+                                    @if ($timetables->onFirstPage())
+                                        <button class="btn btn-sm btn-white d-sm-block d-none mb-0" disabled>Previous</button>
+                                    @else
+                                        <a href="{{ $timetables->previousPageUrl() }}" class="btn btn-sm btn-white d-sm-block d-none mb-0">Previous</a>
+                                    @endif
+
+                                    <!-- Pagination -->
+                                    <nav aria-label="Pagination" class="ms-auto">
+                                        <ul class="pagination pagination-light mb-0">
+                                            @foreach ($timetables->links()->elements[0] as $page => $url)
+                                                @if ($page == $timetables->currentPage())
+                                                    <li class="page-item active" aria-current="page">
+                                                        <span class="page-link font-weight-bold">{{ $page }}</span>
+                                                    </li>
+                                                @else
+                                                    <li class="page-item">
+                                                        <a class="page-link border-0 font-weight-bold" href="{{ $url }}">{{ $page }}</a>
+                                                    </li>
+                                                @endif
+                                            @endforeach
+                                        </ul>
+                                    </nav>
+
+                                    <!-- Bouton Next -->
+                                    @if ($timetables->hasMorePages())
+                                        <a href="{{ $timetables->nextPageUrl() }}" class="btn btn-sm btn-white d-sm-block d-none mb-0 ms-auto">Next</a>
+                                    @else
+                                        <button class="btn btn-sm btn-white d-sm-block d-none mb-0 ms-auto" disabled>Next</button>
+                                    @endif
                                 </div>
                             @endif
                         </div>

@@ -33,7 +33,7 @@ class StudentController extends Controller
         $validatedData = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:students,email',
+            'email' => 'required|email|unique:students,email', // Unicité de l'email
             'date_of_birth' => 'required|date',
             'phone_number' => 'nullable|string|max:20',
             'class_id' => 'required|exists:class_models,id',
@@ -42,22 +42,34 @@ class StudentController extends Controller
             'emergency_contacts.*.phone' => 'nullable|string|max:20',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validation de la photo
         ]);
-
+    
+        // Vérification de la combinaison prénom, nom et date de naissance
+        $existingStudent = Student::where('first_name', $validatedData['first_name'])
+            ->where('last_name', $validatedData['last_name'])
+            ->where('date_of_birth', $validatedData['date_of_birth'])
+            ->first();
+    
+        if ($existingStudent) {
+            // Si un élève avec le même prénom, nom et date de naissance existe déjà
+            return redirect()->back()->withErrors(['duplicate' => 'Un élève avec ce nom et cette date de naissance existe déjà.']);
+        }
+    
         // Traitement de la photo d'élève s'il y a une photo téléchargée
         if ($request->hasFile('photo')) {
-            $photoPath = $request->file('photo')->store('students_photos', 'public'); // Stocker la photo dans le dossier 'public/students_photos'
-            $validatedData['photo'] = $photoPath; // Ajoute le chemin de la photo aux données validées
+            $photoPath = $request->file('photo')->store('students_photos', 'public'); // Stocker la photo
+            $validatedData['photo'] = $photoPath;
         }
-
+    
         // Traitement des contacts d'urgence
-        $validatedData['emergency_contacts'] = json_encode($request->emergency_contacts); // Sérialise les contacts d'urgence en format JSON
-
+        $validatedData['emergency_contacts'] = json_encode($request->emergency_contacts); // Sérialise les contacts
+    
         // Enregistrement de l'élève dans la base de données
         Student::create($validatedData);
-
+    
         // Redirection après succès avec un message
         return redirect()->route('student-list')->with('success', 'Élève ajouté avec succès.');
     }
+    
 
     // Méthode pour afficher les élèves d'une classe spécifique
     public function getStudentsByClass(Request $request)

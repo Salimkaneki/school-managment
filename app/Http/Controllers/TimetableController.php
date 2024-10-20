@@ -18,7 +18,7 @@ class TimetableController extends Controller
     // Voir la liste des emplois du temps
     public function index()
     {
-        $timetables = Timetable::with('class', 'classroom')->get();
+        $timetables = Timetable::with('class', 'classroom')->paginate(5);
         return view('timetables.index', compact('timetables'));
     }
 

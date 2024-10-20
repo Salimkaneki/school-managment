@@ -31,7 +31,8 @@ class CourseController extends Controller
 
     public function index()
     {
-        $courses = Course::with('teacher')->get();
+        $courses = Course::with('teacher')->paginate(10);
+        
         return view('courses.index', compact('courses'));
     }
 }

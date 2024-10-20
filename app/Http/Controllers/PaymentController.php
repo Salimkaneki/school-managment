@@ -59,7 +59,8 @@ class PaymentController extends Controller
 
     public function index()
     {
-        $payments = Payment::with('class', 'student')->get();
+        $payments = Payment::with('class', 'student')->paginate(10);
+
         return view('payments.index', compact('payments'));
     }
 

@@ -11,7 +11,7 @@ class ClassController extends Controller
 
     public function index()
     {
-        $classes = ClassModel::withCount('classrooms')->get();
+        $classes = ClassModel::withCount('classrooms')->paginate(5);;
 
 
         return view('classes.class-list', compact('classes'));

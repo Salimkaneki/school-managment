@@ -71,6 +71,40 @@
                                 </tbody>
                             </table>
                         </div>
+
+                        <!-- Pagination personnalisée -->
+                        <div class="border-top py-3 px-3 d-flex align-items-center">
+                            <!-- Bouton Previous -->
+                            @if ($courses->onFirstPage())
+                                <button class="btn btn-sm btn-white d-sm-block d-none mb-0" disabled>Previous</button>
+                            @else
+                                <a href="{{ $courses->previousPageUrl() }}" class="btn btn-sm btn-white d-sm-block d-none mb-0">Previous</a>
+                            @endif
+
+                            <!-- Pagination -->
+                            <nav aria-label="Pagination" class="ms-auto">
+                                <ul class="pagination pagination-light mb-0">
+                                    @foreach ($courses->links()->elements[0] as $page => $url)
+                                        @if ($page == $courses->currentPage())
+                                            <li class="page-item active" aria-current="page">
+                                                <span class="page-link font-weight-bold">{{ $page }}</span>
+                                            </li>
+                                        @else
+                                            <li class="page-item">
+                                                <a class="page-link border-0 font-weight-bold" href="{{ $url }}">{{ $page }}</a>
+                                            </li>
+                                        @endif
+                                    @endforeach
+                                </ul>
+                            </nav>
+
+                            <!-- Bouton Next -->
+                            @if ($courses->hasMorePages())
+                                <a href="{{ $courses->nextPageUrl() }}" class="btn btn-sm btn-white d-sm-block d-none mb-0 ms-auto">Next</a>
+                            @else
+                                <button class="btn btn-sm btn-white d-sm-block d-none mb-0 ms-auto" disabled>Next</button>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>

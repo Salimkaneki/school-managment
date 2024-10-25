@@ -19,7 +19,8 @@ protected $fillable = [
     'previous_school_name',
     'emergency_contact_name',
     'emergency_contact_phone',
-    'photo', 
+    'photo',
+    'gender', 
 ];
 
 
@@ -32,4 +33,5 @@ protected $fillable = [
     {
         return $this->belongsTo(AcademicYear::class);
     }
+
 }

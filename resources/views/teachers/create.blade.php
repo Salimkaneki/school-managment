@@ -19,7 +19,7 @@
                             </div>
                         </div>
                         <div class="card-body px-4 py-4">
-                            <form action="{{ route('teachers.store') }}" method="POST">
+                            <form action="{{ route('teachers.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 
                                 <div class="row mb-3">
@@ -77,6 +77,13 @@
                                     <div class="col-md-12">
                                         <label for="subject" class="form-label">Matière enseignée</label>
                                         <input type="text" class="form-control" id="subject" name="subject" placeholder="Entrez la matière enseignée" required>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <label for="photo" class="form-label">Photo</label>
+                                        <input type="file" class="form-control" id="photo" name="photo" accept="image/*">
                                     </div>
                                 </div>
 

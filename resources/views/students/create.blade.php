@@ -54,6 +54,22 @@
                                     </div>
                                 </div>
 
+                                <!-- Genre de l'élève -->
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="gender" class="form-label">Genre</label>
+                                        <select class="form-control" id="gender" name="gender" required>
+                                            <option value="" disabled selected>Choisissez un genre</option>
+                                            <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Masculin</option>
+                                            <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Féminin</option>
+                                            <option value="other" {{ old('gender') == 'other' ? 'selected' : '' }}>Autre</option>
+                                        </select>
+                                        @error('gender')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="email" class="form-label">Email</label>
@@ -160,13 +176,11 @@
                                     </div>
                                 </div>
 
-                                <!-- Boutons d'action -->
-                                <div class="row mb-3">
-                                    <div class="col-md-12 d-flex align-items-end justify-content-end">
-                                        <div class="d-flex">
-                                            <button type="submit" class="btn btn-light text-dark border-dark">Ajouter</button>
-                                            <a href="{{ route('student-list') }}" class="btn btn-secondary ms-2">Annuler</a>
-                                        </div>
+                                <!-- Boutons -->
+                                <div class="row">
+                                    <div class="col-12 text-end">
+                                        <button type="submit" class="btn btn-dark">Enregistrer</button>
+                                        <button type="reset" class="btn btn-outline-secondary">Réinitialiser</button>
                                     </div>
                                 </div>
                             </form>
@@ -175,19 +189,18 @@
                 </div>
             </div>
         </div>
-        <x-app.footer />
     </main>
 
-    <!-- JavaScript pour la prévisualisation de la photo -->
+    <!-- Script pour l'aperçu de la photo -->
     <script>
         document.getElementById('photo').addEventListener('change', function(event) {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    const photoPreview = document.getElementById('photo-preview');
-                    photoPreview.src = e.target.result;
-                    photoPreview.style.display = 'block';
+                    const preview = document.getElementById('photo-preview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
                 };
                 reader.readAsDataURL(file);
             }

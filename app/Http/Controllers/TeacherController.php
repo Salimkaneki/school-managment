@@ -3,33 +3,43 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Teacher;
-use App\Http\Requests\StoreTeacherRequest;
 
 class TeacherController extends Controller
 {
     // Affiche la liste des professeurs
     public function index()
     {
-        // Récupère la liste des professeurs triée par nom de famille avec pagination
         $teachers = Teacher::orderBy('last_name', 'asc')->paginate(10);
-        
-        // Passe la liste des professeurs à la vue
         return view('teachers.index', ['teachers' => $teachers]);
     }
-    
-    
 
     // Enregistre un nouveau professeur
-    public function store(StoreTeacherRequest $request)
+    public function store(Request $request)
     {
-        // Récupérer les données validées du formulaire
-        $validatedData = $request->validated();
+        $validatedData = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:teachers',
+            'phone_number' => 'nullable|string|max:20',
+            'gender' => 'required|in:male,female,other',
+            'nationality' => 'nullable|string|max:255',
+            'seniority' => 'nullable|integer',
+            'subject' => 'required|string|max:255',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
-        // Enregistrer l'enseignant
+        if ($request->hasFile('photo')) {
+            // Stocke l'image directement dans le dossier teachers
+            // Sans ajouter /storage/ au début
+            $photoPath = $request->file('photo')->store('teachers', 'public');
+            $validatedData['photo'] = $photoPath; // Stocke le chemin relatif uniquement
+        }
+
         Teacher::create($validatedData);
-
-        // Redirection après enregistrement réussi
-        return redirect()->route('index-teacher')->with('success', 'Enseignant ajouté avec succès.');
+        
+        return redirect()->route('index-teacher')
+            ->with('success', 'Enseignant ajouté avec succès.');
     }
 }

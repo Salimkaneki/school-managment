@@ -33,15 +33,20 @@ class StudentController extends Controller
         $validatedData = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:students,email', // Unicité de l'email
+            'email' => 'required|email|unique:students,email',
             'date_of_birth' => 'required|date',
             'phone_number' => 'nullable|string|max:20',
             'class_id' => 'required|exists:class_models,id',
             'previous_school_name' => 'nullable|string|max:255',
             'emergency_contacts.*.name' => 'nullable|string|max:255',
             'emergency_contacts.*.phone' => 'nullable|string|max:20',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validation de la photo
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'gender' => 'required|in:male,female,other',
+
         ]);
+
+        // dd($validatedData);
+
     
         // Vérification de la combinaison prénom, nom et date de naissance
         $existingStudent = Student::where('first_name', $validatedData['first_name'])

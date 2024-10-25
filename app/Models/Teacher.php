@@ -18,12 +18,13 @@ class Teacher extends Model
         'first_name',
         'last_name',
         'email',
-        // 'password',
         'phone_number',
         'gender',
         'nationality',
         'seniority',
-        'subject'
+        'subject',
+        'photo',
+
     ];
 
     public function course()

@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class AcademicYear extends Model
 {
     use HasFactory;
+
+    public function trimesters()
+    {
+        return $this->hasMany(Trimester::class);
+    }
+
+    
 }

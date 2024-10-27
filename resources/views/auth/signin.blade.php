@@ -1,5 +1,3 @@
-
-
 <x-guest-layout>
     <div class="container position-sticky z-index-sticky top-0">
         <div class="row">
@@ -16,10 +14,10 @@
                         <div class="col-xl-4 col-md-6 d-flex flex-column mx-auto">
                             <div class="card card-plain mt-8">
                                 <div class="card-header pb-0 text-left bg-transparent text-center">
-                                    <h3 class="font-weight-black text-dark display-6">Bienvenue</h3>
-                                    <p class="mb-0">Bienvenue!</p>
-                                    <p class="mb-0">Créez un nouveau compte<br></p>
-                                    <p class="mb-0">OU connectez-vous avec ces identifiants :</p>
+                                    <h3 class="font-weight-black text-dark display-6">Espace de Connexion</h3>
+                                    <p class="mb-0">Bienvenue sur votre portail scolaire !</p>
+                                    <p class="mb-0">Pour accéder à votre espace, veuillez vous connecter<br></p>
+                                    <p class="mb-0">Identifiants de démonstration :</p>
                                     <p class="mb-0">Email : <b>admin@corporateui.com</b></p>
                                     <p class="mb-0">Mot de passe : <b>secret</b></p>
                                 </div>
@@ -57,28 +55,28 @@
                                                 <input class="form-check-input" type="checkbox" value=""
                                                     id="flexCheckDefault">
                                                 <label class="font-weight-normal text-dark mb-0" for="flexCheckDefault">
-                                                    Se souvenir pendant 14 jours
+                                                    Rester connecté(e)
                                                 </label>
                                             </div>
                                             <a href="{{ route('password.request') }}"
-                                                class="text-xs font-weight-bold ms-auto">Mot de passe oublié</a>
+                                                class="text-xs font-weight-bold ms-auto">Mot de passe oublié ?</a>
                                         </div>
                                         <div class="text-center">
-                                            <button type="submit" class="btn btn-dark w-100 mt-4 mb-3">Se connecter</button>
+                                            <button type="submit" class="btn btn-dark w-100 mt-4 mb-3">Connexion</button>
                                             <button type="button" class="btn btn-white btn-icon w-100 mb-3">
                                                 <span class="btn-inner--icon me-1">
                                                     <img class="w-5" src="../assets/img/logos/google-logo.svg"
                                                         alt="logo-google" />
                                                 </span>
-                                                <span class="btn-inner--text">Se connecter avec Google</span>
+                                                <span class="btn-inner--text">Connexion avec Google</span>
                                             </button>
                                         </div>
                                     </form>
                                 </div>
                                 <div class="card-footer text-center pt-0 px-lg-2 px-1">
                                     <p class="mb-4 text-xs mx-auto">
-                                        Vous n'avez pas de compte?
-                                        <a href="{{ route('sign-up') }}" class="text-dark font-weight-bold">S'inscrire</a>
+                                        Nouvel utilisateur ?
+                                        <a href="{{ route('sign-up') }}" class="text-dark font-weight-bold">Créer un compte</a>
                                     </p>
                                 </div>
                             </div>
@@ -89,8 +87,8 @@
                                     style="background-image:url('../assets/img/image-sign-in.jpg')">
                                     <div
                                         class="blur mt-12 p-4 text-center border border-white border-radius-md position-absolute fixed-bottom m-4">
-                                        <h2 class="mt-3 text-dark font-weight-bold">____</h2>
-                                        <h6 class="text-dark text-sm mt-5">Copyright © 2024 #</h6>
+                                        <h2 class="mt-3 text-dark font-weight-bold">Votre Portail Éducatif</h2>
+                                        <h6 class="text-dark text-sm mt-5">Copyright © 2024 - Tous droits réservés</h6>
                                     </div>
                                 </div>
                             </div>

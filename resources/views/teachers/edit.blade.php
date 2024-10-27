@@ -1,41 +1,212 @@
 <x-app-layout>
-    <div class="d-flex justify-content-center align-items-center main-content position-relative max-height-vh-100 h-100 border-radius-lg" style="min-height: 100vh; background-color: #f8f9fa;">
-        <div class="col-lg-8 col-md-10">
-            <div class="card shadow-sm border-light" style="border-radius: 8px;">
-                <div class="card-header bg-primary text-white" style="border-radius: 8px 8px 0 0;">
-                    <h6 class="text-center mb-0">Modifier le Professeur</h6>
-                </div>
-                <div class="card-body px-4 py-4">
-                    <form action="#" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
-                        <div class="mb-3">
-                            <label for="nom" class="form-label">Nom du Professeur</label>
-                            <input type="text" class="form-control" id="nom" name="nom" placeholder="Entrez le nom du professeur" required>
+    <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+        <x-app.navbar />
+        <div class="px-5 py-4 container-fluid">
+            <div class="mt-4 row">
+                <div class="col-12">
+                    <div class="card shadow-sm border-light" style="border-radius: 8px;">
+                        <div class="pb-0 card-header text-dark" style="border-radius: 8px 8px 0 0;">
+                            <div class="row">
+                                <div class="col-6">
+                                    <h6 class="mb-0">Modifier un Professeur</h6>
+                                    <p class="text-sm mb-0">Modification des informations de {{ $teacher->first_name }} {{ $teacher->last_name }}</p>
+                                </div>
+                                <div class="col-6 text-end">
+                                    <a href="{{ route('show-teacher', $teacher) }}" class="btn btn-light text-dark border-dark">
+                                        <i class="fas fa-arrow-left me-2"></i> Retour aux détails
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="departement" class="form-label">Département</label>
-                            <input type="text" class="form-control" id="departement" name="departement" placeholder="Entrez le département" required>
+                        <div class="card-body px-4 py-4">
+                            @if($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul class="mb-0">
+                                        @foreach($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+
+                            <form action="#" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                @method('PUT')
+                                
+                                <div class="row mb-4">
+                                    <!-- Photo actuelle -->
+                                    <div class="col-md-12 text-center mb-3">
+                                        @if($teacher->photo)
+                                            <img src="{{ Storage::url($teacher->photo) }}" 
+                                                 alt="Photo actuelle"
+                                                 class="img-fluid rounded-circle mb-2"
+                                                 style="width: 150px; height: 150px; object-fit: cover;">
+                                            <p class="text-sm text-muted">Photo actuelle</p>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="first_name" class="form-label">Prénom</label>
+                                        <input type="text" 
+                                               class="form-control @error('first_name') is-invalid @enderror" 
+                                               id="first_name" 
+                                               name="first_name" 
+                                               value="{{ old('first_name', $teacher->first_name) }}" 
+                                               required>
+                                        @error('first_name')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="last_name" class="form-label">Nom de famille</label>
+                                        <input type="text" 
+                                               class="form-control @error('last_name') is-invalid @enderror" 
+                                               id="last_name" 
+                                               name="last_name" 
+                                               value="{{ old('last_name', $teacher->last_name) }}" 
+                                               required>
+                                        @error('last_name')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" 
+                                               class="form-control @error('email') is-invalid @enderror" 
+                                               id="email" 
+                                               name="email" 
+                                               value="{{ old('email', $teacher->email) }}" 
+                                               required>
+                                        @error('email')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="phone_number" class="form-label">Téléphone</label>
+                                        <input type="text" 
+                                               class="form-control @error('phone_number') is-invalid @enderror" 
+                                               id="phone_number" 
+                                               name="phone_number" 
+                                               value="{{ old('phone_number', $teacher->phone_number) }}">
+                                        @error('phone_number')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="gender" class="form-label">Genre</label>
+                                        <select class="form-control @error('gender') is-invalid @enderror" 
+                                                id="gender" 
+                                                name="gender" 
+                                                required>
+                                            <option value="male" {{ old('gender', $teacher->gender) == 'male' ? 'selected' : '' }}>Masculin</option>
+                                            <option value="female" {{ old('gender', $teacher->gender) == 'female' ? 'selected' : '' }}>Féminin</option>
+                                            <option value="other" {{ old('gender', $teacher->gender) == 'other' ? 'selected' : '' }}>Autre</option>
+                                        </select>
+                                        @error('gender')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="nationality" class="form-label">Nationalité</label>
+                                        <select class="form-control @error('nationality') is-invalid @enderror" 
+                                                id="nationality" 
+                                                name="nationality">
+                                            <option value="" disabled {{ old('nationality', $teacher->nationality) ? '' : 'selected' }}>Choisissez une nationalité</option>
+                                            <option value="Togo" {{ old('nationality', $teacher->nationality) == 'Togo' ? 'selected' : '' }}>Togo</option>
+                                            <option value="Bénin" {{ old('nationality', $teacher->nationality) == 'Bénin' ? 'selected' : '' }}>Bénin</option>
+                                            <option value="Cameroun" {{ old('nationality', $teacher->nationality) == 'Cameroun' ? 'selected' : '' }}>Cameroun</option>
+                                            <option value="Ghana" {{ old('nationality', $teacher->nationality) == 'Ghana' ? 'selected' : '' }}>Ghana</option>
+                                            <option value="Sénégal" {{ old('nationality', $teacher->nationality) == 'Sénégal' ? 'selected' : '' }}>Sénégal</option>
+                                        </select>
+                                        @error('nationality')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="seniority" class="form-label">Années d'expérience</label>
+                                        <input type="number" 
+                                               class="form-control @error('seniority') is-invalid @enderror" 
+                                               id="seniority" 
+                                               name="seniority" 
+                                               value="{{ old('seniority', $teacher->seniority) }}">
+                                        @error('seniority')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <label for="subject" class="form-label">Matière enseignée</label>
+                                        <input type="text" 
+                                               class="form-control @error('subject') is-invalid @enderror" 
+                                               id="subject" 
+                                               name="subject" 
+                                               value="{{ old('subject', $teacher->subject) }}" 
+                                               required>
+                                        @error('subject')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <label for="photo" class="form-label">
+                                            Nouvelle photo
+                                            <small class="text-muted">(Laissez vide pour conserver l'image actuelle)</small>
+                                        </label>
+                                        <input type="file" 
+                                               class="form-control @error('photo') is-invalid @enderror" 
+                                               id="photo" 
+                                               name="photo" 
+                                               accept="image/*">
+                                        @error('photo')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="is_active" class="form-label">Statut</label>
+                                        <select class="form-control @error('is_active') is-invalid @enderror" 
+                                                id="is_active" 
+                                                name="is_active">
+                                            <option value="1" {{ old('is_active', $teacher->is_active) ? 'selected' : '' }}>Actif</option>
+                                            <option value="0" {{ old('is_active', $teacher->is_active) ? '' : 'selected' }}>Inactif</option>
+                                        </select>
+                                        @error('is_active')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 d-flex justify-content-end gap-2">
+                                        <a href="{{ route('show-teacher', $teacher) }}" class="btn btn-secondary">Annuler</a>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save me-2"></i> Enregistrer les modifications
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" placeholder="Entrez l'email" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="telephone" class="form-label">Téléphone</label>
-                            <input type="text" class="form-control" id="telephone" name="telephone" placeholder="Entrez le numéro de téléphone" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="photo" class="form-label">Photo</label>
-                            <input type="file" class="form-control" id="photo" name="photo">
-                        </div>
-                        <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary">Mettre à Jour</button>
-                            <a href="#" class="btn btn-secondary ms-2">Annuler</a>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+        <x-app.footer />
+    </main>
 </x-app-layout>

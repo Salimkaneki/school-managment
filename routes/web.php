@@ -56,19 +56,32 @@ Route::middleware(['auth'])->group(function () {
     })->name('profile');
 
         Route::prefix('/teacher')->group(function () {
-            Route::get('/create', function () {
-                return view('teachers.create');
-            })->name('create-teacher');
+
+            // Route::get('/create', function () {return view('teachers.create');})->name('create-teacher');
 
             Route::get('/list', [TeacherController::class, 'index'])->name('index-teacher');
 
 
-            Route::get('/edit', function () {
-                return view('teachers.edit');
-            })->name('edit-teacher');
+            // Route::get('/edit', function () {
+            //     return view('teachers.edit');
+            // })->name('edit-teacher');
 
             Route::post('/teachers', [TeacherController::class, 'store'])->name('teachers.store');
             Route::get('/teachers', [TeacherController::class, 'index'])->name('teachers.index');
+
+            Route::get('/list', [TeacherController::class, 'index'])->name('index-teacher');
+            Route::get('/create', [TeacherController::class, 'create'])->name('create-teacher');
+            Route::post('/store', [TeacherController::class, 'store'])->name('store-teacher');
+            Route::get('/{teacher}', [TeacherController::class, 'show'])->name('show-teacher');
+            Route::get('/{teacher}/edit', [TeacherController::class, 'edit'])->name('edit-teacher'); //**A enlever pour cause de css non pris en compte  */
+            Route::put('/{teacher}', [TeacherController::class, 'update'])->name('update-teacher');
+            Route::delete('/{teacher}', [TeacherController::class, 'destroy'])->name('delete-teacher');
+            
+            // Routes pour les fonctionnalités supplémentaires
+            Route::get('/search', [TeacherController::class, 'search'])->name('search-teacher');
+            Route::get('/export', [TeacherController::class, 'export'])->name('export-teacher');
+            Route::get('/filter/{subject}', [TeacherController::class, 'filterBySubject'])->name('filter-teacher');
+            Route::patch('/{teacher}/toggle-status', [TeacherController::class, 'toggleStatus'])->name('toggle-status-teacher');
 
         });
 
@@ -211,6 +224,11 @@ Route::middleware(['auth'])->group(function () {
 
         // Route to show the list of events
         Route::get('/list', [SchoolEventController::class, 'index'])->name('event-list');
+
+        Route::get('/events', [SchoolEventController::class, 'index'])->name('event-list');
+        Route::get('/events/create', [SchoolEventController::class, 'create'])->name('events.create');
+        Route::post('/events', [SchoolEventController::class, 'store'])->name('events.store');
+        Route::get('/events/{event}', [SchoolEventController::class, 'show'])->name('events.show');
 
     });
 

@@ -347,31 +347,6 @@
                 </a>
             </li>
 
-
-
-            
-            <!-- <li class="nav-item mt-2">
-                <div class="d-flex align-items-center nav-link" style="cursor: pointer;" data-bs-toggle="collapse" data-bs-target="#financeMenu" aria-expanded="false">
-                    <svg id="financeIcon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet2 ms-2" viewBox="0 0 16 16">
-                        <path d="M3 4a2 2 0 0 0-2 2v7.5a1.5 1.5 0 0 0 1.5 1.5h10a1.5 1.5 0 0 0 1.5-1.5V6a2 2 0 0 0-2-2H3zm12 1H1a1 1 0 0 1 0-2h14a1 1 0 0 1 0 2z"/>
-                    </svg>
-                    <span class="font-weight-normal text-md ms-2">Finance</span>
-                </div>
-                <ul id="financeMenu" class="collapse list-unstyled ms-3">
-                    <li class="nav-item border-start my-0 pt-2 ps-3">
-                        <a class="nav-link position-relative ms-0 ps-0 py-2 {{ is_current_route('users.profile') ? 'active' : '' }}" href="#">
-                            <span class="nav-link-text ms-1">Frais Scolarités</span>
-                        </a>
-                    </li>
-                    <li class="nav-item border-start my-0 pt-2 ps-3">
-                        <a class="nav-link position-relative ms-0 ps-0 py-2 {{ is_current_route('') ? 'active' : '' }}" href="#">
-                            <span class="nav-link-text ms-1">Dépenses</span>
-                        </a>
-                    </li>
-                </ul>
-            </li> -->
-
-
             <li class="nav-item mt-2">
                 <div class="d-flex align-items-center nav-link ">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet2 ms-2" viewBox="0 0 448 512">

@@ -141,7 +141,15 @@
                         </li>
                     </ul>
                 </li> -->
+                <li class="nav-item dropdown pe-2 d-flex align-items-center">
+                    <x-school-notification-bell />
+                </li>
 
+
+
+
+
+                
 
 
                 

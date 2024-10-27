@@ -6,67 +6,185 @@ use Illuminate\Http\Request;
 use App\Models\Payment;
 use App\Models\ClassModel;
 use App\Models\Student;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class PaymentController extends Controller 
+class PaymentController extends Controller
 {
     public function create()
     {
-        $classes = ClassModel::all(); 
-        $students = Student::all(); 
+        $classes = ClassModel::all();
+        $students = Student::with(['payments' => function($query) {
+            $query->latest();
+        }])->get()->map(function($student) {
+            return [
+                'id' => $student->id,
+                'first_name' => $student->first_name,
+                'last_name' => $student->last_name,
+                'class_id' => $student->class_id,
+                'previous_payment' => $student->payments->sum('amount_paid'),
+                'remaining_balance' => $student->payments->first() ? 
+                    $student->payments->first()->remaining_balance : 
+                    $student->class->fees ?? 0
+            ];
+        });
 
         return view('payments.create', compact('classes', 'students'));
     }
 
-
     public function store(Request $request)
     {
         try {
+            DB::beginTransaction();
+
             $validated = $request->validate([
                 'class_id' => 'required|exists:class_models,id',
                 'student_id' => 'required|exists:students,id',
-                'amount_due' => 'required|numeric',
-                'amount_paid' => 'required|numeric',
+                'amount_due' => 'required|numeric|min:0',
+                'amount_paid' => 'required|numeric|min:0',
+                'remaining_balance' => 'required|numeric|min:0'
             ]);
 
-            // Vérifier le dernier paiement pour obtenir le solde actuel
-            $lastPayment = Payment::where('student_id', $validated['student_id'])->orderBy('created_at', 'desc')->first();
+            // Vérifier si l'étudiant existe et appartient à la classe
+            $student = Student::where('id', $validated['student_id'])
+                            ->where('class_id', $validated['class_id'])
+                            ->firstOrFail();
 
-            $currentBalance = $lastPayment ? $lastPayment->remaining_balance : $validated['amount_due'];
+            // Récupérer le dernier paiement
+            $lastPayment = Payment::where('student_id', $validated['student_id'])
+                                ->latest()
+                                ->first();
 
+            $currentBalance = $lastPayment ? 
+                $lastPayment->remaining_balance : 
+                $validated['amount_due'];
+
+            // Vérifications de cohérence
             if ($validated['amount_paid'] > $currentBalance) {
-                return back()->withErrors('Le montant payé ne peut pas dépasser le solde dû. Solde actuel: ' . $currentBalance);
+                throw new \Exception('Le montant payé ne peut pas dépasser le solde dû.');
             }
 
-            // Calculer le nouveau solde après le paiement
-            $newBalance = $currentBalance - $validated['amount_paid'];
-
-            // Créer un nouveau paiement
-            Payment::create([
+            // Créer le paiement
+            $payment = Payment::create([
                 'student_id' => $validated['student_id'],
                 'amount_due' => $validated['amount_due'],
                 'amount_paid' => $validated['amount_paid'],
-                'remaining_balance' => $newBalance,
+                'remaining_balance' => $validated['remaining_balance']
             ]);
 
-            return redirect()->route('payment-list')->with('success', 'Paiement enregistré avec succès.');
+            DB::commit();
+            return redirect()
+                ->route('payment-list')
+                ->with('success', 'Paiement enregistré avec succès.');
+
         } catch (\Exception $e) {
-            Log::error($e->getMessage());
-            return back()->withErrors('Une erreur est survenue lors de l\'enregistrement.');
+            DB::rollBack();
+            Log::error('Erreur lors de l\'enregistrement du paiement: ' . $e->getMessage());
+            return back()
+                ->withInput()
+                ->withErrors(['error' => $e->getMessage()]);
         }
     }
-    
 
     public function index()
     {
-        $payments = Payment::with('class', 'student')->paginate(10);
+        $payments = Payment::with(['student.class'])
+            ->latest()
+            ->paginate(10);
 
         return view('payments.index', compact('payments'));
     }
 
-    public function show($id)
+    public function edit($id)
     {
-        $payment = Payment::with('student')->findOrFail($id);
-        return view('payments.show', compact('payment'));
+        try {
+            $payment = Payment::with('student.class')->findOrFail($id);
+            $classes = ClassModel::all();
+            
+            // Récupérer les informations de paiement pour l'étudiant
+            $studentPayments = Payment::where('student_id', $payment->student_id)
+                                    ->where('created_at', '<', $payment->created_at)
+                                    ->latest()
+                                    ->get();
+
+            $previousPayments = $studentPayments->sum('amount_paid');
+
+            // Préparer les données pour la vue
+            $paymentData = [
+                'id' => $payment->id,
+                'student' => $payment->student,
+                'class' => $payment->student->class,
+                'amount_due' => $payment->amount_due,
+                'amount_paid' => $payment->amount_paid,
+                'previous_payments' => $previousPayments,
+                'remaining_balance' => $payment->remaining_balance,
+                'created_at' => $payment->created_at->format('d/m/Y')
+            ];
+
+            return view('payments.edit', compact('paymentData', 'classes'));
+
+        } catch (\Exception $e) {
+            Log::error('Erreur lors de l\'édition du paiement: ' . $e->getMessage());
+            return redirect()
+                ->route('payment-list')
+                ->withErrors(['error' => 'Paiement introuvable ou inaccessible.']);
+        }
+    }
+
+    public function update(Request $request, $id)
+    {
+        try {
+            DB::beginTransaction();
+
+            $payment = Payment::findOrFail($id);
+
+            $validated = $request->validate([
+                'amount_paid' => [
+                    'required',
+                    'numeric',
+                    'min:0',
+                    function ($attribute, $value, $fail) use ($payment) {
+                        // Vérifier si le nouveau montant est cohérent
+                        $totalPaid = Payment::where('student_id', $payment->student_id)
+                                          ->where('id', '!=', $payment->id)
+                                          ->sum('amount_paid') + $value;
+
+                        if ($totalPaid > $payment->amount_due) {
+                            $fail('Le total des paiements ne peut pas dépasser le montant dû.');
+                        }
+                    },
+                ],
+                'remaining_balance' => 'required|numeric|min:0'
+            ]);
+
+            // Vérifier la cohérence du solde restant
+            $newRemainingBalance = $payment->amount_due - 
+                                 ($validated['amount_paid'] + 
+                                  Payment::where('student_id', $payment->student_id)
+                                        ->where('id', '!=', $payment->id)
+                                        ->sum('amount_paid'));
+
+            if (abs($newRemainingBalance - $validated['remaining_balance']) > 0.01) {
+                throw new \Exception('Le calcul du solde restant est incorrect.');
+            }
+
+            // Mettre à jour le paiement
+            $payment->update([
+                'amount_paid' => $validated['amount_paid'],
+                'remaining_balance' => $validated['remaining_balance']
+            ]);
+
+            DB::commit();
+            return redirect()
+                ->route('payment-list')
+                ->with('success', 'Paiement mis à jour avec succès.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Erreur lors de la mise à jour du paiement: ' . $e->getMessage());
+            return back()
+                ->withInput()
+                ->withErrors(['error' => $e->getMessage()]);
+        }
     }
 }

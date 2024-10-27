@@ -29,9 +29,19 @@ protected $fillable = [
         return $this->belongsTo(ClassModel::class, 'class_id');
     }
 
+    public function class()
+    {
+        return $this->belongsTo(ClassModel::class, 'class_id');
+    }
+
     public function academicYear()
     {
         return $this->belongsTo(AcademicYear::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
     }
 
 }

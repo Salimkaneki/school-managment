@@ -89,6 +89,17 @@
                                                         </td>
                                                         <td class="align-middle text-center">
                                                             <div class="d-flex justify-content-center gap-2">
+
+                                                                <button type="button" 
+                                                                        class="btn btn-link text-primary px-3 mb-0"
+                                                                        data-bs-toggle="modal" 
+                                                                        data-bs-target="#teacherModal{{ $teacher->id }}">
+                                                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                        <path d="M15.58 12C15.58 13.98 13.98 15.58 12 15.58C10.02 15.58 8.42001 13.98 8.42001 12C8.42001 10.02 10.02 8.42001 12 8.42001C13.98 8.42001 15.58 10.02 15.58 12Z" stroke="#007bff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                        <path d="M12 20.27C15.53 20.27 18.82 18.19 21.11 14.59C22.01 13.18 22.01 10.81 21.11 9.39997C18.82 5.79997 15.53 3.71997 12 3.71997C8.47003 3.71997 5.18003 5.79997 2.89003 9.39997C1.99003 10.81 1.99003 13.18 2.89003 14.59C5.18003 18.19 8.47003 20.27 12 20.27Z" stroke="#007bff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                    </svg>
+                                                                </button>
+
                                                                 <a href="{{ route('edit-teacher', $teacher->id) }}" 
                                                                    class="btn btn-link text-warning px-3 mb-0">
                                                                     <svg width="14" height="14" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -110,6 +121,101 @@
                                                                     </button>
                                                                 </form>
                                                             </div>
+
+                                                            <div class="modal fade" id="teacherModal{{ $teacher->id }}" tabindex="-1" aria-labelledby="teacherModalLabel{{ $teacher->id }}" aria-hidden="true">
+                                                                <div class="modal-dialog modal-lg modal-dialog-centered">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header bg-light">
+                                                                            <h5 class="modal-title" id="teacherModalLabel{{ $teacher->id }}">
+                                                                                Détails du Professeur
+                                                                            </h5>
+                                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <div class="row">
+                                                                                <!-- Photo du professeur -->
+                                                                                <div class="col-md-4 text-center mb-4">
+                                                                                    @if($teacher->photo)
+                                                                                        <img src="{{ Storage::url($teacher->photo) }}" 
+                                                                                            alt="Photo de {{ $teacher->first_name }}"
+                                                                                            class="img-fluid rounded-circle"
+                                                                                            style="width: 150px; height: 150px; object-fit: cover;">
+                                                                                    @else
+                                                                                        <div class="bg-light rounded-circle d-flex align-items-center justify-content-center mx-auto"
+                                                                                            style="width: 150px; height: 150px;">
+                                                                                            <i class="fas fa-user fa-3x text-secondary"></i>
+                                                                                        </div>
+                                                                                    @endif
+                                                                                </div>
+
+                                                                                <!-- Informations du professeur -->
+                                                                                <div class="col-md-8">
+                                                                                    <div class="row g-3">
+                                                                                        <div class="col-md-6">
+                                                                                            <p class="mb-1"><strong>Prénom:</strong></p>
+                                                                                            <p class="text-muted">{{ $teacher->first_name }}</p>
+                                                                                        </div>
+                                                                                        <div class="col-md-6">
+                                                                                            <p class="mb-1"><strong>Nom:</strong></p>
+                                                                                            <p class="text-muted">{{ $teacher->last_name }}</p>
+                                                                                        </div>
+                                                                                        <div class="col-md-6">
+                                                                                            <p class="mb-1"><strong>Email:</strong></p>
+                                                                                            <p class="text-muted">{{ $teacher->email }}</p>
+                                                                                        </div>
+                                                                                        <div class="col-md-6">
+                                                                                            <p class="mb-1"><strong>Téléphone:</strong></p>
+                                                                                            <p class="text-muted">{{ $teacher->phone_number ?? 'Non renseigné' }}</p>
+                                                                                        </div>
+                                                                                        <div class="col-md-6">
+                                                                                            <p class="mb-1"><strong>Genre:</strong></p>
+                                                                                            <p class="text-muted">
+                                                                                                @switch($teacher->gender)
+                                                                                                    @case('male')
+                                                                                                        Masculin
+                                                                                                        @break
+                                                                                                    @case('female')
+                                                                                                        Féminin
+                                                                                                        @break
+                                                                                                    @default
+                                                                                                        Autre
+                                                                                                @endswitch
+                                                                                            </p>
+                                                                                        </div>
+                                                                                        <div class="col-md-6">
+                                                                                            <p class="mb-1"><strong>Nationalité:</strong></p>
+                                                                                            <p class="text-muted">{{ $teacher->nationality ?? 'Non renseignée' }}</p>
+                                                                                        </div>
+                                                                                        <div class="col-md-6">
+                                                                                            <p class="mb-1"><strong>Années d'expérience:</strong></p>
+                                                                                            <p class="text-muted">{{ $teacher->seniority ?? '0' }} an(s)</p>
+                                                                                        </div>
+                                                                                        <div class="col-md-6">
+                                                                                            <p class="mb-1"><strong>Matière:</strong></p>
+                                                                                            <p class="text-muted">{{ $teacher->subject }}</p>
+                                                                                        </div>
+                                                                                        <div class="col-12">
+                                                                                            <p class="mb-1"><strong>Statut:</strong></p>
+                                                                                            @if($teacher->is_active)
+                                                                                                <span class="badge bg-success">Actif</span>
+                                                                                            @else
+                                                                                                <span class="badge bg-danger">Inactif</span>
+                                                                                            @endif
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                                                                            <a href="{{ route('edit-teacher', $teacher->id) }}" class="btn btn-primary">
+                                                                                Modifier
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
                                                         </td>
                                                     </tr>
                                                 @endforeach

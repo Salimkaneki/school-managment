@@ -129,12 +129,12 @@
                                 <div class="row mb-3">
                                     <h5>Contacts d'Urgence</h5>
                                     <div class="col-md-6">
-                                        <label for="emergency_contact_name_1" class="form-label">Nom du contact d'urgence 1</label>
+                                        <label for="emergency_contact_name_1" class="form-label">Nom du Père</label>
                                         <input type="text" class="form-control" name="emergency_contacts[0][name]" value="{{ old('emergency_contacts.0.name') }}" placeholder="Entrez le nom du contact d'urgence">
                                         @error('emergency_contacts.0.name')<div class="text-danger">{{ $message }}</div>@enderror
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="emergency_contact_phone_1" class="form-label">Nom du Père</label>
+                                        <label for="emergency_contact_phone_1" class="form-label">Téléphone du Père</label>
                                         <input type="text" class="form-control" name="emergency_contacts[0][phone]" value="{{ old('emergency_contacts.0.phone') }}" placeholder="Entrez le téléphone du contact d'urgence">
                                         @error('emergency_contacts.0.phone')<div class="text-danger">{{ $message }}</div>@enderror
                                     </div>
@@ -147,7 +147,7 @@
                                         @error('emergency_contacts.1.name')<div class="text-danger">{{ $message }}</div>@enderror
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="emergency_contact_phone_2" class="form-label">Téléphone du contact d'urgence 2</label>
+                                        <label for="emergency_contact_phone_2" class="form-label">Téléphone de la Mère</label>
                                         <input type="text" class="form-control" name="emergency_contacts[1][phone]" value="{{ old('emergency_contacts.1.phone') }}" placeholder="Entrez le téléphone du contact d'urgence">
                                         @error('emergency_contacts.1.phone')<div class="text-danger">{{ $message }}</div>@enderror
                                     </div>

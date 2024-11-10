@@ -17,8 +17,7 @@ return new class extends Migration
             $table->year('end_year');
             $table->boolean('is_active')->default(false);
             $table->timestamps();
-        });
-        
+        }); 
     }
 
     /**

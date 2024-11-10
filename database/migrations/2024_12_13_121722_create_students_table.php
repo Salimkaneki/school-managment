@@ -24,6 +24,8 @@ return new class extends Migration
             $table->string('emergency_contact_name')->nullable();
             $table->string('emergency_contact_phone')->nullable();
             $table->string('photo')->nullable(); // Ajout du champ pour la photo de l'élève
+            $table->unsignedBigInteger('academic_year_id')->nullable();
+            $table->foreign('academic_year_id')->references('id')->on('academic_years')->onDelete('set null');
             $table->timestamps();
         });        
     }

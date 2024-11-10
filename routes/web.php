@@ -16,6 +16,7 @@ use App\Http\Controllers\SchoolEventController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\TimetableController;
+use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\NotificationController;
 
 use PHPUnit\Framework\Attributes\Group;
@@ -171,6 +172,26 @@ Route::middleware(['auth'])->group(function () {
                 return view ('academic-years.year-trimester');
             });
         });
+
+
+        Route::prefix('academic-years')->name('academic-years.')->group(function () {
+            // Routes de base CRUD
+            Route::get('/', [AcademicYearController::class, 'index'])->name('index');
+            Route::get('/create', [AcademicYearController::class, 'create'])->name('create');
+            Route::post('/', [AcademicYearController::class, 'store'])->name('store');
+            Route::get('/{academicYear}', [AcademicYearController::class, 'show'])->name('show');
+            Route::get('/{academicYear}/edit', [AcademicYearController::class, 'edit'])->name('edit');
+            Route::put('/{academicYear}', [AcademicYearController::class, 'update'])->name('update');
+            Route::delete('/{academicYear}', [AcademicYearController::class, 'destroy'])->name('destroy');
+            
+            // Routes additionnelles
+            Route::get('/current', [AcademicYearController::class, 'currentAcademicYear'])->name('current');
+            Route::post('/{academicYear}/activate', [AcademicYearController::class, 'activate'])->name('activate');
+        });
+
+                    Route::get('list/trimesters', function() {
+                        return view('academic-years.year-trimester');
+                    })->name('year-trimester');
 
         Route::prefix('course')->group(function (){
 

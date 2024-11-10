@@ -56,7 +56,7 @@
                                     <table class="table align-items-center mb-0 table-bordered text-center">
                                         <thead class="bg-gray-100">
                                             <tr>
-                                                <th class="text-secondary text-xs font-weight-semibold opacity-7">Prénom et Nom</th>
+                                                <th class="text-secondary text-xs font-weight-semibold opacity-7">Nom et Prénom</th>
                                                 <th class="text-secondary text-xs font-weight-semibold opacity-7 ps-2">Téléphone</th>
                                                 <th class="text-center text-secondary text-xs font-weight-semibold opacity-7">Email</th>
                                                 <th class="text-center text-secondary text-xs font-weight-semibold opacity-7">Classe Assignée</th>
@@ -74,7 +74,7 @@
                                                                     alt="Photo de {{ $student->first_name }} {{ $student->last_name }}">
                                                             </div>
                                                             <div class="d-flex flex-column justify-content-center ms-1">
-                                                                <h6 class="mb-0 text-sm font-weight-semibold">{{ $student->first_name }} {{ $student->last_name }}</h6>
+                                                                <h6 class="mb-0 text-sm font-weight-semibold"> {{ $student->last_name }}  {{ $student->first_name }}</h6>
                                                                 <p class="text-sm text-secondary mb-0">{{ $student->email }}</p>
                                                             </div>
                                                         </div>

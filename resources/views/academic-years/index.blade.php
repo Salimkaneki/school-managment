@@ -12,7 +12,7 @@
                                     <p class="text-sm">Gérez les années académiques ici</p>
                                 </div>
                                 <div class="ms-auto d-flex">
-                                    <a href="#" class="btn btn-sm btn-dark btn-icon d-flex align-items-center me-2">
+                                    <a href="{{ route('academic-years.create') }}" class="btn btn-sm btn-dark btn-icon d-flex align-items-center me-2">
                                         <span class="btn-inner--icon">
                                             <i class="fas fa-plus"></i>
                                         </span>
@@ -33,20 +33,38 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- Exemple de données -->
-                                    <tr>
-                                        <td>1</td>
-                                        <td>2023</td>
-                                        <td>2024</td>
-                                        <td>
-                                            <span class="badge bg-success">Oui</span>
-                                        </td>
-                                        <td>
-                                            <a href="#" class="text-primary">Modifier</a>
-                                            <a href="#" class="text-danger ms-3">Supprimer</a>
-                                        </td>
-                                    </tr>
-                                    <!-- Répétez ce bloc pour chaque année académique -->
+                                    @forelse($academicYears as $year)
+                                        <tr>
+                                            <td>{{ $year->id }}</td>
+                                            <td>{{ $year->start_year }}</td>
+                                            <td>{{ $year->end_year }}</td>
+                                            <td>
+                                                @if($year->is_active)
+                                                    <span style="background-color: #198754; color: white; padding: 2px 8px; border-radius: 3px; font-weight: 500; font-size: 12px;">
+                                                        Actif
+                                                    </span>
+                                                @else
+                                                    <span style="background-color: #dc3545; color: white; padding: 2px 8px; border-radius: 3px; font-weight: 500; font-size: 12px;">
+                                                        Inactif
+                                                    </span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('academic-years.edit', $year->id) }}" class="text-primary">Modifier</a>
+                                                <form action="{{ route('academic-years.destroy', $year->id) }}" method="POST" style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="text-danger ms-3" style="border: none; background: none; cursor: pointer;">
+                                                        Supprimer
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="5">Aucune année académique trouvée.</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>

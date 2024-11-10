@@ -24,13 +24,30 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="align-middle bg-transparent border-bottom text-xs">2023-2024</td>
-                                        <td class="align-middle bg-transparent border-bottom text-xs">Premier Trimestre</td>
-                                        <td class="align-middle bg-transparent border-bottom text-xs">01/09/2023</td>
-                                        <td class="align-middle bg-transparent border-bottom text-xs">30/11/2023</td>
-                                    </tr>
-                                    <!-- Ajoutez plus de lignes si nécessaire -->
+                                    @if($currentYear)
+                                        @foreach($currentYear->trimesters as $trimester)
+                                            <tr>
+                                                <td class="align-middle bg-transparent border-bottom text-xs">
+                                                    {{ $currentYear->start_year }}-{{ $currentYear->end_year }}
+                                                </td>
+                                                <td class="align-middle bg-transparent border-bottom text-xs">
+                                                    {{ $trimester->name }}
+                                                </td>
+                                                <td class="align-middle bg-transparent border-bottom text-xs">
+                                                    {{ \Carbon\Carbon::parse($trimester->start_date)->format('d/m/Y') }}
+                                                </td>
+                                                <td class="align-middle bg-transparent border-bottom text-xs">
+                                                    {{ \Carbon\Carbon::parse($trimester->end_date)->format('d/m/Y') }}
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td colspan="4" class="text-center">
+                                                Aucune année académique active n'a été trouvée
+                                            </td>
+                                        </tr>
+                                    @endif
                                 </tbody>
                             </table>
                         </div>

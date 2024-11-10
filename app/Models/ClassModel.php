@@ -9,23 +9,17 @@ class ClassModel extends Model
 {
     use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'description',
-        'fees',  
-        'trimester_id'
-
+        'fees',
+        'trimester_id',
     ];
+
     public function students()
     {
         return $this->hasMany(Student::class);
     }
-
 
     public function teachers()
     {
@@ -41,7 +35,6 @@ class ClassModel extends Model
     {
         return $this->hasMany(Classroom::class);
     }
-
 
     public function academicYear()
     {

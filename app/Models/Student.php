@@ -20,7 +20,9 @@ protected $fillable = [
     'emergency_contact_name',
     'emergency_contact_phone',
     'photo',
-    'gender', 
+    'gender',
+    'academic_year_id', // Assurez-vous que cette ligne existe
+
 ];
 
 

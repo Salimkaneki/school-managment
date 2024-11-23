@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use App\Models\Teacher;
+
 
 class TeacherController extends Controller
 {
@@ -54,41 +56,91 @@ class TeacherController extends Controller
     }
 
     // Affiche le formulaire d'édition
-    public function edit(Teacher $teacher)
+    public function edit($id)
     {
+        $teacher = Teacher::findOrFail($id);
         return view('teachers.edit', compact('teacher'));
     }
-
-    // Met à jour un professeur
-    public function update(Request $request, Teacher $teacher)
+    
+    public function update(Request $request, $id)
     {
-        $validatedData = $request->validate([
+        $teacher = Teacher::findOrFail($id);
+        
+        $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:teachers,email,' . $teacher->id,
+            'email' => 'required|email|max:255|unique:teachers,email,'.$id,
             'phone_number' => 'nullable|string|max:20',
             'gender' => 'required|in:male,female,other',
             'nationality' => 'nullable|string|max:255',
-            'seniority' => 'nullable|integer',
             'subject' => 'required|string|max:255',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'seniority' => 'nullable|integer|min:0',
+            // 'is_active' => 'boolean',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
-
+    
         if ($request->hasFile('photo')) {
-            // Supprime l'ancienne photo si elle existe
-            if ($teacher->photo && Storage::disk('public')->exists($teacher->photo)) {
-                Storage::disk('public')->delete($teacher->photo);
+            // Supprimer l'ancienne photo si elle existe
+            if ($teacher->photo) {
+                Storage::delete($teacher->photo);
             }
             
-            $photoPath = $request->file('photo')->store('teachers', 'public');
-            $validatedData['photo'] = $photoPath;
+            // Enregistrer la nouvelle photo
+            $path = $request->file('photo')->store('teachers', 'public');
+            $validated['photo'] = $path;
         }
-
-        $teacher->update($validatedData);
-        
-        return redirect()->route('index-teacher')
-            ->with('success', 'Enseignant mis à jour avec succès.');
+    
+        $teacher->update($validated);
+    
+        return redirect()->route('teachers.index')
+            ->with('success', 'Les informations du professeur ont été mises à jour avec succès.');
     }
+
+//     public function update(Request $request, Teacher $teacher)
+// {
+//     try {
+//         $validatedData = $request->validate([
+//             'first_name' => 'required|string|max:255',
+//             'last_name' => 'required|string|max:255',
+//             'email' => 'required|string|email|max:255|unique:teachers,email,' . $teacher->id,
+//             'phone_number' => 'nullable|string|max:20',
+//             'gender' => 'required|in:male,female,other',
+//             'nationality' => 'nullable|string|max:255',
+//             'seniority' => 'nullable|integer',
+//             'subject' => 'required|string|max:255',
+//             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+//             'is_active' => 'required|boolean'
+//         ]);
+
+//         Log::info('Données validées :', $validatedData); // Ajouté pour debug
+
+//         if ($request->hasFile('photo')) {
+//             if ($teacher->photo && Storage::disk('public')->exists($teacher->photo)) {
+//                 Storage::disk('public')->delete($teacher->photo);
+//             }
+            
+//             $photoPath = $request->file('photo')->store('teachers', 'public');
+//             $validatedData['photo'] = $photoPath;
+//         }
+
+//         Log::info('Avant update', ['teacher_id' => $teacher->id]); // Ajouté pour debug
+//         $result = $teacher->update($validatedData);
+//         Log::info('Résultat update', ['result' => $result]); // Ajouté pour debug
+        
+//         return redirect()->route('show-teacher', $teacher)
+//             ->with('success', 'Les informations de l\'enseignant ont été mises à jour avec succès.');
+            
+//     } catch (\Exception $e) {
+//         Log::error('Erreur mise à jour teacher:', [
+//             'message' => $e->getMessage(),
+//             'trace' => $e->getTraceAsString()
+//         ]);
+        
+//         return redirect()->back()
+//             ->with('error', 'Une erreur est survenue lors de la mise à jour: ' . $e->getMessage())
+//             ->withInput();
+//     }
+// }
 
     // Supprime un professeur
     public function destroy(Teacher $teacher)
@@ -161,6 +213,7 @@ class TeacherController extends Controller
             ->orderBy('last_name', 'asc')
             ->paginate(10);
             
+
         return view('teachers.index', compact('teachers', 'subject'));
     }
 

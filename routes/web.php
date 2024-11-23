@@ -74,7 +74,6 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/create', [TeacherController::class, 'create'])->name('create-teacher');
             Route::post('/store', [TeacherController::class, 'store'])->name('store-teacher');
             Route::get('/{teacher}', [TeacherController::class, 'show'])->name('show-teacher');
-            Route::get('/{teacher}/edit', [TeacherController::class, 'edit'])->name('edit-teacher'); //**A enlever pour cause de css non pris en compte  */
             Route::put('/{teacher}', [TeacherController::class, 'update'])->name('update-teacher');
             Route::delete('/{teacher}', [TeacherController::class, 'destroy'])->name('delete-teacher');
             
@@ -85,6 +84,11 @@ Route::middleware(['auth'])->group(function () {
             Route::patch('/{teacher}/toggle-status', [TeacherController::class, 'toggleStatus'])->name('toggle-status-teacher');
 
         });
+
+        Route::get('/teachers-edit/{id}', [TeacherController::class, 'edit'])->name('edit-teacher');
+        Route::put('/teachers/{id}', [TeacherController::class, 'update'])->name('teachers.update');
+
+        
 
         Route::prefix('/class')->group(function () {
 
@@ -119,10 +123,6 @@ Route::middleware(['auth'])->group(function () {
 
         Route::prefix('student')->group(function (){
 
-            Route::get('/detail', function() {
-                return view ('students.show');
-            })->name('detail-student');
-
             Route::get('/create-student', [StudentController::class, 'create'])->name('create-student');
 
             Route::get('/student-list', [StudentController::class, 'index'])->name('student-list');
@@ -133,7 +133,14 @@ Route::middleware(['auth'])->group(function () {
 
             Route::post('/download-by-class/{classId}', [StudentController::class, 'downloadByClass'])->name('download-by-class');
 
+            Route::delete('/delete/{id}', [StudentController::class, 'destroy'])->name('student.delete');
+
+            Route::get('/edit/{id}', [StudentController::class, 'edit'])->name('student.edit');
+            Route::put('/update/{id}', [StudentController::class, 'update'])->name('student.update');
         });
+
+        Route::get('/students-edit/{id}', [StudentController::class, 'edit'])->name('edit-students');
+        Route::put('/teachers/{id}', [TeacherController::class, 'update'])->name('teachers.update');
 
 
         Route::prefix('payment')->group(function () {

@@ -93,4 +93,52 @@ class StudentController extends Controller
         return response()->json($students);
     }
 
+    public function edit($id)
+    {
+        $student = Student::findOrFail($id);
+        $classes = ClassModel::all();
+        $academicYears = AcademicYear::all();
+        return view('students.edit', compact('student', 'classes', 'academicYears'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $student = Student::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:students,email,' . $student->id,
+            'date_of_birth' => 'required|date',
+            'phone_number' => 'nullable|string|max:20',
+            'class_id' => 'required|exists:class_models,id',
+            'academic_year_id' => 'required|exists:academic_years,id',
+            'previous_school_name' => 'nullable|string|max:255',
+            'emergency_contacts.*.name' => 'nullable|string|max:255',
+            'emergency_contacts.*.phone' => 'nullable|string|max:20',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'gender' => 'required|in:male,female,other',
+        ]);
+
+        // Traitement de la photo d'élève s'il y a une photo téléchargée
+        if ($request->hasFile('photo')) {
+            $photoPath = $request->file('photo')->store('students_photos', 'public');
+            $validatedData['photo'] = $photoPath;
+        }
+
+        // Traitement des contacts d'urgence
+        $validatedData['emergency_contacts'] = json_encode($request->emergency_contacts);
+
+        $student->update($validatedData);
+
+        return redirect()->route('student-list')->with('success', 'Élève modifié avec succès.');
+    }
+
+    public function destroy($id)
+    {
+        $student = Student::findOrFail($id);
+        $student->delete();
+
+        return redirect()->route('student-list')->with('success', 'Élève supprimé avec succès.');
+    }
 }

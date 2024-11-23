@@ -24,6 +24,7 @@ class Teacher extends Model
         'seniority',
         'subject',
         'photo',
+        'is_active',
 
     ];
 

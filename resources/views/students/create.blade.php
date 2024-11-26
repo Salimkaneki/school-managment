@@ -61,9 +61,9 @@
                                     </div>
                                 </div>
 
-                                <!-- Genre -->
+                                <!-- Genre et Nationalité -->
                                 <div class="row mb-3">
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <label for="gender" class="form-label">Genre</label>
                                         <select class="form-control" id="gender" name="gender" required>
                                             <option value="" disabled selected>Choisissez un genre</option>
@@ -72,6 +72,12 @@
                                             <option value="other" {{ old('gender') == 'other' ? 'selected' : '' }}>Autre</option>
                                         </select>
                                         @error('gender')<div class="text-danger">{{ $message }}</div>@enderror
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="nationality" class="form-label">Nationalité</label>
+                                        <input type="text" class="form-control" id="nationality" name="nationality" 
+                                               value="{{ old('nationality') }}" placeholder="Entrez la nationalité" required>
+                                        @error('nationality')<div class="text-danger">{{ $message }}</div>@enderror
                                     </div>
                                 </div>
 

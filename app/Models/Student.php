@@ -15,13 +15,14 @@ protected $fillable = [
     'email',
     'date_of_birth',
     'phone_number',
+    'nationality',
     'class_id',
     'previous_school_name',
     'emergency_contact_name',
     'emergency_contact_phone',
     'photo',
     'gender',
-    'academic_year_id', // Assurez-vous que cette ligne existe
+    'academic_year_id', 
 
 ];
 

@@ -42,6 +42,7 @@ class StudentController extends Controller
             'emergency_contacts.*.phone' => 'nullable|string|max:20',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'gender' => 'required|in:male,female,other',
+            'nationality' => 'required|string|max:100',
         ]);
 
         // Traitement de la photo d'élève s'il y a une photo téléchargée
@@ -118,6 +119,7 @@ class StudentController extends Controller
             'emergency_contacts.*.phone' => 'nullable|string|max:20',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'gender' => 'required|in:male,female,other',
+            'nationality' => 'required|string|max:100',
         ]);
 
         // Traitement de la photo d'élève s'il y a une photo téléchargée

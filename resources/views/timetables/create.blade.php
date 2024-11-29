@@ -11,11 +11,43 @@
                             </h6>
                             <p class="text-sm text-muted mb-0">Configurez l'emploi du temps pour votre classe</p>
                         </div>
-                        <a href="{{ route('timetables.index') }}" class="btn btn-outline-secondary">
-                            <i class="fas fa-list me-2"></i>Liste des Emplois du Temps
-                        </a>
+
+
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-dark btn-icon d-flex align-items-center me-2 dropdown-toggle" type="button" id="actionMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="btn-inner--icon">
+                                    <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="d-block me-2">
+                                        <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z" clip-rule="evenodd" />
+                                    </svg>
+                                </span>
+                                <span class="btn-inner--text">Actions</span>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="actionMenu">
+                                <div class="dropdown-header">Emplois du Temps</div>
+                                <a href="{{ route('timetables.index') }}" class="dropdown-item">
+                                    <i class="fas fa-list me-2"></i>Liste des Emplois du Temps
+                                </a>
+                                <a href="{{ route('timetables.create') }}" class="dropdown-item">
+                                    <i class="fas fa-plus me-2"></i>Créer un Emploi du Temps
+                                </a>
+                                <a href="{{ route('time-slots.create') }}" class="dropdown-item">
+                                    <i class="fas fa-clock me-2"></i>Gérer les Créneaux Horaires
+                                </a>
+                                
+                                <div class="dropdown-divider"></div>
+                                <div class="dropdown-header">Ressources</div>
+                                <a href="#" class="dropdown-item">
+                                    <i class="fas fa-graduation-cap me-2"></i>Gérer les Classes
+                                </a>
+                                <a href="#" class="dropdown-item">
+                                    <i class="fas fa-door-open me-2"></i>Gérer les Salles de Classe
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                </div>
+
+                        
+
                 <div class="card-body px-4 py-4">
                     @if ($errors->any())
                         <div class="alert alert-light alert-dismissible fade show mb-4" role="alert">

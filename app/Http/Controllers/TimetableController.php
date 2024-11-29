@@ -7,6 +7,7 @@ use App\Models\Classroom;
 use App\Models\Timetable;
 use App\Models\Course;
 use App\Models\Teacher;
+use App\Models\TimeSlot;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -150,14 +151,15 @@ class TimetableController extends Controller
         $daysOfWeek = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
     
         // Créneaux horaires
-        $timeSlots = [
-            '08:00 - 09:00',
-            '09:00 - 10:00',
-            '10:00 - 11:00',
-            '11:00 - 12:00',
-            '14:00 - 15:00',
-            '15:00 - 16:00',
-        ];
+         $timeSlots = TimeSlot::where('is_active', true)
+             ->orderBy('start_time')
+             ->get()
+             ->map(function($slot) {
+                 return sprintf('%s - %s', 
+                     date('H:i', strtotime($slot->start_time)), 
+                date('H:i', strtotime($slot->end_time))
+                 );
+             });
     
         // Récupérer les cours spécifiques à cet emploi du temps et à la salle de classe
         $timetableCourses = DB::table('timetable_courses')
@@ -212,7 +214,28 @@ class TimetableController extends Controller
             'classroomName' => $classroomName,
             'className' => $className,
         ]);
+    
     }
+
+    // Dans TimetableController
+    // public function weeklyView($timetable_id)
+    // {
+    //     // Récupérer les créneaux dynamiquement depuis la base de données
+    //     $timeSlots = TimeSlot::where('is_active', true)
+    //         ->orderBy('start_time')
+    //         ->get()
+    //         ->map(function($slot) {
+    //             return sprintf('%s - %s', 
+    //                 date('H:i', strtotime($slot->start_time)), 
+    //                 date('H:i', strtotime($slot->end_time))
+    //             );
+    //         });
+
+    //     // Le reste de votre logique reste similaire
+    //     $daysOfWeek = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+
+    //     // ... reste du code existant
+    // }
     
     
     

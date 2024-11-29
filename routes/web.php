@@ -17,6 +17,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\TimetableController;
 use App\Http\Controllers\AcademicYearController;
+use App\Http\Controllers\TimeSlotController;
 use App\Http\Controllers\NotificationController;
 
 use PHPUnit\Framework\Attributes\Group;
@@ -217,6 +218,16 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/store', [TimetableController::class, 'store'])->name('timetables.store');
             Route::get('/{id}', [TimetableController::class, 'weeklyView'])->name('timetables.weekly-view');
             Route::delete('/{id}', [TimetableController::class, 'destroy'])->name('timetables.destroy');
+        });
+
+        // Routes pour les créneaux horaires (TimeSlots)
+        Route::prefix('time-slots')->group(function () {
+            Route::get('/', [TimeSlotController::class, 'index'])->name('time-slots.index');
+            Route::get('/create', [TimeSlotController::class, 'create'])->name('time-slots.create');
+            Route::post('/', [TimeSlotController::class, 'store'])->name('time-slots.store');
+            Route::get('/{timeSlot}/edit', [TimeSlotController::class, 'edit'])->name('time-slots.edit');
+            Route::put('/{timeSlot}', [TimeSlotController::class, 'update'])->name('time-slots.update');
+            Route::delete('/{timeSlot}', [TimeSlotController::class, 'destroy'])->name('time-slots.destroy');
         });
         
 

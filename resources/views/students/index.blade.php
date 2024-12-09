@@ -239,7 +239,7 @@
                                                 <li class="page-item">
                                                     <a class="page-link border-0 font-weight-bold" href="{{ $url }}">{{ $page }}</a>
                                                 </li>
-                                            @endif
+                                            @endif 
                                         @endforeach
                                     </ul>
                                 </nav>

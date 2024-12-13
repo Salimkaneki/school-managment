@@ -131,6 +131,62 @@
                                     </div>
 
                                     <div class="col-md-6">
+                                        <label for="birthday" class="form-label">
+                                            <i class="fas fa-calendar me-2 text-black"></i>Date d'anniversaire
+                                        </label>
+                                        <input 
+                                            type="date" 
+                                            class="form-control @error('birthday') is-invalid @enderror" 
+                                            id="birthday" 
+                                            name="birthday" 
+                                            value="{{ old('birthday') }}"
+                                            required
+                                        >
+                                        @error('birthday')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="marital_status" class="form-label">
+                                            <i class="fas fa-heart me-2 text-black"></i>Situation matrimoniale
+                                        </label>
+                                        <select 
+                                            class="form-select @error('marital_status') is-invalid @enderror" 
+                                            id="marital_status" 
+                                            name="marital_status" 
+                                            required
+                                        >
+                                            <option value="" disabled selected>Choisissez une situation matrimoniale</option>
+                                            <option value="single" {{ old('marital_status') == 'single' ? 'selected' : '' }}>Célibataire</option>
+                                            <option value="married" {{ old('marital_status') == 'married' ? 'selected' : '' }}>Marié(e)</option>
+                                            <option value="divorced" {{ old('marital_status') == 'divorced' ? 'selected' : '' }}>Divorcé(e)</option>
+                                            <option value="widowed" {{ old('marital_status') == 'widowed' ? 'selected' : '' }}>Veuf/Veuve</option>
+                                        </select>
+                                        @error('marital_status')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <label for="address" class="form-label">
+                                            <i class="fas fa-map-marker-alt me-2 text-black"></i>Adresse
+                                        </label>
+                                        <input 
+                                            type="text" 
+                                            class="form-control @error('address') is-invalid @enderror" 
+                                            id="address" 
+                                            name="address" 
+                                            placeholder="Entrez l'adresse complète" 
+                                            value="{{ old('address') }}"
+                                            required
+                                        >
+                                        @error('address')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-6">
                                         <label for="nationality" class="form-label">
                                             <i class="fas fa-globe me-2 text-black"></i>Nationalité
                                         </label>

@@ -14,12 +14,12 @@
                         <div class="col-xl-4 col-md-6 d-flex flex-column mx-auto">
                             <div class="card card-plain mt-8">
                                 <div class="card-header pb-0 text-left bg-transparent text-center">
-                                    <h3 class="font-weight-black text-dark display-6">Espace de Connexion</h3>
-                                    <p class="mb-0">Bienvenue sur votre portail scolaire !</p>
+                                    <h3 class="font-weight-black text-dark display-6">Connexion</h3>
+                                    <p class="mb-0">Bienvenue sur Gestecole</p>
                                     <p class="mb-0">Pour accéder à votre espace, veuillez vous connecter<br></p>
-                                    <p class="mb-0">Identifiants de démonstration :</p>
+                                    <!-- <p class="mb-0">Identifiants de démonstration :</p>
                                     <p class="mb-0">Email : <b>admin@corporateui.com</b></p>
-                                    <p class="mb-0">Mot de passe : <b>secret</b></p>
+                                    <p class="mb-0">Mot de passe : <b>secret</b></p> -->
                                 </div>
                                 <div class="text-center">
                                     @if (session('status'))

@@ -7,7 +7,7 @@
                 <div class="col-md-12">
                     <div class="d-md-flex align-items-center mb-3 mx-2">
                         <div class="mb-md-0 mb-3">
-                            <h3 class="font-weight-bold mb-0">Bonjour, Administrateur</h3>
+                            <h3 class="font-weight-bold mb-0">Bonjour, Administrateurs</h3>
                             <p class="mb-0">Bon travail!</p>
                         </div>
                         <button type="button"
@@ -32,7 +32,9 @@
                     </div>
                 </div>
             </div>
+
             <hr class="my-0">
+
             <div class="row">
             </div>
             <div class="row my-4">
@@ -145,41 +147,52 @@
                 </div>
             </div>
 
+
             <div class="col-lg-4 col-md-6 mb-md-0 mb-4">
                 <div class="card shadow-xs border h-100">
                     <div class="card-header pb-0">
-                        <h6 class="font-weight-semibold text-lg mb-0">Distribution des Élèves</h6>
-                        <p class="text-sm">Répartition par sexe des étudiants inscrits.</p>
+                        <h6 class="font-weight-semibold text-lg mb-0">Répartition par Sexe</h6>
+                        <p class="text-sm">Pourcentage d'étudiants par genre.</p>
                     </div>
                     <div class="card-body d-flex flex-column align-items-center justify-content-center py-3">
                         <div class="chart mb-2" style="position: relative; height: 240px; width: 100%; max-width: 300px;">
                             <canvas id="chart-pie" class="chart-canvas"></canvas>
                         </div>
-                        <button class="btn btn-white mb-0 mt-3">Voir le rapport</button>
+                        <button class="btn btn-white mb-0 mt-3">Voir le rapport détaillé</button>
                     </div>
                 </div>
             </div>
 
-            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
                     var ctx = document.getElementById('chart-pie').getContext('2d');
+                    
+                    var dataFemale = {{ $femalePercentage }};
+                    var dataMale = {{ $malePercentage }};
+                    
+                    if (dataFemale < 0 || dataMale < 0) {
+                        console.warn('Invalid percentage values.');
+                        dataFemale = 50; // Valeur par défaut
+                        dataMale = 50;    // Valeur par défaut
+                    }
+
                     var myPieChart = new Chart(ctx, {
                         type: 'pie',
                         data: {
                             labels: ['Filles', 'Garçons'],
                             datasets: [{
-                                label: 'Taux d\'élèves inscrits',
-                                data: [{{ $femalePercentage }}, {{ $malePercentage }}], // Utiliser les pourcentages passés depuis le contrôleur
+                                label: 'Répartition des élèves',
+                                data: [dataFemale, dataMale],
                                 backgroundColor: [
-                                    'rgba(255, 159, 64, 0.6)',  // Filles : Orange
-                                    'rgba(75, 192, 192, 0.6)'   // Garçons : Cyan
+                                    'rgba(41, 128, 185, 0.6)',  // Bleu pour Filles
+                                    'rgba(142, 68, 173, 0.6)'   // Violet pour Garçons
                                 ],
                                 borderColor: [
-                                    'rgba(255, 159, 64, 1)',    // Bordure pour Filles
-                                    'rgba(75, 192, 192, 1)'     // Bordure pour Garçons
+                                    'rgba(41, 128, 185, 1)',    // Bordures correspondantes
+                                    'rgba(142, 68, 173, 1)'
                                 ],
-                                borderWidth: 2
+                                borderWidth: 2,
+                                hoverOffset: 8
                             }]
                         },
                         options: {
@@ -188,6 +201,11 @@
                             plugins: {
                                 legend: {
                                     position: 'top',
+                                    labels: {
+                                        font: {
+                                            size: 14
+                                        }
+                                    }
                                 },
                                 tooltip: {
                                     callbacks: {
@@ -200,261 +218,18 @@
                                         }
                                     }
                                 }
+                            },
+                            animation: {
+                                animateScale: true,
+                                animateRotate: true
                             }
                         }
                     });
                 });
             </script>
+
             
-                <!-- <div class="col-lg-8 col-md-6">
-                    <div class="card shadow-xs border">
-                        <div class="card-header border-bottom pb-0">
-                            <div class="d-sm-flex align-items-center mb-3">
-                                <div>
-                                    <h6 class="font-weight-semibold text-lg mb-0">Recent transactions</h6>
-                                    <p class="text-sm mb-sm-0 mb-2">These are details about the last transactions</p>
-                                </div>
-                                <div class="ms-auto d-flex">
-                                    <button type="button" class="btn btn-sm btn-white mb-0 me-2">
-                                        View report
-                                    </button>
-                                    <button type="button"
-                                        class="btn btn-sm btn-dark btn-icon d-flex align-items-center mb-0">
-                                        <span class="btn-inner--icon">
-                                            <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg"
-                                                fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                                stroke="currentColor" class="d-block me-2">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                                            </svg>
-                                        </span>
-                                        <span class="btn-inner--text">Download</span>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="pb-3 d-sm-flex align-items-center">
-                                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                    <input type="radio" class="btn-check" name="btnradiotable" id="btnradiotable1"
-                                        autocomplete="off" checked>
-                                    <label class="btn btn-white px-3 mb-0" for="btnradiotable1">All</label>
-                                    <input type="radio" class="btn-check" name="btnradiotable" id="btnradiotable2"
-                                        autocomplete="off">
-                                    <label class="btn btn-white px-3 mb-0" for="btnradiotable2">Monitored</label>
-                                    <input type="radio" class="btn-check" name="btnradiotable" id="btnradiotable3"
-                                        autocomplete="off">
-                                    <label class="btn btn-white px-3 mb-0" for="btnradiotable3">Unmonitored</label>
-                                </div>
-                                <div class="input-group w-sm-25 ms-auto">
-                                    <span class="input-group-text text-body">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px"
-                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                            stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z">
-                                            </path>
-                                        </svg>
-                                    </span>
-                                    <input type="text" class="form-control" placeholder="Search">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body px-0 py-0">
-                            <div class="table-responsive p-0">
-                                <table class="table align-items-center justify-content-center mb-0">
-                                    <thead class="bg-gray-100">
-                                        <tr>
-                                            <th class="text-secondary text-xs font-weight-semibold opacity-7">
-                                                Transaction</th>
-                                            <th class="text-secondary text-xs font-weight-semibold opacity-7 ps-2">
-                                                Amount</th>
-                                            <th class="text-secondary text-xs font-weight-semibold opacity-7 ps-2">Date
-                                            </th>
-                                            <th class="text-secondary text-xs font-weight-semibold opacity-7 ps-2">
-                                                Account</th>
-                                            <th
-                                                class="text-center text-secondary text-xs font-weight-semibold opacity-7">
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex px-2">
-                                                    <div class="avatar avatar-sm rounded-circle bg-gray-100 me-2 my-2">
-                                                        <img src="../assets/img/small-logos/logo-spotify.svg"
-                                                            class="w-80" alt="spotify">
-                                                    </div>
-                                                    <div class="my-auto">
-                                                        <h6 class="mb-0 text-sm">Spotify</h6>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <p class="text-sm font-weight-normal mb-0">$2,500</p>
-                                            </td>
-                                            <td>
-                                                <span class="text-sm font-weight-normal">Wed 3:00pm</span>
-                                            </td>
-                                            <td class="align-middle">
-                                                <div class="d-flex">
-                                                    <div
-                                                        class="border px-1 py-1 text-center d-flex align-items-center border-radius-sm my-auto">
-                                                        <img src="../assets/img/logos/visa.png" class="w-90 mx-auto"
-                                                            alt="visa">
-                                                    </div>
-                                                    <div class="ms-2">
-                                                        <p class="text-dark text-sm mb-0">Visa 1234</p>
-                                                        <p class="text-secondary text-sm mb-0">Expiry 06/2026</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="align-middle">
-                                                <a href="javascript:;" class="text-secondary font-weight-bold text-xs"
-                                                    data-bs-toggle="tooltip" data-bs-title="Edit user">
-                                                    <svg width="14" height="14" viewBox="0 0 15 16"
-                                                        fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M11.2201 2.02495C10.8292 1.63482 10.196 1.63545 9.80585 2.02636C9.41572 2.41727 9.41635 3.05044 9.80726 3.44057L11.2201 2.02495ZM12.5572 6.18502C12.9481 6.57516 13.5813 6.57453 13.9714 6.18362C14.3615 5.79271 14.3609 5.15954 13.97 4.7694L12.5572 6.18502ZM11.6803 1.56839L12.3867 2.2762L12.3867 2.27619L11.6803 1.56839ZM14.4302 4.31284L15.1367 5.02065L15.1367 5.02064L14.4302 4.31284ZM3.72198 15V16C3.98686 16 4.24091 15.8949 4.42839 15.7078L3.72198 15ZM0.999756 15H-0.000244141C-0.000244141 15.5523 0.447471 16 0.999756 16L0.999756 15ZM0.999756 12.2279L0.293346 11.5201C0.105383 11.7077 -0.000244141 11.9624 -0.000244141 12.2279H0.999756ZM9.80726 3.44057L12.5572 6.18502L13.97 4.7694L11.2201 2.02495L9.80726 3.44057ZM12.3867 2.27619C12.7557 1.90794 13.3549 1.90794 13.7238 2.27619L15.1367 0.860593C13.9869 -0.286864 12.1236 -0.286864 10.9739 0.860593L12.3867 2.27619ZM13.7238 2.27619C14.0917 2.64337 14.0917 3.23787 13.7238 3.60504L15.1367 5.02064C16.2875 3.8721 16.2875 2.00913 15.1367 0.860593L13.7238 2.27619ZM13.7238 3.60504L3.01557 14.2922L4.42839 15.7078L15.1367 5.02065L13.7238 3.60504ZM3.72198 14H0.999756V16H3.72198V14ZM1.99976 15V12.2279H-0.000244141V15H1.99976ZM1.70617 12.9357L12.3867 2.2762L10.9739 0.86059L0.293346 11.5201L1.70617 12.9357Z"
-                                                            fill="#64748B" />
-                                                    </svg>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex px-2">
-                                                    <div class="avatar avatar-sm rounded-circle bg-gray-100 me-2 my-2">
-                                                        <img src="../assets/img/small-logos/logo-invision.svg"
-                                                            class="w-80" alt="invision">
-                                                    </div>
-                                                    <div class="my-auto">
-                                                        <h6 class="mb-0 text-sm">Invision</h6>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <p class="text-sm font-weight-normal mb-0">$5,000</p>
-                                            </td>
-                                            <td>
-                                                <span class="text-sm font-weight-normal">Wed 1:00pm</span>
-                                            </td>
-                                            <td class="align-middle">
-                                                <div class="d-flex">
-                                                    <div
-                                                        class="border px-1 py-1 text-center d-flex align-items-center border-radius-sm my-auto">
-                                                        <img src="../assets/img/logos/mastercard.png"
-                                                            class="w-90 mx-auto" alt="mastercard">
-                                                    </div>
-                                                    <div class="ms-2">
-                                                        <p class="text-dark text-sm mb-0">Mastercard 1234</p>
-                                                        <p class="text-secondary text-sm mb-0">Expiry 06/2026</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="align-middle">
-                                                <a href="javascript:;" class="text-secondary font-weight-bold text-xs"
-                                                    data-bs-toggle="tooltip" data-bs-title="Edit user">
-                                                    <svg width="14" height="14" viewBox="0 0 15 16"
-                                                        fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M11.2201 2.02495C10.8292 1.63482 10.196 1.63545 9.80585 2.02636C9.41572 2.41727 9.41635 3.05044 9.80726 3.44057L11.2201 2.02495ZM12.5572 6.18502C12.9481 6.57516 13.5813 6.57453 13.9714 6.18362C14.3615 5.79271 14.3609 5.15954 13.97 4.7694L12.5572 6.18502ZM11.6803 1.56839L12.3867 2.2762L12.3867 2.27619L11.6803 1.56839ZM14.4302 4.31284L15.1367 5.02065L15.1367 5.02064L14.4302 4.31284ZM3.72198 15V16C3.98686 16 4.24091 15.8949 4.42839 15.7078L3.72198 15ZM0.999756 15H-0.000244141C-0.000244141 15.5523 0.447471 16 0.999756 16L0.999756 15ZM0.999756 12.2279L0.293346 11.5201C0.105383 11.7077 -0.000244141 11.9624 -0.000244141 12.2279H0.999756ZM9.80726 3.44057L12.5572 6.18502L13.97 4.7694L11.2201 2.02495L9.80726 3.44057ZM12.3867 2.27619C12.7557 1.90794 13.3549 1.90794 13.7238 2.27619L15.1367 0.860593C13.9869 -0.286864 12.1236 -0.286864 10.9739 0.860593L12.3867 2.27619ZM13.7238 2.27619C14.0917 2.64337 14.0917 3.23787 13.7238 3.60504L15.1367 5.02064C16.2875 3.8721 16.2875 2.00913 15.1367 0.860593L13.7238 2.27619ZM13.7238 3.60504L3.01557 14.2922L4.42839 15.7078L15.1367 5.02065L13.7238 3.60504ZM3.72198 14H0.999756V16H3.72198V14ZM1.99976 15V12.2279H-0.000244141V15H1.99976ZM1.70617 12.9357L12.3867 2.2762L10.9739 0.86059L0.293346 11.5201L1.70617 12.9357Z"
-                                                            fill="#64748B" />
-                                                    </svg>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex px-2">
-                                                    <div class="avatar avatar-sm rounded-circle bg-gray-100 me-2 my-2">
-                                                        <img src="../assets/img/small-logos/logo-jira.svg"
-                                                            class="w-80" alt="jira">
-                                                    </div>
-                                                    <div class="my-auto">
-                                                        <h6 class="mb-0 text-sm">Jira</h6>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <p class="text-sm font-weight-normal mb-0">$3,400</p>
-                                            </td>
-                                            <td>
-                                                <span class="text-sm font-weight-normal">Mon 7:40pm</span>
-                                            </td>
-                                            <td class="align-middle">
-                                                <div class="d-flex">
-                                                    <div
-                                                        class="border px-1 py-1 text-center d-flex align-items-center border-radius-sm my-auto">
-                                                        <img src="../assets/img/logos/mastercard.png"
-                                                            class="w-90 mx-auto" alt="mastercard">
-                                                    </div>
-                                                    <div class="ms-2">
-                                                        <p class="text-dark text-sm mb-0">Mastercard 1234</p>
-                                                        <p class="text-secondary text-sm mb-0">Expiry 06/2026</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="align-middle">
-                                                <a href="javascript:;" class="text-secondary font-weight-bold text-xs"
-                                                    data-bs-toggle="tooltip" data-bs-title="Edit user">
-                                                    <svg width="14" height="14" viewBox="0 0 15 16"
-                                                        fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M11.2201 2.02495C10.8292 1.63482 10.196 1.63545 9.80585 2.02636C9.41572 2.41727 9.41635 3.05044 9.80726 3.44057L11.2201 2.02495ZM12.5572 6.18502C12.9481 6.57516 13.5813 6.57453 13.9714 6.18362C14.3615 5.79271 14.3609 5.15954 13.97 4.7694L12.5572 6.18502ZM11.6803 1.56839L12.3867 2.2762L12.3867 2.27619L11.6803 1.56839ZM14.4302 4.31284L15.1367 5.02065L15.1367 5.02064L14.4302 4.31284ZM3.72198 15V16C3.98686 16 4.24091 15.8949 4.42839 15.7078L3.72198 15ZM0.999756 15H-0.000244141C-0.000244141 15.5523 0.447471 16 0.999756 16L0.999756 15ZM0.999756 12.2279L0.293346 11.5201C0.105383 11.7077 -0.000244141 11.9624 -0.000244141 12.2279H0.999756ZM9.80726 3.44057L12.5572 6.18502L13.97 4.7694L11.2201 2.02495L9.80726 3.44057ZM12.3867 2.27619C12.7557 1.90794 13.3549 1.90794 13.7238 2.27619L15.1367 0.860593C13.9869 -0.286864 12.1236 -0.286864 10.9739 0.860593L12.3867 2.27619ZM13.7238 2.27619C14.0917 2.64337 14.0917 3.23787 13.7238 3.60504L15.1367 5.02064C16.2875 3.8721 16.2875 2.00913 15.1367 0.860593L13.7238 2.27619ZM13.7238 3.60504L3.01557 14.2922L4.42839 15.7078L15.1367 5.02065L13.7238 3.60504ZM3.72198 14H0.999756V16H3.72198V14ZM1.99976 15V12.2279H-0.000244141V15H1.99976ZM1.70617 12.9357L12.3867 2.2762L10.9739 0.86059L0.293346 11.5201L1.70617 12.9357Z"
-                                                            fill="#64748B" />
-                                                    </svg>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex px-2">
-                                                    <div class="avatar avatar-sm rounded-circle bg-gray-100 me-2 my-2">
-                                                        <img src="../assets/img/small-logos/logo-slack.svg"
-                                                            class="w-80" alt="slack">
-                                                    </div>
-                                                    <div class="my-auto">
-                                                        <h6 class="mb-0 text-sm">Slack</h6>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <p class="text-sm font-weight-normal mb-0">$1,000</p>
-                                            </td>
-                                            <td>
-                                                <span class="text-sm font-weight-normal">Wed 5:00pm</span>
-                                            </td>
-                                            <td class="align-middle">
-                                                <div class="d-flex">
-                                                    <div
-                                                        class="border px-1 py-1 text-center d-flex align-items-center border-radius-sm my-auto">
-                                                        <img src="../assets/img/logos/visa.png" class="w-90 mx-auto"
-                                                            alt="visa">
-                                                    </div>
-                                                    <div class="ms-2">
-                                                        <p class="text-dark text-sm mb-0">Visa 1234</p>
-                                                        <p class="text-secondary text-sm mb-0">Expiry 06/2026</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="align-middle">
-                                                <a href="javascript:;" class="text-secondary font-weight-bold text-xs"
-                                                    data-bs-toggle="tooltip" data-bs-title="Edit user">
-                                                    <svg width="14" height="14" viewBox="0 0 15 16"
-                                                        fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M11.2201 2.02495C10.8292 1.63482 10.196 1.63545 9.80585 2.02636C9.41572 2.41727 9.41635 3.05044 9.80726 3.44057L11.2201 2.02495ZM12.5572 6.18502C12.9481 6.57516 13.5813 6.57453 13.9714 6.18362C14.3615 5.79271 14.3609 5.15954 13.97 4.7694L12.5572 6.18502ZM11.6803 1.56839L12.3867 2.2762L12.3867 2.27619L11.6803 1.56839ZM14.4302 4.31284L15.1367 5.02065L15.1367 5.02064L14.4302 4.31284ZM3.72198 15V16C3.98686 16 4.24091 15.8949 4.42839 15.7078L3.72198 15ZM0.999756 15H-0.000244141C-0.000244141 15.5523 0.447471 16 0.999756 16L0.999756 15ZM0.999756 12.2279L0.293346 11.5201C0.105383 11.7077 -0.000244141 11.9624 -0.000244141 12.2279H0.999756ZM9.80726 3.44057L12.5572 6.18502L13.97 4.7694L11.2201 2.02495L9.80726 3.44057ZM12.3867 2.27619C12.7557 1.90794 13.3549 1.90794 13.7238 2.27619L15.1367 0.860593C13.9869 -0.286864 12.1236 -0.286864 10.9739 0.860593L12.3867 2.27619ZM13.7238 2.27619C14.0917 2.64337 14.0917 3.23787 13.7238 3.60504L15.1367 5.02064C16.2875 3.8721 16.2875 2.00913 15.1367 0.860593L13.7238 2.27619ZM13.7238 3.60504L3.01557 14.2922L4.42839 15.7078L15.1367 5.02065L13.7238 3.60504ZM3.72198 14H0.999756V16H3.72198V14ZM1.99976 15V12.2279H-0.000244141V15H1.99976ZM1.70617 12.9357L12.3867 2.2762L10.9739 0.86059L0.293346 11.5201L1.70617 12.9357Z"
-                                                            fill="#64748B" />
-                                                    </svg>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
+             
 <!--------------------------------------------->
                 {{--Liste des Professeurs--}}
                 <!-- <div class="col-lg-8 col-md-6">
@@ -565,109 +340,119 @@
             </div>
 
 
-            <!-- Overview balance -->
-            <!-- <div class="row">
-                <div class="col-lg-12">
-                    <div class="card shadow-xs border">
-                        <div class="card-header pb-0">
-                            <div class="d-sm-flex align-items-center mb-3">
-                                <div>
-                                    <h6 class="font-weight-semibold text-lg mb-0">Courbes d'absences</h6>
-                                    <p class="text-sm mb-sm-0 mb-2">Voici les détails sur les absences au fil du temps.</p>
-                                </div>
-                                <div class="ms-auto d-flex">
-                                    <button type="button" class="btn btn-sm btn-white mb-0 me-2">
-                                        Voir le rapport
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="d-sm-flex align-items-center">
-                                <h3 class="mb-0 font-weight-semibold">1500 hrs</h3>
-                                <span
-                                    class="badge badge-sm border border-success text-success bg-success border-radius-sm ms-sm-3 px-2">
-                                    <svg width="9" height="9" viewBox="0 0 10 9" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M0.46967 4.46967C0.176777 4.76256 0.176777 5.23744 0.46967 5.53033C0.762563 5.82322 1.23744 5.82322 1.53033 5.53033L0.46967 4.46967ZM5.53033 1.53033C5.82322 1.23744 5.82322 0.762563 5.53033 0.46967C5.23744 0.176777 4.76256 0.176777 4.46967 0.46967L5.53033 1.53033ZM5.53033 0.46967C5.23744 0.176777 4.76256 0.176777 4.46967 0.46967C4.17678 0.762563 4.17678 1.23744 4.46967 1.53033L5.53033 0.46967ZM8.46967 5.53033C8.76256 5.82322 9.23744 5.82322 9.53033 5.53033C9.82322 5.23744 9.82322 4.76256 9.53033 4.46967L8.46967 5.53033ZM1.53033 5.53033L5.53033 1.53033L4.46967 0.46967L0.46967 4.46967L1.53033 5.53033ZM4.46967 1.53033L8.46967 5.53033L9.53033 4.46967L5.53033 0.46967L4.46967 1.53033Z"
-                                            fill="#67C23A"></path>
-                                    </svg>
-                                    10.5%
-                                </span>
-                            </div>
-                        </div>
-                        <div class="card-body p-3">
-                            <div class="chart mt-n6">
-                                <canvas id="chart-line" class="chart-canvas" height="300"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card shadow-xs border">
                         <div class="card-header pb-0">
-                            <div class="d-sm-flex align-items-center mb-3">
+                            <div class="d-sm-flex align-items-center justify-content-between">
                                 <div>
                                     <h6 class="font-weight-semibold text-lg mb-0">Courbes d'absences</h6>
-                                    <p class="text-sm mb-sm-0 mb-2">Voici les détails sur les absences au fil du temps.</p>
+                                    <p class="text-sm text-muted mb-0">Suivi des absences cumulées mensuelles.</p>
                                 </div>
-                                <div class="ms-auto d-flex">
-                                    <button type="button" class="btn btn-sm btn-white mb-0 me-2">
-                                        Voir le rapport
+                                <div>
+                                    <button type="button" class="btn btn-sm btn-outline-primary">
+                                        Télécharger le rapport
                                     </button>
                                 </div>
                             </div>
-                            <div class="d-sm-flex align-items-center">
-                                <!-- <h3 class="mb-0 font-weight-semibold">1500 hrs</h3> -->
-                                <!-- <span class="badge badge-sm border border-success text-success bg-success border-radius-sm ms-sm-3 px-2">
-                                    <svg width="9" height="9" viewBox="0 0 10 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.46967 4.46967C0.176777 4.76256 0.176777 5.23744 0.46967 5.53033C0.762563 5.82322 1.23744 5.82322 1.53033 5.53033L0.46967 4.46967ZM5.53033 1.53033C5.82322 1.23744 5.82322 0.762563 5.53033 0.46967C5.23744 0.176777 4.76256 0.176777 4.46967 0.46967L5.53033 1.53033ZM5.53033 0.46967C5.23744 0.176777 4.76256 0.176777 4.46967 0.46967C4.17678 0.762563 4.17678 1.23744 4.46967 1.53033L5.53033 0.46967ZM8.46967 5.53033C8.76256 5.82322 9.23744 5.82322 9.53033 5.53033C9.82322 5.23744 9.82322 4.76256 9.53033 4.46967L8.46967 5.53033ZM1.53033 5.53033L5.53033 1.53033L4.46967 0.46967L0.46967 4.46967L1.53033 5.53033ZM4.46967 1.53033L8.46967 5.53033L9.53033 4.46967L5.53033 0.46967L4.46967 1.53033Z" fill="#67C23A"></path>
-                                    </svg>
-                                    10.5%
-                                </span> -->
-                                
-                            </div>
                         </div>
-                        <div class="card-body p-3">
-                            <div class="chart mt-n6">
-                                <canvas id="chart-line" class="chart-canvas" height="300"></canvas>
+                        <div class="card-body">
+                            <div class="chart">
+                                <canvas id="chart-line" class="chart-canvas"></canvas>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    var ctx = document.getElementById('chart-line').getContext('2d');
-                    var myLineChart = new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'], // Remplace ces labels par tes données
-                            datasets: [{
-                                label: 'Heures d\'absence',
-                                data: [200, 300, 400, 350, 600, 700, 800], // Remplace ces données par tes données réelles
-                                backgroundColor: 'rgba(75, 192, 192, 0.2)', // Couleur de fond
-                                borderColor: 'rgba(75, 192, 192, 1)', // Couleur de la ligne
-                                borderWidth: 2,
-                                fill: true, // Remplir sous la courbe
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false, // Permet de maintenir l'aspect ratio
-                            scales: {
-                                y: {
-                                    beginAtZero: true // Commencer l'axe Y à zéro
-                                }
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('chart-line').getContext('2d');
+
+        // Dégradé de couleurs pour le fond de la courbe
+        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, 'rgba(0, 123, 255, 0.4)'); // Couleur principale Bootstrap (bleu)
+        gradient.addColorStop(1, 'rgba(0, 123, 255, 0)');
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                datasets: [{
+                    label: 'Heures d\'absence',
+                    data: [200, 300, 400, 350, 600, 700, 800],
+                    backgroundColor: gradient, // Dégradé appliqué
+                    borderColor: '#007bff', // Couleur principale Bootstrap
+                    pointBackgroundColor: '#007bff', // Points en bleu
+                    pointHoverBackgroundColor: '#0056b3', // Points en bleu foncé au survol
+                    borderWidth: 2,
+                    tension: 0.4, // Adoucit les courbes
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            color: '#6c757d', // Texte en gris Bootstrap
+                            font: {
+                                size: 14
                             }
                         }
-                    });
-                });
-            </script>
+                    },
+                    tooltip: {
+                        enabled: true,
+                        backgroundColor: '#343a40', // Fond sombre pour le tooltip
+                        titleColor: '#ffffff', // Couleur du titre du tooltip
+                        bodyColor: '#ffffff', // Couleur du corps du tooltip
+                        borderColor: '#6c757d', // Bordure gris clair
+                        borderWidth: 1,
+                        callbacks: {
+                            label: function(context) {
+                                return ` ${context.dataset.label}: ${context.raw} heures`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false // Supprime les lignes verticales
+                        },
+                        ticks: {
+                            color: '#6c757d', // Texte en gris Bootstrap
+                            font: {
+                                size: 12
+                            }
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(200, 200, 200, 0.2)' // Couleur légère pour les lignes horizontales
+                        },
+                        ticks: {
+                            color: '#6c757d', // Texte en gris Bootstrap
+                            font: {
+                                size: 12
+                            },
+                            callback: function(value) {
+                                return `${value} h`; // Ajoute l'unité
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+
 
 
             <!-- <div class="row">

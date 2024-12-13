@@ -9,13 +9,13 @@
                             <div class="row align-items-center">
                                 <div class="col-6">
                                     <h6 class="mb-1 text-dark">
-                                        <i class="fas fa-plus-circle me-2 text-primary"></i>Créer une Nouvelle Classe
+                                        <i class="fas fa-plus-circle me-2 text-dark"></i>Créer une Nouvelle Classe
                                     </h6>
                                     <p class="text-sm text-muted mb-0">Veuillez remplir les informations ci-dessous</p>
                                 </div>
                                 <div class="col-6 text-end">
                                     <a href="{{ route('class-list') }}" class="btn btn-outline-secondary">
-                                        <i class="fas fa-list me-2"></i> Liste des Classes
+                                        <i class="fas fa-list me-2 text-dark"></i> Liste des Classes
                                     </a>
                                 </div>
                             </div>
@@ -24,7 +24,7 @@
                             @if ($errors->any())
                                 <div class="alert alert-light alert-dismissible fade show" role="alert">
                                     <strong class="text-danger">
-                                        <i class="fas fa-exclamation-triangle me-2"></i>Erreurs de validation
+                                        <i class="fas fa-exclamation-triangle me-2 text-dark"></i>Erreurs de validation
                                     </strong>
                                     <ul class="text-dark">
                                         @foreach ($errors->all() as $error)
@@ -41,7 +41,7 @@
                                 <div class="row g-3">
                                     <div class="col-md-6">
                                         <label for="name" class="form-label">
-                                            <i class="fas fa-tag me-2 text-primary"></i>Nom de la Classe
+                                            <i class="fas fa-tag me-2 text-dark"></i>Nom de la Classe
                                         </label>
                                         <input 
                                             type="text" 
@@ -59,7 +59,7 @@
 
                                     <div class="col-md-6">
                                         <label for="fees" class="form-label">
-                                            <i class="fas fa-money-bill-wave me-2 text-primary"></i>Frais de Scolarité
+                                            <i class="fas fa-money-bill-wave me-2 text-dark"></i>Frais de Scolarité
                                         </label>
                                         <input 
                                             type="number" 
@@ -78,7 +78,7 @@
 
                                     <div class="col-md-12">
                                         <label for="description" class="form-label">
-                                            <i class="fas fa-comment-dots me-2 text-primary"></i>Description (Optionnel)
+                                            <i class="fas fa-comment-dots me-2 text-dark"></i>Description (Optionnel)
                                         </label>
                                         <textarea 
                                             class="form-control" 
@@ -91,7 +91,7 @@
 
                                     <div class="col-md-12">
                                         <h6 class="mt-3 mb-3 text-dark">
-                                            <i class="fas fa-school me-2 text-primary"></i>Salles de Classe
+                                            <i class="fas fa-school me-2 text-dark"></i>Salles de Classe
                                         </h6>
                                         <div id="classrooms-container">
                                             <!-- Première Salle de Classe -->
@@ -99,7 +99,7 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <label for="classroom_name_1" class="form-label">
-                                                            <i class="fas fa-door-open me-2 text-primary"></i>Nom de la Salle
+                                                            <i class="fas fa-door-open me-2 text-dark"></i>Nom de la Salle
                                                         </label>
                                                         <input 
                                                             type="text" 
@@ -112,7 +112,7 @@
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label for="classroom_capacity_1" class="form-label">
-                                                            <i class="fas fa-users me-2 text-primary"></i>Capacité
+                                                            <i class="fas fa-users me-2 text-dark"></i>Capacité
                                                         </label>
                                                         <input 
                                                             type="number" 
@@ -128,7 +128,7 @@
                                         </div>
                                         <button 
                                             type="button" 
-                                            class="btn btn-sm btn-primary" 
+                                            class="btn btn-sm btn-outline-secondary" 
                                             onclick="addClassroomEntry()"
                                         >
                                             <i class="fas fa-plus me-2"></i>Ajouter une Salle
@@ -137,9 +137,9 @@
 
                                     <div class="col-md-12 d-flex justify-content-end gap-2 mt-3">
                                         <a href="{{ route('class-list') }}" class="btn btn-outline-secondary">
-                                            <i class="fas fa-times me-2"></i>Annuler
+                                            <i class="fas fa-times me-2 text-dark"></i>Annuler
                                         </a>
-                                        <button type="submit" class="btn btn-primary">
+                                        <button type="submit" class="btn btn-outline-secondary">
                                             <i class="fas fa-save me-2"></i>Créer la Classe
                                         </button>
                                     </div>
@@ -164,7 +164,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label for="classroom_name_${classroomIndex}" class="form-label">
-                            <i class="fas fa-door-open me-2 text-primary"></i>Nom de la Salle
+                            <i class="fas fa-door-open me-2 text-dark"></i>Nom de la Salle
                         </label>
                         <input 
                             type="text" 
@@ -177,7 +177,7 @@
                     </div>
                     <div class="col-md-6">
                         <label for="classroom_capacity_${classroomIndex}" class="form-label">
-                            <i class="fas fa-users me-2 text-primary"></i>Capacité
+                            <i class="fas fa-users me-2 text-dark"></i>Capacité
                         </label>
                         <input 
                             type="number" 

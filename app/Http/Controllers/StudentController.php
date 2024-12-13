@@ -19,7 +19,7 @@ class StudentController extends Controller
         return view('students.create', compact('classes', 'academicYears')); // Retourne la vue avec la liste des classes et des années académiques
     }
 
-    // Méthode pour afficher la liste des élèves    // Méthode pour afficher la liste des élèves
+    // Méthode pour afficher la liste des élèves
     public function index()
     {
         $students = Student::with('classModel', 'academicYear')->orderBy('last_name', 'asc')->paginate(10);
@@ -35,6 +35,8 @@ class StudentController extends Controller
             'email' => 'required|email|unique:students,email',
             'date_of_birth' => 'required|date',
             'phone_number' => 'nullable|string|max:20',
+            'address' => 'required|string|max:255',
+            'place_of_birth' => 'required|string|max:255',
             'class_id' => 'required|exists:class_models,id',
             'academic_year_id' => 'required|exists:academic_years,id',
             'previous_school_name' => 'nullable|string|max:255',
@@ -60,7 +62,6 @@ class StudentController extends Controller
         // Redirection après succès avec un message
         return redirect()->route('student-list')->with('success', 'Élève ajouté avec succès.');
     }
-    
 
     // Méthode pour afficher les élèves d'une classe spécifique
     public function getStudentsByClass(Request $request)
@@ -112,6 +113,8 @@ class StudentController extends Controller
             'email' => 'required|email|unique:students,email,' . $student->id,
             'date_of_birth' => 'required|date',
             'phone_number' => 'nullable|string|max:20',
+            'address' => 'required|string|max:255',
+            'place_of_birth' => 'required|string|max:255',
             'class_id' => 'required|exists:class_models,id',
             'academic_year_id' => 'required|exists:academic_years,id',
             'previous_school_name' => 'nullable|string|max:255',

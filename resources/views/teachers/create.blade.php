@@ -9,13 +9,13 @@
                             <div class="row align-items-center">
                                 <div class="col-6">
                                     <h6 class="mb-1 text-dark">
-                                        <i class="fas fa-plus-circle me-2 text-primary"></i>Ajouter un Professeur
+                                        <i class="fas fa-plus-circle me-2 text-black"></i>Ajouter un Professeur
                                     </h6>
                                     <p class="text-sm text-muted mb-0">Veuillez remplir les informations ci-dessous</p>
                                 </div>
                                 <div class="col-6 text-end">
                                     <a href="{{ route('index-teacher') }}" class="btn btn-outline-secondary">
-                                        <i class="fas fa-list me-2"></i> Liste des Professeurs
+                                        <i class="fas fa-list me-2 text-black"></i> Liste des Professeurs
                                     </a>
                                 </div>
                             </div>
@@ -24,7 +24,7 @@
                             @if ($errors->any())
                                 <div class="alert alert-light alert-dismissible fade show" role="alert">
                                     <strong class="text-danger">
-                                        <i class="fas fa-exclamation-triangle me-2"></i>Erreurs de validation
+                                        <i class="fas fa-exclamation-triangle me-2 text-black"></i>Erreurs de validation
                                     </strong>
                                     <ul class="text-dark">
                                         @foreach ($errors->all() as $error)
@@ -41,7 +41,7 @@
                                 <div class="row g-3">
                                     <div class="col-md-6">
                                         <label for="first_name" class="form-label">
-                                            <i class="fas fa-user me-2 text-primary"></i>Prénom
+                                            <i class="fas fa-user me-2 text-black"></i>Prénom
                                         </label>
                                         <input 
                                             type="text" 
@@ -59,7 +59,7 @@
 
                                     <div class="col-md-6">
                                         <label for="last_name" class="form-label">
-                                            <i class="fas fa-user me-2 text-primary"></i>Nom de famille
+                                            <i class="fas fa-user me-2 text-black"></i>Nom de famille
                                         </label>
                                         <input 
                                             type="text" 
@@ -77,7 +77,7 @@
 
                                     <div class="col-md-12">
                                         <label for="email" class="form-label">
-                                            <i class="fas fa-envelope me-2 text-primary"></i>Email
+                                            <i class="fas fa-envelope me-2 text-black"></i>Email
                                         </label>
                                         <input 
                                             type="email" 
@@ -95,7 +95,7 @@
 
                                     <div class="col-md-6">
                                         <label for="phone_number" class="form-label">
-                                            <i class="fas fa-phone me-2 text-primary"></i>Téléphone
+                                            <i class="fas fa-phone me-2 text-black"></i>Téléphone
                                         </label>
                                         <input 
                                             type="text" 
@@ -112,7 +112,7 @@
 
                                     <div class="col-md-6">
                                         <label for="gender" class="form-label">
-                                            <i class="fas fa-venus-mars me-2 text-primary"></i>Genre
+                                            <i class="fas fa-venus-mars me-2 text-black"></i>Genre
                                         </label>
                                         <select 
                                             class="form-select @error('gender') is-invalid @enderror" 
@@ -132,7 +132,7 @@
 
                                     <div class="col-md-6">
                                         <label for="nationality" class="form-label">
-                                            <i class="fas fa-globe me-2 text-primary"></i>Nationalité
+                                            <i class="fas fa-globe me-2 text-black"></i>Nationalité
                                         </label>
                                         <select 
                                             class="form-select @error('nationality') is-invalid @enderror" 
@@ -154,7 +154,7 @@
 
                                     <div class="col-md-6">
                                         <label for="seniority" class="form-label">
-                                            <i class="fas fa-briefcase me-2 text-primary"></i>Années d'expérience
+                                            <i class="fas fa-briefcase me-2 text-black"></i>Années d'expérience
                                         </label>
                                         <input 
                                             type="number" 
@@ -171,7 +171,7 @@
 
                                     <div class="col-md-12">
                                         <label for="subject" class="form-label">
-                                            <i class="fas fa-book me-2 text-primary"></i>Matière enseignée
+                                            <i class="fas fa-book me-2 text-black"></i>Matière enseignée
                                         </label>
                                         <input 
                                             type="text" 
@@ -189,7 +189,7 @@
 
                                     <div class="col-md-12">
                                         <label for="photo" class="form-label">
-                                            <i class="fas fa-image me-2 text-primary"></i>Photo
+                                            <i class="fas fa-image me-2 text-black"></i>Photo
                                         </label>
                                         <input 
                                             type="file" 
@@ -205,10 +205,10 @@
 
                                     <div class="col-md-12 d-flex justify-content-end gap-2 mt-3">
                                         <a href="{{ route('index-teacher') }}" class="btn btn-outline-secondary">
-                                            <i class="fas fa-times me-2"></i>Annuler
+                                            <i class="fas fa-times me-2 text-black"></i>Annuler
                                         </a>
                                         <button type="submit" class="btn btn-primary">
-                                            <i class="fas fa-save me-2"></i>Ajouter
+                                            <i class="fas fa-save me-2 text-black"></i>Ajouter
                                         </button>
                                     </div>
                                 </div>

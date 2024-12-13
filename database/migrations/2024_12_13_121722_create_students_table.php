@@ -19,16 +19,21 @@ return new class extends Migration
             $table->string('phone_number')->nullable();
             $table->enum('gender', ['male', 'female', 'other']);
             $table->date('date_of_birth');
+            $table->string('place_of_birth'); // Added place of birth
+            $table->string('address'); // Added address
+            $table->string('nationality'); // Added nationality
             $table->foreignId('class_id')->constrained('class_models')->onDelete('cascade');
             $table->string('previous_school_name')->nullable();
-            $table->string('emergency_contact_name')->nullable();
-            $table->string('emergency_contact_phone')->nullable();
-            $table->string('photo')->nullable(); // Ajout du champ pour la photo de l'élève
+            $table->json('emergency_contacts')->nullable(); // Changed to match the controller's JSON storage
+            $table->string('photo')->nullable();
             $table->unsignedBigInteger('academic_year_id')->nullable();
             $table->foreign('academic_year_id')->references('id')->on('academic_years')->onDelete('set null');
             $table->timestamps();
-        });        
+        });
     }
+    
+
+    
 
     /**
      * Reverse the migrations.

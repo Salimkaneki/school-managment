@@ -41,4 +41,13 @@ class SchoolEventController extends Controller
         $events = SchoolEvent::all();
         return view('events.index', compact('events'));
     }
+
+    public function destroy($id)
+    {
+        $event = SchoolEvent::findOrFail($id);
+
+        $event->delete();
+
+        return redirect()->route('event-list')->with('success', 'Évènement supprimé avec succès.');
+    }
 }

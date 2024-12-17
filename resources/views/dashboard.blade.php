@@ -479,7 +479,6 @@
                     </div>
                 </div>
             </div> -->
-
             <x-app.footer />
         </div>
     </main>

@@ -19,7 +19,7 @@ use App\Http\Controllers\TimetableController;
 use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\TimeSlotController;
 use App\Http\Controllers\NotificationController;
-
+use App\Models\SchoolEvent;
 use PHPUnit\Framework\Attributes\Group;
 
 /*
@@ -268,7 +268,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/events/create', [SchoolEventController::class, 'create'])->name('events.create');
         Route::post('/events', [SchoolEventController::class, 'store'])->name('events.store');
         Route::get('/events/{event}', [SchoolEventController::class, 'show'])->name('events.show');
-
+        Route::delete('/delete-event/{id}', [SchoolEventController::class, 'destroy'])->name('delete-event');
     });
 
     // Route::prefix('attendance')->group(function () {

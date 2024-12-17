@@ -57,7 +57,7 @@
                                             <a href="#" class="text-secondary font-weight-bold text-xs">
                                                 Modifier
                                             </a>
-                                            <form action="#" method="POST" style="display:inline;">
+                                            <form action="{{route ('delete-event', $event->id)}}" method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="text-danger font-weight-bold text-xs border-0 bg-transparent p-0 ms-2">

@@ -61,12 +61,12 @@
 
                                 <div class="row mb-3">
                                     <div class="col-md-6">
-                                        <label for="amount_due" class="form-label">Montant dû</label>
-                                        <input type="number" step="0.01" class="form-control" id="amount_due" name="amount_due" placeholder="Montant dû" required readonly>
+                                        <label for="total_fees" class="form-label">Total des frais</label>
+                                        <input type="number" step="0.01" class="form-control" id="total_fees" name="total_fees" placeholder="Total des frais" required readonly>
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="previous_payment" class="form-label">Versement précédent</label>
-                                        <input type="number" step="0.01" class="form-control" id="previous_payment" name="previous_payment" placeholder="Versement précédent" readonly>
+                                        <label for="total_previous_paid" class="form-label">Total payé précédemment</label>
+                                        <input type="number" step="0.01" class="form-control" id="total_previous_paid" name="total_previous_paid" placeholder="Total payé" readonly>
                                     </div>
                                 </div>
 
@@ -104,14 +104,15 @@
         function filterStudents(classSelect) {
             const classId = classSelect.value;
             const studentSelect = document.getElementById('student_id');
-            const amountDueInput = document.getElementById('amount_due');
-            const previousPaymentInput = document.getElementById('previous_payment');
+            const totalFeesInput = document.getElementById('total_fees');
+            const totalPreviousPaidInput = document.getElementById('total_previous_paid');
             const remainingBalanceInput = document.getElementById('remaining_balance');
+            const amountPaidInput = document.getElementById('amount_paid');
 
             // Récupérer les frais de la classe sélectionnée
             const selectedClass = classSelect.options[classSelect.selectedIndex];
             const fees = selectedClass.getAttribute('data-fees');
-            amountDueInput.value = fees;
+            totalFeesInput.value = fees;
 
             // Filtrer les étudiants appartenant à la classe sélectionnée
             studentSelect.innerHTML = '<option value="" disabled selected>Choisir un élève</option>';
@@ -120,30 +121,37 @@
                     const option = document.createElement('option');
                     option.value = student.id;
                     option.textContent = `${student.first_name} ${student.last_name}`;
+                    option.dataset.totalFees = student.total_fees;
+                    option.dataset.totalPreviousPaid = student.total_previous_paid;
+                    option.dataset.remainingBalance = student.remaining_balance;
                     studentSelect.appendChild(option);
                 }
             });
 
-            // Réinitialiser les champs des paiements
-            previousPaymentInput.value = '';
+            // Réinitialiser les champs
+            totalPreviousPaidInput.value = '';
             remainingBalanceInput.value = '';
+            amountPaidInput.value = '';
         }
 
         function updatePaymentInfo(studentSelect) {
-            const studentId = studentSelect.value;
-            const selectedStudent = students.find(student => student.id == studentId);
+            const selectedOption = studentSelect.options[studentSelect.selectedIndex];
+            const totalFees = parseFloat(selectedOption.dataset.totalFees) || 0;
+            const totalPreviousPaid = parseFloat(selectedOption.dataset.totalPreviousPaid) || 0;
+            const remainingBalance = parseFloat(selectedOption.dataset.remainingBalance) || 0;
 
-            // Mettre à jour le "Versement précédent" et le solde restant de l'élève
-            document.getElementById('previous_payment').value = selectedStudent ? selectedStudent.previous_payment : 0;
-            document.getElementById('remaining_balance').value = selectedStudent ? selectedStudent.remaining_balance : 0;
+            document.getElementById('total_fees').value = totalFees.toFixed(2);
+            document.getElementById('total_previous_paid').value = totalPreviousPaid.toFixed(2);
+            document.getElementById('remaining_balance').value = remainingBalance.toFixed(2);
         }
 
         // Calcul du solde restant après paiement
         document.getElementById('amount_paid').addEventListener('input', function() {
-            const amountDue = parseFloat(document.getElementById('amount_due').value) || 0;
-            const previousPayment = parseFloat(document.getElementById('previous_payment').value) || 0;
+            const totalFees = parseFloat(document.getElementById('total_fees').value) || 0;
+            const totalPreviousPaid = parseFloat(document.getElementById('total_previous_paid').value) || 0;
             const amountPaid = parseFloat(this.value) || 0;
-            const remainingBalance = Math.max(0, amountDue - previousPayment - amountPaid);
+            
+            const remainingBalance = Math.max(0, totalFees - totalPreviousPaid - amountPaid);
             document.getElementById('remaining_balance').value = remainingBalance.toFixed(2);
         });
     </script>

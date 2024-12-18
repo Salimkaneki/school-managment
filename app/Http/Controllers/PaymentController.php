@@ -11,26 +11,108 @@ use Illuminate\Support\Facades\Log;
 
 class PaymentController extends Controller
 {
+    // public function create()
+    // {
+    //     $classes = ClassModel::all();
+    //     $students = Student::with(['payments' => function($query) {
+    //         $query->latest();
+    //     }])->get()->map(function($student) {
+    //         return [
+    //             'id' => $student->id,
+    //             'first_name' => $student->first_name,
+    //             'last_name' => $student->last_name,
+    //             'class_id' => $student->class_id,
+    //             'previous_payment' => $student->payments->sum('amount_paid'),
+    //             'remaining_balance' => $student->payments->first() ? 
+    //                 $student->payments->first()->remaining_balance : 
+    //                 $student->class->fees ?? 0
+    //         ];
+    //     });
+
+    //     return view('payments.create', compact('classes', 'students'));
+    // }
+
     public function create()
     {
         $classes = ClassModel::all();
         $students = Student::with(['payments' => function($query) {
             $query->latest();
-        }])->get()->map(function($student) {
+        }, 'class'])->get()->map(function($student) {
+            // Calculer le total des paiements précédents
+            $totalPreviousPaid = $student->payments->sum('amount_paid');
+            
+            // Calculer le solde restant
+            $classFees = $student->class->fees ?? 0;
+            $remainingBalance = max(0, $classFees - $totalPreviousPaid);
+
             return [
                 'id' => $student->id,
                 'first_name' => $student->first_name,
                 'last_name' => $student->last_name,
                 'class_id' => $student->class_id,
-                'previous_payment' => $student->payments->sum('amount_paid'),
-                'remaining_balance' => $student->payments->first() ? 
-                    $student->payments->first()->remaining_balance : 
-                    $student->class->fees ?? 0
+                'class_name' => $student->class->name,
+                'total_fees' => $classFees,
+                'total_previous_paid' => $totalPreviousPaid,
+                'remaining_balance' => $remainingBalance
             ];
         });
 
         return view('payments.create', compact('classes', 'students'));
     }
+
+    // public function store(Request $request)
+    // {
+    //     try {
+    //         DB::beginTransaction();
+
+    //         $validated = $request->validate([
+    //             'class_id' => 'required|exists:class_models,id',
+    //             'student_id' => 'required|exists:students,id',
+    //             'amount_due' => 'required|numeric|min:0',
+    //             'amount_paid' => 'required|numeric|min:0',
+    //             'remaining_balance' => 'required|numeric|min:0'
+    //         ]);
+
+    //         // Vérifier si l'étudiant existe et appartient à la classe
+    //         $student = Student::where('id', $validated['student_id'])
+    //                         ->where('class_id', $validated['class_id'])
+    //                         ->firstOrFail();
+
+    //         // Récupérer le dernier paiement
+    //         $lastPayment = Payment::where('student_id', $validated['student_id'])
+    //                             ->latest()
+    //                             ->first();
+
+    //         $currentBalance = $lastPayment ? 
+    //             $lastPayment->remaining_balance : 
+    //             $validated['amount_due'];
+
+    //         // Vérifications de cohérence
+    //         if ($validated['amount_paid'] > $currentBalance) {
+    //             throw new \Exception('Le montant payé ne peut pas dépasser le solde dû.');
+    //         }
+
+    //         // Créer le paiement
+    //         $payment = Payment::create([
+    //             'student_id' => $validated['student_id'],
+    //             'amount_due' => $validated['amount_due'],
+    //             'amount_paid' => $validated['amount_paid'],
+    //             'remaining_balance' => $validated['remaining_balance']
+    //         ]);
+
+    //         DB::commit();
+    //         return redirect()
+    //             ->route('payment-list')
+    //             ->with('success', 'Paiement enregistré avec succès.');
+
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
+    //         Log::error('Erreur lors de l\'enregistrement du paiement: ' . $e->getMessage());
+    //         return back()
+    //             ->withInput()
+    //             ->withErrors(['error' => $e->getMessage()]);
+    //     }
+    // }
 
     public function store(Request $request)
     {
@@ -40,7 +122,8 @@ class PaymentController extends Controller
             $validated = $request->validate([
                 'class_id' => 'required|exists:class_models,id',
                 'student_id' => 'required|exists:students,id',
-                'amount_due' => 'required|numeric|min:0',
+                'total_fees' => 'required|numeric|min:0',
+                'total_previous_paid' => 'required|numeric|min:0',
                 'amount_paid' => 'required|numeric|min:0',
                 'remaining_balance' => 'required|numeric|min:0'
             ]);
@@ -50,24 +133,19 @@ class PaymentController extends Controller
                             ->where('class_id', $validated['class_id'])
                             ->firstOrFail();
 
-            // Récupérer le dernier paiement
-            $lastPayment = Payment::where('student_id', $validated['student_id'])
-                                ->latest()
-                                ->first();
-
-            $currentBalance = $lastPayment ? 
-                $lastPayment->remaining_balance : 
-                $validated['amount_due'];
+            // Calculer le solde restant exact
+            $totalPreviousPaid = Payment::where('student_id', $validated['student_id'])->sum('amount_paid');
+            $currentBalance = $validated['total_fees'] - $totalPreviousPaid;
 
             // Vérifications de cohérence
             if ($validated['amount_paid'] > $currentBalance) {
-                throw new \Exception('Le montant payé ne peut pas dépasser le solde dû.');
+                throw new \Exception('Le montant payé ne peut pas dépasser le solde restant.');
             }
 
             // Créer le paiement
             $payment = Payment::create([
                 'student_id' => $validated['student_id'],
-                'amount_due' => $validated['amount_due'],
+                'amount_due' => $validated['total_fees'],
                 'amount_paid' => $validated['amount_paid'],
                 'remaining_balance' => $validated['remaining_balance']
             ]);

@@ -131,75 +131,104 @@
                                                                             </h5>
                                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                         </div>
-                                                                        <div class="modal-body">
-                                                                            <div class="row">
-                                                                                <!-- Photo du professeur -->
-                                                                                <div class="col-md-4 text-center mb-4">
-                                                                                    @if($teacher->photo)
-                                                                                        <img src="{{ Storage::url($teacher->photo) }}" 
-                                                                                            alt="Photo de {{ $teacher->first_name }}"
-                                                                                            class="img-fluid rounded-circle"
-                                                                                            style="width: 150px; height: 150px; object-fit: cover;">
-                                                                                    @else
-                                                                                        <div class="bg-light rounded-circle d-flex align-items-center justify-content-center mx-auto"
-                                                                                            style="width: 150px; height: 150px;">
-                                                                                            <i class="fas fa-user fa-3x text-secondary"></i>
+                                                                        <div class="modal-body p-4">
+                                                                            <div class="row g-4">
+                                                                                <!-- Photo et informations principales -->
+                                                                                <div class="col-lg-4">
+                                                                                    <div class="text-center">
+                                                                                        @if($teacher->photo)
+                                                                                            <img src="{{ Storage::url($teacher->photo) }}" 
+                                                                                                alt="Photo de {{ $teacher->first_name }}"
+                                                                                                class="img-fluid rounded-circle border shadow-sm mb-3"
+                                                                                                style="width: 180px; height: 180px; object-fit: cover;">
+                                                                                        @else
+                                                                                            <div class="bg-light rounded-circle d-flex align-items-center justify-content-center mx-auto border shadow-sm mb-3"
+                                                                                                style="width: 180px; height: 180px;">
+                                                                                                <i class="fas fa-user fa-4x text-secondary opacity-50"></i>
+                                                                                            </div>
+                                                                                        @endif
+                                                                                        
+                                                                                        <h4 class="mb-2" style="color: #000;">{{ $teacher->first_name }} {{ $teacher->last_name }}</h4>
+                                                                                        <div class="d-flex justify-content-center gap-2 flex-wrap mb-3">
+                                                                                            <span class="badge" style="background-color: #E3F2FD; color: #1976D2; font-weight: 500; padding: 8px 12px;">
+                                                                                                <i class="fas fa-book-reader me-1"></i> {{ $teacher->subject }}
+                                                                                            </span>
+                                                                                            <span class="badge" style="background-color: #E8F5E9; color: #2E7D32; font-weight: 500; padding: 8px 12px;">
+                                                                                                <i class="fas fa-briefcase me-1"></i> {{ $teacher->seniority ?? '0' }} an(s)
+                                                                                            </span>
                                                                                         </div>
-                                                                                    @endif
+                                                                                        
+                                                                                        @if($teacher->email)
+                                                                                            <button class="btn btn-outline-primary btn-sm w-100 mb-2">
+                                                                                                <i class="fas fa-envelope me-2"></i>{{ $teacher->email }}
+                                                                                            </button>
+                                                                                        @endif
+                                                                                    </div>
                                                                                 </div>
-
-                                                                                <!-- Informations du professeur -->
-                                                                                <div class="col-md-8">
-                                                                                    <div class="row g-3">
-                                                                                        <div class="col-md-6">
-                                                                                            <p class="mb-1"><strong>Prénom:</strong></p>
-                                                                                            <p class="text-muted">{{ $teacher->first_name }}</p>
-                                                                                        </div>
-                                                                                        <div class="col-md-6">
-                                                                                            <p class="mb-1"><strong>Nom:</strong></p>
-                                                                                            <p class="text-muted">{{ $teacher->last_name }}</p>
-                                                                                        </div>
-                                                                                        <div class="col-md-6">
-                                                                                            <p class="mb-1"><strong>Email:</strong></p>
-                                                                                            <p class="text-muted">{{ $teacher->email }}</p>
-                                                                                        </div>
-                                                                                        <div class="col-md-6">
-                                                                                            <p class="mb-1"><strong>Téléphone:</strong></p>
-                                                                                            <p class="text-muted">{{ $teacher->phone_number ?? 'Non renseigné' }}</p>
-                                                                                        </div>
-                                                                                        <div class="col-md-6">
-                                                                                            <p class="mb-1"><strong>Genre:</strong></p>
-                                                                                            <p class="text-muted">
-                                                                                                @switch($teacher->gender)
-                                                                                                    @case('male')
-                                                                                                        Masculin
-                                                                                                        @break
-                                                                                                    @case('female')
-                                                                                                        Féminin
-                                                                                                        @break
-                                                                                                    @default
-                                                                                                        Autre
-                                                                                                @endswitch
-                                                                                            </p>
-                                                                                        </div>
-                                                                                        <div class="col-md-6">
-                                                                                            <p class="mb-1"><strong>Nationalité:</strong></p>
-                                                                                            <p class="text-muted">{{ $teacher->nationality ?? 'Non renseignée' }}</p>
-                                                                                        </div>
-                                                                                        <div class="col-md-6">
-                                                                                            <p class="mb-1"><strong>Années d'expérience:</strong></p>
-                                                                                            <p class="text-muted">{{ $teacher->seniority ?? '0' }} an(s)</p>
-                                                                                        </div>
-                                                                                        <div class="col-md-6">
-                                                                                            <p class="mb-1"><strong>Matière:</strong></p>
-                                                                                            <p class="text-muted">{{ $teacher->subject }}</p>
-                                                                                        </div>
+                                                                                
+                                                                                <!-- Informations détaillées -->
+                                                                                <div class="col-lg-8">
+                                                                                    <div class="row g-4">
+                                                                                        <!-- Informations principales -->
                                                                                         <div class="col-12">
-                                                                                            <p class="mb-1"><strong>Statut:</strong></p>
-                                                                                            @if($teacher->is_active)
-                                                                                                <span class="badge bg-success">Actif</span>
-                                                                                            @else
-                                                                                                <span class="badge bg-danger">Inactif</span>
+                                                                                            <h6 class="border-bottom pb-2 mb-3" style="color: #000;">Informations personnelles</h6>
+                                                                                            <div class="row g-3">
+                                                                                                @php
+                                                                                                $mainInfo = [
+                                                                                                    ['icon' => 'calendar', 'label' => 'Date de naissance', 'value' => $teacher->birthday ? \Carbon\Carbon::parse($teacher->birthday)->format('d-m-Y') : 'Non renseignée'],
+                                                                                                    ['icon' => 'venus-mars', 'label' => 'Genre', 'value' => $teacher->gender == 'male' ? 'Masculin' : ($teacher->gender == 'female' ? 'Féminin' : 'Autre')],
+                                                                                                    ['icon' => 'globe', 'label' => 'Nationalité', 'value' => $teacher->nationality ?? 'Non renseignée'],
+                                                                                                    ['icon' => 'heart', 'label' => 'Statut matrimonial', 'value' => [
+                                                                                                        'single' => 'Célibataire',
+                                                                                                        'married' => 'Marié(e)',
+                                                                                                        'divorced' => 'Divorcé(e)',
+                                                                                                        'widowed' => 'Veuf(ve)'
+                                                                                                    ][$teacher->marital_status] ?? 'Non renseigné'],
+                                                                                                ];
+                                                                                                @endphp
+
+                                                                                                @foreach($mainInfo as $info)
+                                                                                                    <div class="col-sm-6">
+                                                                                                        <div class="d-flex align-items-center">
+                                                                                                            <div class="flex-shrink-0">
+                                                                                                                <span class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
+                                                                                                                    <i class="fas fa-{{ $info['icon'] }} text-primary"></i>
+                                                                                                                </span>
+                                                                                                            </div>
+                                                                                                            <div class="flex-grow-1 ms-3">
+                                                                                                                <small style="color: #000;">{{ $info['label'] }}</small>
+                                                                                                                <div style="color: #000; font-weight: 500;">{{ $info['value'] }}</div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                @endforeach
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <!-- Coordonnées -->
+                                                                                        <div class="col-12">
+                                                                                            <h6 class="border-bottom pb-2 mb-3" style="color: #000;">Coordonnées</h6>
+                                                                                            @if($teacher->address)
+                                                                                                <div class="d-flex align-items-start mb-3">
+                                                                                                    <span class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center flex-shrink-0" style="width: 35px; height: 35px;">
+                                                                                                        <i class="fas fa-map-marker-alt text-primary"></i>
+                                                                                                    </span>
+                                                                                                    <div class="ms-3">
+                                                                                                        <small style="color: #000;">Adresse</small>
+                                                                                                        <div style="color: #000; font-weight: 500;">{{ $teacher->address }}</div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            @endif
+                                                                                            @if($teacher->phone_number)
+                                                                                                <div class="d-flex align-items-center">
+                                                                                                    <span class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center flex-shrink-0" style="width: 35px; height: 35px;">
+                                                                                                        <i class="fas fa-phone text-primary"></i>
+                                                                                                    </span>
+                                                                                                    <div class="ms-3">
+                                                                                                        <small style="color: #000;">Téléphone</small>
+                                                                                                        <div style="color: #000; font-weight: 500;">{{ $teacher->phone_number }}</div>
+                                                                                                    </div>
+                                                                                                </div>
                                                                                             @endif
                                                                                         </div>
                                                                                     </div>

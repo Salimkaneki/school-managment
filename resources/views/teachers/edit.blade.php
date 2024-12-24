@@ -147,6 +147,49 @@
                                 </div>
 
                                 <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="marital_status" class="form-label">Statut matrimonial</label>
+                                        <select class="form-control @error('marital_status') is-invalid @enderror" 
+                                                id="marital_status" 
+                                                name="marital_status">
+                                            <option value="" disabled {{ old('marital_status', $teacher->marital_status) ? '' : 'selected' }}>Choisissez un statut</option>
+                                            <option value="single" {{ old('marital_status', $teacher->marital_status) == 'single' ? 'selected' : '' }}>Célibataire</option>
+                                            <option value="married" {{ old('marital_status', $teacher->marital_status) == 'married' ? 'selected' : '' }}>Marié(e)</option>
+                                            <option value="divorced" {{ old('marital_status', $teacher->marital_status) == 'divorced' ? 'selected' : '' }}>Divorcé(e)</option>
+                                            <option value="widowed" {{ old('marital_status', $teacher->marital_status) == 'widowed' ? 'selected' : '' }}>Veuf(ve)</option>
+                                        </select>
+                                        @error('marital_status')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="birthday" class="form-label">Date de naissance</label>
+                                        <input type="date" 
+                                               class="form-control @error('birthday') is-invalid @enderror" 
+                                               id="birthday" 
+                                               name="birthday" 
+                                               value="{{ old('birthday', $teacher->birthday) }}">
+                                        @error('birthday')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <label for="address" class="form-label">Adresse</label>
+                                        <input type="text" 
+                                               class="form-control @error('address') is-invalid @enderror" 
+                                               id="address" 
+                                               name="address" 
+                                               value="{{ old('address', $teacher->address) }}">
+                                        @error('address')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
                                     <div class="col-md-12">
                                         <label for="subject" class="form-label">Matière enseignée</label>
                                         <input type="text" 

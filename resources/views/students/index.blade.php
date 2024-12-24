@@ -138,66 +138,125 @@
                                                             <div class="modal-dialog modal-lg modal-dialog-centered">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header bg-light">
-                                                                        <h5 class="modal-title">Détails de l'Élève</h5>
+                                                                        <h5 class="modal-title" style="color: #000;">Détails de l'Élève</h5>
                                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                     </div>
-                                                                    <div class="modal-body">
-                                                                        <div class="row">
-                                                                            <!-- Photo de l'élève -->
-                                                                            <div class="col-md-4 text-center mb-3">
+                                                                    <div class="modal-body p-4" style="overflow-y: hidden;">
+                                                                        <div class="row g-4">
+                                                                            <!-- Photo de l'élève et informations principales -->
+                                                                            <div class="col-lg-4 text-center">
                                                                                 @if($student->photo)
                                                                                     <img src="{{ Storage::url($student->photo) }}" 
-                                                                                        class="rounded-circle img-fluid mb-2"
-                                                                                        style="width: 150px; height: 150px; object-fit: cover;"
-                                                                                        alt="Photo de {{ $student->first_name }}">
+                                                                                        alt="Photo de {{ $student->first_name }}" 
+                                                                                        class="img-fluid rounded-circle border shadow-sm mb-3" 
+                                                                                        style="width: 180px; height: 180px; object-fit: cover;">
                                                                                 @else
-                                                                                    <img src="{{ asset('images/default-avatar.png') }}" 
-                                                                                        class="rounded-circle img-fluid mb-2"
-                                                                                        style="width: 150px; height: 150px; object-fit: cover;"
-                                                                                        alt="Photo par défaut">
+                                                                                    <div class="bg-light rounded-circle d-flex align-items-center justify-content-center mx-auto border shadow-sm mb-3" 
+                                                                                        style="width: 180px; height: 180px;">
+                                                                                        <i class="fas fa-user fa-4x text-secondary opacity-50"></i>
+                                                                                    </div>
                                                                                 @endif
-                                                                                <h5 class="font-weight-bold">{{ $student->last_name }} {{ $student->first_name }}</h5>
+                                                                                <h4 class="mb-2" style="color: #000;">{{ $student->first_name }} {{ $student->last_name }}</h4>
+                                                                                <div class="d-flex justify-content-center gap-2 flex-wrap mb-3">
+                                                                                    <span class="badge" style="background-color: #E3F2FD; color: #1976D2; font-weight: 500; padding: 8px 12px;">
+                                                                                        <i class="fas fa-graduation-cap me-1"></i> {{ $student->classModel->name ?? 'Non assigné' }}
+                                                                                    </span>
+                                                                                    <span class="badge" style="background-color: #E8F5E9; color: #2E7D32; font-weight: 500; padding: 8px 12px;">
+                                                                                        <i class="fas fa-calendar-alt me-1"></i> {{ $student->academicYear->name ?? 'Non assigné' }}
+                                                                                    </span>
+                                                                                </div>
+                                                                                
+                                                                                @if($student->email)
+                                                                                    <button class="btn btn-outline-primary btn-sm w-100 mb-2">
+                                                                                        <i class="fas fa-envelope me-2"></i>{{ $student->email }}
+                                                                                    </button>
+                                                                                @endif
                                                                             </div>
 
-                                                                            <!-- Informations de l'élève -->
-                                                                            <div class="col-md-8">
-                                                                                <div class="row mb-3">
-                                                                                    <div class="col-md-6">
-                                                                                        <h6 class="text-sm font-weight-bold">Date de naissance</h6>
-                                                                                        <p class="text-sm">{{ $student->birth_date ? \Carbon\Carbon::parse($student->birth_date)->format('d/m/Y') : 'Non renseigné' }}</p>
-                                                                                    </div>
-                                                                                    <div class="col-md-6">
-                                                                                        <h6 class="text-sm font-weight-bold">Lieu de naissance</h6>
-                                                                                        <p class="text-sm">{{ $student->birth_place ?? 'Non renseigné' }}</p>
-                                                                                    </div>
-                                                                                </div>
-
-                                                                                <div class="row mb-3">
-                                                                                    <div class="col-md-6">
-                                                                                        <h6 class="text-sm font-weight-bold">Téléphone</h6>
-                                                                                        <p class="text-sm">{{ $student->phone_number ?? 'Non renseigné' }}</p>
-                                                                                    </div>
-                                                                                    <div class="col-md-6">
-                                                                                        <h6 class="text-sm font-weight-bold">Email</h6>
-                                                                                        <p class="text-sm">{{ $student->email ?? 'Non renseigné' }}</p>
-                                                                                    </div>
-                                                                                </div>
-
-                                                                                <div class="row mb-3">
-                                                                                    <div class="col-md-6">
-                                                                                        <h6 class="text-sm font-weight-bold">Classe</h6>
-                                                                                        <p class="text-sm">{{ $student->classModel ? $student->classModel->name : 'Non assigné' }}</p>
-                                                                                    </div>
-                                                                                    <div class="col-md-6">
-                                                                                        <h6 class="text-sm font-weight-bold">Année Académique</h6>
-                                                                                        <p class="text-sm">{{ $student->academicYear->name ?? 'Non assigné' }}</p>
-                                                                                    </div>
-                                                                                </div>
-
-                                                                                <div class="row">
+                                                                            <!-- Informations détaillées -->
+                                                                            <div class="col-lg-8">
+                                                                                <div class="row g-4">
+                                                                                    <!-- Informations personnelles -->
                                                                                     <div class="col-12">
-                                                                                        <h6 class="text-sm font-weight-bold">Adresse</h6>
-                                                                                        <p class="text-sm">{{ $student->address ?? 'Non renseigné' }}</p>
+                                                                                        <h6 class="border-bottom pb-2 mb-3" style="color: #000;">Informations personnelles</h6>
+                                                                                        <div class="row g-3">
+                                                                                            @php
+                                                                                            $mainInfo = [
+                                                                                                ['icon' => 'calendar', 'label' => 'Date de naissance', 'value' => $student->birth_date ? \Carbon\Carbon::parse($student->birth_date)->format('d/m/Y') : 'Non renseigné'],
+                                                                                                ['icon' => 'venus-mars', 'label' => 'Genre', 'value' => $student->gender == 'male' ? 'Masculin' : ($student->gender == 'female' ? 'Féminin' : 'Autre')],
+                                                                                                ['icon' => 'globe', 'label' => 'Nationalité', 'value' => $student->nationality ?? 'Non renseignée'],
+                                                                                                ['icon' => 'heart', 'label' => 'Statut matrimonial', 'value' => [
+                                                                                                    'single' => 'Célibataire',
+                                                                                                    'married' => 'Marié(e)',
+                                                                                                    'divorced' => 'Divorcé(e)',
+                                                                                                    'widowed' => 'Veuf(ve)'
+                                                                                                ][$student->marital_status] ?? 'Non renseigné'],
+                                                                                            ];
+                                                                                            @endphp
+
+                                                                                            @foreach($mainInfo as $info)
+                                                                                                <div class="col-sm-6">
+                                                                                                    <div class="d-flex align-items-center">
+                                                                                                        <div class="flex-shrink-0">
+                                                                                                            <span class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
+                                                                                                                <i class="fas fa-{{ $info['icon'] }} text-primary"></i>
+                                                                                                            </span>
+                                                                                                        </div>
+                                                                                                        <div class="flex-grow-1 ms-3">
+                                                                                                            <small style="color: #000;">{{ $info['label'] }}</small>
+                                                                                                            <div style="color: #000; font-weight: 500;">{{ $info['value'] }}</div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            @endforeach
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <!-- Coordonnées -->
+                                                                                    <div class="col-12">
+                                                                                        <h6 class="border-bottom pb-2 mb-3" style="color: #000;">Coordonnées</h6>
+                                                                                        @if($student->address)
+                                                                                            <div class="d-flex align-items-start mb-3">
+                                                                                                <span class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center flex-shrink-0" style="width: 35px; height: 35px;">
+                                                                                                    <i class="fas fa-map-marker-alt text-primary"></i>
+                                                                                                </span>
+                                                                                                <div class="ms-3">
+                                                                                                    <small style="color: #000;">Adresse</small>
+                                                                                                    <div style="color: #000; font-weight: 500;">{{ $student->address }}</div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        @endif
+                                                                                        @if($student->phone_number)
+                                                                                            <div class="d-flex align-items-center">
+                                                                                                <span class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center flex-shrink-0" style="width: 35px; height: 35px;">
+                                                                                                    <i class="fas fa-phone text-primary"></i>
+                                                                                                </span>
+                                                                                                <div class="ms-3">
+                                                                                                    <small style="color: #000;">Téléphone</small>
+                                                                                                    <div style="color: #000; font-weight: 500;">{{ $student->phone_number }}</div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        @endif
+                                                                                    </div>
+
+                                                                                    <!-- Informations académiques -->
+                                                                                    <div class="col-12">
+                                                                                        <h6 class="border-bottom pb-2 mb-3" style="color: #000;">Informations académiques</h6>
+                                                                                        <div class="row g-3">
+                                                                                            <div class="col-sm-6">
+                                                                                                <small style="color: #000;">Classe</small>
+                                                                                                <div style="color: #000; font-weight: 500;">{{ $student->classModel->name ?? 'Non assigné' }}</div>
+                                                                                            </div>
+                                                                                            <div class="col-sm-6">
+                                                                                                <small style="color: #000;">Année Académique</small>
+                                                                                                <div style="color: #000; font-weight: 500;">{{ $student->academicYear->name ?? 'Non assigné' }}</div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <div class="col-12">
+                                                                                        <h6 class="border-bottom pb-2 mb-3" style="color: #000;">École précédente</h6>
+                                                                                        <p class="text-sm">{{ $student->previous_school_name ?? 'Non renseigné' }}</p>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>

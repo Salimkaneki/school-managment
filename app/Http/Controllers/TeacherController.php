@@ -36,6 +36,9 @@ class TeacherController extends Controller
             'seniority' => 'nullable|integer',
             'subject' => 'required|string|max:255',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'birthday' => 'required|date',
+            'marital_status' => 'required|in:single,married,divorced,widowed',
+            'address' => 'required|string|max:255',
         ]);
 
         if ($request->hasFile('photo')) {
@@ -77,6 +80,9 @@ class TeacherController extends Controller
             'seniority' => 'nullable|integer|min:0',
             // 'is_active' => 'boolean',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'birthday' => 'required|date',
+            'marital_status' => 'required|in:single,married,divorced,widowed',
+            'address' => 'required|string|max:255',
         ]);
     
         if ($request->hasFile('photo')) {

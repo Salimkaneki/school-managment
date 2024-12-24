@@ -25,9 +25,9 @@ class Teacher extends Model
         'subject',
         'photo',
         'is_active',
-        'birthday' => 'required|date',
-        'marital_status' => 'required|in:single,married,divorced,widowed',
-        'address' => 'required|string|max:255',
+        'birthday',
+        'marital_status',
+        'address',
     ];
 
     public function course()

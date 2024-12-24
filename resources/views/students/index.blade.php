@@ -132,7 +132,7 @@
                                                                 </button>
                                                             </form>
                                                         </div>
-
+ 
                                                         <!-- Modal Détails Élève -->
                                                         <div class="modal fade" id="studentModal{{ $student->id }}" tabindex="-1" aria-hidden="true">
                                                             <div class="modal-dialog modal-lg modal-dialog-centered">

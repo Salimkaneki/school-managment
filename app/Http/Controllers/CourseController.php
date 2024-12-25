@@ -35,4 +35,12 @@ class CourseController extends Controller
         
         return view('courses.index', compact('courses'));
     }
+
+        public function destroy($id)
+        {
+            $course = Course::findOrFail($id);
+            $course->delete();
+    
+            return redirect()->route('course-list')->with('success', 'Le cours a été supprimé avec succès.');
+        }
 }

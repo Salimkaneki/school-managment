@@ -204,10 +204,9 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('course')->group(function (){
 
             Route::get('create', [\App\Http\Controllers\CourseController::class, 'create'])->name('create-course');
-
             Route::post('store', [\App\Http\Controllers\CourseController::class, 'store'])->name('store-course');
-
             Route::get('list', [\App\Http\Controllers\CourseController::class, 'index'])->name('course-list');
+            Route::delete('delete/{id}', [\App\Http\Controllers\CourseController::class, 'destroy'])->name('delete-course');
 
         });
 

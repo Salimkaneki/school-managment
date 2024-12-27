@@ -185,12 +185,6 @@
                                                                                                 ['icon' => 'calendar', 'label' => 'Date de naissance', 'value' => $student->birth_date ? \Carbon\Carbon::parse($student->birth_date)->format('d/m/Y') : 'Non renseigné'],
                                                                                                 ['icon' => 'venus-mars', 'label' => 'Genre', 'value' => $student->gender == 'male' ? 'Masculin' : ($student->gender == 'female' ? 'Féminin' : 'Autre')],
                                                                                                 ['icon' => 'globe', 'label' => 'Nationalité', 'value' => $student->nationality ?? 'Non renseignée'],
-                                                                                                ['icon' => 'heart', 'label' => 'Statut matrimonial', 'value' => [
-                                                                                                    'single' => 'Célibataire',
-                                                                                                    'married' => 'Marié(e)',
-                                                                                                    'divorced' => 'Divorcé(e)',
-                                                                                                    'widowed' => 'Veuf(ve)'
-                                                                                                ][$student->marital_status] ?? 'Non renseigné'],
                                                                                             ];
                                                                                             @endphp
 
@@ -239,24 +233,24 @@
                                                                                         @endif
                                                                                     </div>
 
-                                                                                    <!-- Informations académiques -->
+                                                                                    <!-- Informations académiques et école précédente -->
                                                                                     <div class="col-12">
                                                                                         <h6 class="border-bottom pb-2 mb-3" style="color: #000;">Informations académiques</h6>
-                                                                                        <div class="row g-3">
-                                                                                            <div class="col-sm-6">
-                                                                                                <small style="color: #000;">Classe</small>
-                                                                                                <div style="color: #000; font-weight: 500;">{{ $student->classModel->name ?? 'Non assigné' }}</div>
-                                                                                            </div>
-                                                                                            <div class="col-sm-6">
-                                                                                                <small style="color: #000;">Année Académique</small>
-                                                                                                <div style="color: #000; font-weight: 500;">{{ $student->academicYear->name ?? 'Non assigné' }}</div>
+                                                                                        <div class="mb-3">
+                                                                                            <div class="row g-3">
+                                                                                                <div class="col-sm-6">
+                                                                                                    <small style="color: #000;">Classe</small>
+                                                                                                    <div style="color: #000; font-weight: 500;">{{ $student->classModel->name ?? 'Non assigné' }}</div>
+                                                                                                </div>
+                                                                                                <div class="col-sm-6">
+                                                                                                    <small style="color: #000;">Année Académique</small>
+                                                                                                    <div style="color: #000; font-weight: 500;">{{ $student->academicYear->name ?? 'Non assigné' }}</div>
+                                                                                                </div>
                                                                                             </div>
                                                                                         </div>
-                                                                                    </div>
-
-                                                                                    <div class="col-12">
+                                                                                        
                                                                                         <h6 class="border-bottom pb-2 mb-3" style="color: #000;">École précédente</h6>
-                                                                                        <p class="text-sm">{{ $student->previous_school_name ?? 'Non renseigné' }}</p>
+                                                                                        <p style="color: #000;">{{ $student->previous_school_name ?? 'Non renseigné' }}</p>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>

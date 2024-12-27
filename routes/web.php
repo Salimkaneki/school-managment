@@ -101,8 +101,6 @@ Route::middleware(['auth'])->group(function () {
             
             Route::post('/store-class', [ClassController::class, 'store'])->name('store-class');
 
-            // Route::get('/edit-class/{id}', [ClassController::class, 'edit'])->name('edit-class');
-
             Route::put('/update-class/{id}', [ClassController::class, 'update'])->name('update-class');
         
             Route::delete('/delete-class/{id}', [ClassController::class, 'destroy'])->name('delete-class');
@@ -209,8 +207,10 @@ Route::middleware(['auth'])->group(function () {
             Route::post('store', [\App\Http\Controllers\CourseController::class, 'store'])->name('store-course');
             Route::get('list', [\App\Http\Controllers\CourseController::class, 'index'])->name('course-list');
             Route::delete('delete/{id}', [\App\Http\Controllers\CourseController::class, 'destroy'])->name('delete-course');
-
+        Route::put('update/{id}', [\App\Http\Controllers\CourseController::class, 'update'])->name('update-course');
         });
+        Route::get('edit/{id}', [\App\Http\Controllers\CourseController::class, 'edit'])->name('edit-course');
+
 
 
         Route::prefix('timetables')->group(function () {

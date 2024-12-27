@@ -28,6 +28,27 @@ class CourseController extends Controller
         return redirect()->route('course-list')->with('success', 'Le cours a été créé avec succès.');
     }
 
+    public function edit($id)
+{
+    $course = Course::findOrFail($id);
+    $teachers = Teacher::all();
+    return view('courses.edit', compact('course', 'teachers'));
+}
+
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'teacher_id' => 'required|exists:teachers,id',
+            'description' => 'nullable|string'
+        ]);
+
+        $course = Course::findOrFail($id);
+        $course->update($validated);
+
+        return redirect()->route('course-list')->with('success', 'Le cours a été modifié avec succès.');
+    }
+
 
     public function index()
     {

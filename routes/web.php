@@ -101,13 +101,15 @@ Route::middleware(['auth'])->group(function () {
             
             Route::post('/store-class', [ClassController::class, 'store'])->name('store-class');
 
-            Route::get('/edit-class/{id}', [ClassController::class, 'edit'])->name('edit-class');
+            // Route::get('/edit-class/{id}', [ClassController::class, 'edit'])->name('edit-class');
 
             Route::put('/update-class/{id}', [ClassController::class, 'update'])->name('update-class');
         
             Route::delete('/delete-class/{id}', [ClassController::class, 'destroy'])->name('delete-class');
 
         });
+        Route::get('/edit-class/{id}', [ClassController::class, 'edit'])->name('edit-class');
+
 
         Route::prefix('/classroom')->group(function () {
 

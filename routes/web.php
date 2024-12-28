@@ -222,6 +222,10 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/{id}', [TimetableController::class, 'destroy'])->name('timetables.destroy');
         });
 
+        Route::get('/api/classes/{class}/classrooms', [TimetableController::class, 'getClassroomsByClass']);
+
+
+
         // Routes pour les créneaux horaires (TimeSlots)
         Route::prefix('time-slots')->group(function () {
             Route::get('/', [TimeSlotController::class, 'index'])->name('time-slots.index');

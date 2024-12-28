@@ -47,6 +47,23 @@ class TimetableController extends Controller
         return redirect()->route('timetables.index')->with('success', 'Emploi du temps créé avec succès.');
     }
 
+    // Dans TimetableController, ajoutez cette nouvelle méthode
+    public function getClassroomsByClass($classId)
+    {
+        $class = ClassModel::findOrFail($classId);
+        $classrooms = $class->classrooms; // Assurez-vous d'avoir défini la relation dans le modèle
+        
+        return response()->json([
+            'classrooms' => $classrooms->map(function($classroom) {
+                return [
+                    'id' => $classroom->id,
+                    'name' => $classroom->name,
+                    'capacity' => $classroom->capacity
+                ];
+            })
+        ]);
+    }
+
     // Afficher le formulaire pour ajouter un cours
     public function showAddCourseForm($id)
     {

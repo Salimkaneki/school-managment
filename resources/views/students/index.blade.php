@@ -182,7 +182,7 @@
                                                                                         <div class="row g-3">
                                                                                             @php
                                                                                             $mainInfo = [
-                                                                                                ['icon' => 'calendar', 'label' => 'Date de naissance', 'value' => $student->birth_date ? \Carbon\Carbon::parse($student->birth_date)->format('d/m/Y') : 'Non renseigné'],
+                                                                                                ['icon' => 'calendar', 'label' => 'Date de naissance', 'value' => $student->date_of_birth? \Carbon\Carbon::parse($student->birth_date)->format('d/m/Y') : 'Non renseigné'],
                                                                                                 ['icon' => 'venus-mars', 'label' => 'Genre', 'value' => $student->gender == 'male' ? 'Masculin' : ($student->gender == 'female' ? 'Féminin' : 'Autre')],
                                                                                                 ['icon' => 'globe', 'label' => 'Nationalité', 'value' => $student->nationality ?? 'Non renseignée'],
                                                                                             ];

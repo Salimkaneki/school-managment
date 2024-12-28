@@ -154,8 +154,6 @@ Route::middleware(['auth'])->group(function () {
             // Route pour stocker un paiement
             Route::post('/', [PaymentController::class, 'store'])->name('payment.store');
             
-            // Route pour récupérer un paiement existant pour l'édition
-            Route::get('/{id}/edit', [PaymentController::class, 'edit'])->name('payment.edit');
             
             // Route pour mettre à jour un paiement
             Route::put('/{id}', [PaymentController::class, 'update'])->name('payment.update');
@@ -163,7 +161,10 @@ Route::middleware(['auth'])->group(function () {
         
 
         Route::get('/detail/{id}', [PaymentController::class, 'show'])->name('detail-payment');
-        
+
+        // Route pour récupérer un paiement existant pour l'édition
+        Route::get('/{id}/edit', [PaymentController::class, 'edit'])->name('payment.edit');
+
 
 
         Route::prefix('academic-years')->group(function (){
@@ -197,9 +198,9 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/{academicYear}/activate', [AcademicYearController::class, 'activate'])->name('activate');
         });
 
-                    Route::get('list/trimesters', function() {
-                        return view('academic-years.year-trimester');
-                    })->name('year-trimester');
+        Route::get('list/trimesters', function() {
+            return view('academic-years.year-trimester');
+        })->name('year-trimester');
 
         Route::prefix('course')->group(function (){
 
@@ -297,43 +298,43 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/laravel-examples/users-management', [UserController::class, 'index'])->name('users-management');
 });
 
-// Group for guest routes
-Route::middleware(['guest'])->group(function () {
-    Route::get('/signup', function () {
-        return view('account-pages.signup');
-    })->name('signup');
+    // Group for guest routes
+    Route::middleware(['guest'])->group(function () {
+        Route::get('/signup', function () {
+            return view('account-pages.signup');
+        })->name('signup');
 
-    Route::get('/sign-up', [RegisterController::class, 'create'])->name('sign-up');
-    Route::post('/sign-up', [RegisterController::class, 'store']);
+        Route::get('/sign-up', [RegisterController::class, 'create'])->name('sign-up');
+        Route::post('/sign-up', [RegisterController::class, 'store']);
 
-    Route::get('/sign-in', [LoginController::class, 'create'])->name('sign-in');
-    Route::post('/sign-in', [LoginController::class, 'store']);
+        Route::get('/sign-in', [LoginController::class, 'create'])->name('sign-in');
+        Route::post('/sign-in', [LoginController::class, 'store']);
 
-    Route::get('/forgot-password', [ForgotPasswordController::class, 'create'])->name('password.request');
-    Route::post('/forgot-password', [ForgotPasswordController::class, 'store'])->name('password.email');
+        Route::get('/forgot-password', [ForgotPasswordController::class, 'create'])->name('password.request');
+        Route::post('/forgot-password', [ForgotPasswordController::class, 'store'])->name('password.email');
 
-    Route::get('/reset-password/{token}', [ResetPasswordController::class, 'create'])->name('password.reset');
-    Route::post('/reset-password', [ResetPasswordController::class, 'store']);
-});
+        Route::get('/reset-password/{token}', [ResetPasswordController::class, 'create'])->name('password.reset');
+        Route::post('/reset-password', [ResetPasswordController::class, 'store']);
+    });
 
 
-Route::get('/signin', function () {
-    return view('account-pages.signin');
-})->name('signin');
+    Route::get('/signin', function () {
+        return view('account-pages.signin');
+    })->name('signin');
 
-Route::get('/prof', function () {
-    return view('tlistdraft');
-});
-Route::get('/class', function () {
-    return view('cdraft');
-});
+    Route::get('/prof', function () {
+        return view('tlistdraft');
+    });
+    Route::get('/class', function () {
+        return view('cdraft');
+    });
 
-Route::get('/student', function () {
-    return view('sdraft');
-});
-Route::get('/teacher', function () {
-    return view('tlistdraft');
-});
+    Route::get('/student', function () {
+        return view('sdraft');
+    });
+    Route::get('/teacher', function () {
+        return view('tlistdraft');
+    });
 
 
 

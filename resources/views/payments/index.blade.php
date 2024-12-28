@@ -103,6 +103,15 @@
                                                     </td>
                                                     <td class="align-middle text-center">
                                                         <div class="d-flex justify-content-center gap-2">
+                                                            <button type="button" 
+                                                                    class="btn btn-link text-primary px-3 mb-0"
+                                                                    data-bs-toggle="modal" 
+                                                                    data-bs-target="#paymentModal{{ $payment->id }}">
+                                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M15.58 12C15.58 13.98 13.98 15.58 12 15.58C10.02 15.58 8.42001 13.98 8.42001 12C8.42001 10.02 10.02 8.42001 12 8.42001C13.98 8.42001 15.58 10.02 15.58 12Z" stroke="#007bff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                    <path d="M12 20.27C15.53 20.27 18.82 18.19 21.11 14.59C22.01 13.18 22.01 10.81 21.11 9.39997C18.82 5.79997 15.53 3.71997 12 3.71997C8.47003 3.71997 5.18003 5.79997 2.89003 9.39997C1.99003 10.81 1.99003 13.18 2.89003 14.59C5.18003 18.19 8.47003 20.27 12 20.27Z" stroke="#007bff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                </svg>
+                                                            </button>
                                                             <a href="{{ route('payment.edit', $payment->id) }}" 
                                                                class="btn btn-link text-warning px-3 mb-0">
                                                                 <svg width="14" height="14" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -124,13 +133,159 @@
                                                                 </button>
                                                             </form>
                                                         </div>
+
+                                                        @foreach($payments as $payment)
+                                                        <div class="modal fade" id="paymentModal{{ $payment->id }}" tabindex="-1">
+                                                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                                <div class="modal-content" style="border-radius: 12px;">
+                                                                    <!-- Header stylisé -->
+                                                                    <div class="modal-header px-3 pb-3 pt-3" style="background: linear-gradient(45deg, #2152ff, #21d4fd); border: none;">
+                                                                        <div class="text-white">
+                                                                            <h5 class="modal-title fw-bold mb-1">Détails du Paiement</h5>
+                                                                            <small class="mb-0" style="opacity: 0.8;">Transaction #{{ str_pad($payment->id, 6, '0', STR_PAD_LEFT) }}</small>
+                                                                        </div>
+                                                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+
+                                                                    <div class="modal-body p-3">
+                                                                        <div class="row">
+                                                                            <div class="col-md-4">
+                                                                                <!-- Section Étudiant -->
+                                                                                <div class="d-flex align-items-center mb-3 p-2 h-100" style="background-color: #f8f9fa; border-radius: 8px;">
+                                                                                    <div class="text-center me-2">
+                                                                                        <div style="width: 40px; height: 40px; background: #e9ecef; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                                                                            <i class="fas fa-user-graduate" style="font-size: 16px; color: #2152ff;"></i>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        <h6 class="fw-bold mb-0">{{ $payment->student->last_name }} {{ $payment->student->first_name }}</h6>
+                                                                                        <small class="text-muted">
+                                                                                            <i class="fas fa-graduation-cap me-1"></i> 
+                                                                                            {{ $payment->student->class->name ?? 'Non spécifiée' }}
+                                                                                        </small>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <!-- Cartes de montants -->
+                                                                            <div class="col-md-8">
+                                                                                <div class="row g-2">
+                                                                                    <!-- Montant dû -->
+                                                                                    <div class="col-md-4">
+                                                                                        <div class="h-100 p-2" style="background-color: #f8f9fa; border-radius: 8px;">
+                                                                                            <div class="d-flex align-items-center mb-1">
+                                                                                                <div style="width: 28px; height: 28px; background: #e3e6ed; border-radius: 6px; display: flex; align-items: center; justify-content: center;">
+                                                                                                    <i class="fas fa-file-invoice" style="color: #2152ff; font-size: 12px;"></i>
+                                                                                                </div>
+                                                                                                <div class="ms-2">
+                                                                                                    <small class="text-muted">Montant dû</small>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <h6 class="fw-bold mb-0">{{ number_format($payment->amount_due, 0, ',', ' ') }} XOF</h6>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    
+                                                                                    <!-- Montant payé -->
+                                                                                    <div class="col-md-4">
+                                                                                        <div class="h-100 p-2" style="background-color: #f8f9fa; border-radius: 8px;">
+                                                                                            <div class="d-flex align-items-center mb-1">
+                                                                                                <div style="width: 28px; height: 28px; background: #e3f6e4; border-radius: 6px; display: flex; align-items: center; justify-content: center;">
+                                                                                                    <i class="fas fa-check" style="color: #5cb85c; font-size: 12px;"></i>
+                                                                                                </div>
+                                                                                                <div class="ms-2">
+                                                                                                    <small class="text-muted">Montant payé</small>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <h6 class="fw-bold mb-0">{{ number_format($payment->amount_paid, 0, ',', ' ') }} XOF</h6>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <!-- Solde restant -->
+                                                                                    <div class="col-md-4">
+                                                                                        <div class="h-100 p-2" style="background-color: #f8f9fa; border-radius: 8px;">
+                                                                                            <div class="d-flex align-items-center mb-1">
+                                                                                                <div style="width: 28px; height: 28px; background: #fee6e3; border-radius: 6px; display: flex; align-items: center; justify-content: center;">
+                                                                                                    <i class="fas fa-exclamation" style="color: #dc3545; font-size: 12px;"></i>
+                                                                                                </div>
+                                                                                                <div class="ms-2">
+                                                                                                    <small class="text-muted">Solde restant</small>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <h6 class="fw-bold mb-0">{{ number_format($payment->remaining_balance, 0, ',', ' ') }} XOF</h6>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <!-- Statut et Dates -->
+                                                                        <div class="row g-2 mt-3">
+                                                                            <!-- Statut -->
+                                                                            <div class="col-md-6">
+                                                                                <div class="p-2 h-100" style="background-color: #f8f9fa; border-radius: 8px;">
+                                                                                    <h6 class="fw-bold mb-2 fs-7">Statut du paiement</h6>
+                                                                                    @if($payment->remaining_balance == 0)
+                                                                                        <div class="d-inline-block px-2 py-1" style="background-color: #dcf5e3; border-radius: 6px;">
+                                                                                            <i class="fas fa-check-circle me-1" style="color: #2dce89; font-size: 12px;"></i>
+                                                                                            <small style="color: #2dce89; font-weight: 600;">Payé en totalité</small>
+                                                                                        </div>
+                                                                                    @elseif($payment->remaining_balance == $payment->amount_due)
+                                                                                        <div class="d-inline-block px-2 py-1" style="background-color: #fdd1d1; border-radius: 6px;">
+                                                                                            <i class="fas fa-times-circle me-1" style="color: #dc3545; font-size: 12px;"></i>
+                                                                                            <small style="color: #dc3545; font-weight: 600;">Aucun paiement</small>
+                                                                                        </div>
+                                                                                    @else
+                                                                                        <div class="d-inline-block px-2 py-1" style="background-color: #fff3cd; border-radius: 6px;">
+                                                                                            <i class="fas fa-clock me-1" style="color: #ffc107; font-size: 12px;"></i>
+                                                                                            <small style="color: #ffc107; font-weight: 600;">Partiellement payé</small>
+                                                                                        </div>
+                                                                                    @endif
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <!-- Dates -->
+                                                                            <div class="col-md-6">
+                                                                                <div class="p-2 h-100" style="background-color: #f8f9fa; border-radius: 8px;">
+                                                                                    <h6 class="fw-bold mb-2 fs-7">Informations temporelles</h6>
+                                                                                    <div>
+                                                                                        <small class="text-muted d-block mb-2">
+                                                                                            <i class="far fa-calendar-alt me-1" style="color: #2152ff;"></i>
+                                                                                            Date de paiement:
+                                                                                            <span class="fw-bold">
+                                                                                                {{ $payment->created_at ? $payment->created_at->format('d/m/Y') : 'Non spécifiée' }}
+                                                                                            </span>
+                                                                                        </small>
+                                                                                        <small class="text-muted d-block">
+                                                                                            <i class="far fa-clock me-1" style="color: #2152ff;"></i>
+                                                                                            Dernière mise à jour:
+                                                                                            <span class="fw-bold">
+                                                                                                {{ $payment->updated_at ? $payment->updated_at->format('d/m/Y') : 'Non spécifiée' }}
+                                                                                            </span>
+                                                                                        </small>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="modal-footer border-0 px-3 pb-3">
+                                                                        <button type="button" class="btn btn-light btn-sm px-3" data-bs-dismiss="modal">
+                                                                            <i class="fas fa-times me-1"></i>Fermer
+                                                                        </button>
+                                                                        <a href="{{ route('payment.edit', $payment->id) }}" class="btn btn-sm text-white px-3" style="background: linear-gradient(45deg, #2152ff, #21d4fd);">
+                                                                            <i class="fas fa-edit me-1"></i>Modifier
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        @endforeach
                                                     </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
                                 </div>
-
                                 <!-- Pagination personnalisée -->
                                 <div class="border-top py-3 px-3 d-flex align-items-center">
                                     <!-- Bouton Previous -->

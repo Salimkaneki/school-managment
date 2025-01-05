@@ -10,7 +10,7 @@ class ClassController extends Controller
 {
     public function index()
     {
-        $classes = ClassModel::withCount('classrooms')->paginate(5);
+        $classes = ClassModel::withCount('classrooms')->paginate(10);
         return view('classes.class-list', compact('classes'));
     }
 

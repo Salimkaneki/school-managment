@@ -31,15 +31,15 @@ class ClassModel extends Model
         return $this->belongsToMany(Course::class, 'class_course');
     }
 
-    // public function classrooms()
-    // {
-    //     return $this->hasMany(Classroom::class);
-    // }
-
     public function classrooms()
     {
-        return $this->belongsToMany(Classroom::class, 'class_classroom');
+        return $this->hasMany(Classroom::class, );
     }
+
+    // public function classrooms()
+    // {
+    //     return $this->belongsToMany(Classroom::class, 'class_classroom');
+    // }
 
     public function academicYear()
     {

@@ -11,7 +11,7 @@ class ClassroomController extends Controller
 
     public function listClassrooms()
     {
-        $classrooms = Classroom::with('classModel')->get(); // Associe les salles aux classes via la relation définie
+        $classrooms = Classroom::withCount('classModel')->get(); // Associe les salles aux classes via la relation définie
 
         return view('classes.classrooms.index', compact('classrooms'));
     }

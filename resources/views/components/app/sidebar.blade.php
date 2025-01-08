@@ -217,7 +217,7 @@
             aria-hidden="true" id="iconSidenav"></i>
         <a class="navbar-brand d-flex align-items-center m-0"
             href="#" target="_blank">
-            <span class="font-weight-bold text-lg">School Dashboard</span>
+            <span class="font-weight-bold text-lg">Gest-School</span>
         </a>
     </div>
     <div class="collapse navbar-collapse px-4 w-auto" id="sidenav-collapse-main">

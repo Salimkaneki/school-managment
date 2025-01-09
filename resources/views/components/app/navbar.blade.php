@@ -17,7 +17,7 @@
                                 d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                         </svg>
                     </span>
-                    <input type="text" class="form-control ps-0" placeholder="Search">
+                    <input type="text" class="form-control ps-0" placeholder="Rechercher">
                 </div>
             </div>
             <div class="mb-0 font-weight-bold breadcrumb-text text-white">
@@ -26,7 +26,7 @@
 
                     <a href="login" onclick="event.preventDefault();
                 this.closest('form').submit();">
-                        <button class="btn btn-sm  btn-white  mb-0 me-1" type="submit">Log out</button>
+                        <button class="btn btn-sm  btn-white  mb-0 me-1" type="submit">Déconnexion</button>
                     </a>
                 </form>
             </div>
@@ -40,7 +40,9 @@
                         </div>
                     </a>
                 </li>
-                <li class="nav-item px-3 d-flex align-items-center">
+
+                <!-- Icône paramètre  navbar -->
+                <!-- <li class="nav-item px-3 d-flex align-items-center">
                     <a href="javascript:;" class="nav-link text-body p-0">
                         <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg"
                             class="fixed-plugin-button-nav cursor-pointer" viewBox="0 0 24 24" fill="currentColor">
@@ -49,7 +51,7 @@
                                 clip-rule="evenodd" />
                         </svg>
                     </a>
-                </li>
+                </li> -->
 
                 <!-- Notifications -->
                 <!-- <li class="nav-item dropdown pe-2 d-flex align-items-center">
@@ -155,11 +157,10 @@
                 
                 <li class="nav-item ps-2 d-flex align-items-center">
                     <a href="javascript:;" class="nav-link text-body p-0">
-                        <img src="../assets/img/team-2.jpg" class="avatar avatar-sm" alt="avatar" />
+                        <img src="../assets/img/avatar-2.jpg" class="avatar avatar-sm" alt="avatar" />
                     </a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
-<!-- End Navbar -->

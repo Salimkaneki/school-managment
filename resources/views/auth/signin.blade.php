@@ -15,7 +15,7 @@
                             <div class="card card-plain mt-8">
                                 <div class="card-header pb-0 text-left bg-transparent text-center">
                                     <h3 class="font-weight-black text-dark display-6">Connexion</h3>
-                                    <p class="mb-0">Bienvenue sur Gestecole</p>
+                                    <p class="mb-0">Bienvenue sur Gest-School</p>
                                     <p class="mb-0">Pour accéder à votre espace, veuillez vous connecter<br></p>
                                     <!-- <p class="mb-0">Identifiants de démonstration :</p>
                                     <p class="mb-0">Email : <b>admin@corporateui.com</b></p>
@@ -55,7 +55,7 @@
                                                 <input class="form-check-input" type="checkbox" value=""
                                                     id="flexCheckDefault">
                                                 <label class="font-weight-normal text-dark mb-0" for="flexCheckDefault">
-                                                    Rester connecté(e)
+                                                    Restez connecté(e)
                                                 </label>
                                             </div>
                                             <a href="{{ route('password.request') }}"

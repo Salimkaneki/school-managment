@@ -53,7 +53,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="icon" type="image/png" href="../assets/img/favicon.png">
     <title>
-        Gest-Ecole
+        Gest-School
     </title>
     <!--     Fonts and icons     -->
     <link
@@ -95,7 +95,8 @@
 
     {{ $slot }}
 
-    <div class="fixed-plugin">
+    <!-- Fixed plugin -->
+    <!-- <div class="fixed-plugin">
         <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
             <i class="fa fa-cog py-2"></i>
         </a>
@@ -110,11 +111,9 @@
                         <i class="fa fa-close"></i>
                     </button>
                 </div>
-                <!-- End Toggle Button -->
             </div>
             <hr class="horizontal dark my-1">
             <div class="card-body pt-sm-3 pt-0">
-                <!-- Sidebar Backgrounds -->
                 <div>
                     <h6 class="mb-0">Sidebar Colors</h6>
                 </div>
@@ -132,7 +131,6 @@
                             onclick="sidebarColor(this)"></span>
                     </div>
                 </a>
-                <!-- Sidenav Type -->
                 <div class="mt-3">
                     <h6 class="mb-0">Sidenav Type</h6>
                     <p class="text-sm">Choose between 2 different sidenav types.</p>
@@ -144,7 +142,6 @@
                         onclick="sidebarType(this)">White</button>
                 </div>
                 <p class="text-sm d-xl-none d-block mt-2">You can change the sidenav type just on desktop view.</p>
-                <!-- Navbar Fixed -->
                 <div class="mt-3">
                     <h6 class="mb-0">Navbar Fixed</h6>
                 </div>
@@ -174,7 +171,8 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
+
     <!--   Core JS Files   -->
     <script src="../assets/js/core/popper.min.js"></script>
     <script src="../assets/js/core/bootstrap.min.js"></script>

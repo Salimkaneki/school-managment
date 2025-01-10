@@ -27,6 +27,7 @@
                                         </span>
                                         <span class="btn-inner--text">Retour</span>
                                     </a>
+                                    <!-- Bouton déroulant pour action -->
                                     <div class="dropdown">
                                         <button class="btn btn-sm btn-dark btn-icon d-flex align-items-center me-2 dropdown-toggle" type="button" id="actionMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <span class="btn-inner--icon">
@@ -39,7 +40,7 @@
                                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="actionMenu">
                                             <a href="{{ route('create-class') }}" class="dropdown-item">Ajouter une Classe</a>
                                             <a href="{{ route('list-classrooms') }}" class="dropdown-item">Voir les Salles de Classe</a>
-                                            <a href="#" class="dropdown-item">Gérer les Emplois du Temps</a>
+                                            <a href="{{ route('timetables.index') }}" class="dropdown-item">Gérer les Emplois du Temps</a>
                                         </div>
                                     </div>
                                 </div>

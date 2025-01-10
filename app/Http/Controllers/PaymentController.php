@@ -265,4 +265,28 @@ class PaymentController extends Controller
                 ->withErrors(['error' => $e->getMessage()]);
         }
     }
+
+    public function destroy($id)
+    {
+        try {
+            DB::beginTransaction();
+
+            // Trouver le paiement à supprimer
+            $payment = Payment::findOrFail($id);
+
+            // Supprimer le paiement
+            $payment->delete();
+
+            DB::commit();
+
+            return redirect()
+                ->route('payment-list')
+                ->with('success', 'Paiement supprimé avec succès.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Erreur lors de la suppression du paiement: ' . $e->getMessage());
+            return back()
+                ->withErrors(['error' => 'Une erreur est survenue lors de la suppression du paiement.']);
+        }
+    }
 }

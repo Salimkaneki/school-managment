@@ -162,6 +162,9 @@ Route::middleware(['auth'])->group(function () {
             
             // Route pour mettre à jour un paiement
             Route::put('/{id}', [PaymentController::class, 'update'])->name('payment.update');
+
+            Route::delete('/{id}', [PaymentController::class, 'destroy'])->name('payment.destroy');
+
         });
         
 

@@ -40,13 +40,11 @@
                                         <div class="mb-3">
                                             <input type="email" id="email" name="email" class="form-control"
                                                 placeholder="Entrez votre adresse email"
-                                                value="{{ old('email') ? old('email') : 'admin@corporateui.com' }}"
                                                 aria-label="Email" aria-describedby="email-addon">
                                         </div>
                                         <label>Mot de passe</label>
                                         <div class="mb-3">
                                             <input type="password" id="password" name="password"
-                                                value="{{ old('password') ? old('password') : 'secret' }}"
                                                 class="form-control" placeholder="Entrez votre mot de passe"
                                                 aria-label="Password" aria-describedby="password-addon">
                                         </div>

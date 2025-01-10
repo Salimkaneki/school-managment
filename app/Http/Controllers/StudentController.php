@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ClassModel;
+use App\Models\Classroom;
 use App\Models\Student;
 use App\Models\AcademicYear;
 use Illuminate\Support\Facades\Storage;
@@ -38,6 +39,7 @@ class StudentController extends Controller
             'address' => 'required|string|max:255',
             'place_of_birth' => 'required|string|max:255',
             'class_id' => 'required|exists:class_models,id',
+            'classroom_id' => 'required|exists:classrooms,id',
             'academic_year_id' => 'required|exists:academic_years,id',
             'previous_school_name' => 'nullable|string|max:255',
             'emergency_contacts.*.name' => 'nullable|string|max:255',
@@ -47,11 +49,23 @@ class StudentController extends Controller
             'nationality' => 'required|string|max:100',
         ]);
 
+            // Vérifier la capacité de la salle
+            $classroom = Classroom::find($request->classroom_id);
+            $currentStudentsCount = Student::where('classroom_id', $request->classroom_id)->count();
+
+            if ($currentStudentsCount >= $classroom->capacity) {
+                return back()->withErrors(['classroom_id' => 'Cette salle de classe est déjà pleine.'])->withInput();
+            }
+
+            Student::create($validatedData);
+            return redirect()->route('student-list')->with('success', 'Élève ajouté avec succès.');
+
         // Traitement de la photo d'élève s'il y a une photo téléchargée
         if ($request->hasFile('photo')) {
             $photoPath = $request->file('photo')->store('students_photos', 'public'); // Stocker la photo
             $validatedData['photo'] = $photoPath;
         }
+
 
         // Traitement des contacts d'urgence
         $validatedData['emergency_contacts'] = json_encode($request->emergency_contacts); // Sérialise les contacts
@@ -145,5 +159,19 @@ class StudentController extends Controller
         $student->delete();
 
         return redirect()->route('student-list')->with('success', 'Élève supprimé avec succès.');
+    }
+
+    public function getClassrooms($classId)
+    {
+        $classrooms = Classroom::where('class_model_id', $classId)
+            ->select('id', 'name', 'capacity')
+            ->withCount(['students as current_students'])
+            ->get()
+            ->map(function ($classroom) {
+                $classroom->available_seats = $classroom->capacity - $classroom->current_students;
+                return $classroom;
+            });
+    
+        return response()->json($classrooms);
     }
 }

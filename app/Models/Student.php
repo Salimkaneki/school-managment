@@ -23,13 +23,19 @@ class Student extends Model
         'photo',
         'gender',
         'address',
-        'place_of_birth'
+        'place_of_birth',
+        'classroom_id'
     ];
 
 
     public function classModel()
     {
         return $this->belongsTo(ClassModel::class, 'class_id');
+    }
+    
+    public function classroom()
+    {
+        return $this->belongsTo(Classroom::class);
     }
 
     public function class()

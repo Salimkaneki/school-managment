@@ -60,19 +60,24 @@
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
                                             </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="class_id" class="form-label">Classe *</label>
-                                                <select class="form-control" id="class_id" name="class_id" required>
-                                                    <option value="" disabled selected>Sélectionnez une classe</option>
-                                                    @foreach ($classes as $class)
-                                                        <option value="{{ $class->id }}" {{ old('class_id') == $class->id ? 'selected' : '' }}>
-                                                            {{ $class->name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                                @error('class_id')
-                                                    <div class="text-danger">{{ $message }}</div>
-                                                @enderror
+
+
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="class_id" class="form-label">Classe *</label>
+                                                    <select class="form-control" id="class_id" name="class_id" required>
+                                                        <option value="" disabled selected>Sélectionnez une classe</option>
+                                                        @foreach ($classes as $class)
+                                                            <option value="{{ $class->id }}">{{ $class->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="classroom_id" class="form-label">Salle de classe *</label>
+                                                    <select class="form-control" id="classroom_id" name="classroom_id" required disabled>
+                                                        <option value="" disabled selected>Sélectionnez d'abord une classe</option>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -268,6 +273,45 @@
                 }
                 reader.readAsDataURL(file);
             }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const classSelect = document.getElementById('class_id');
+            const classroomSelect = document.getElementById('classroom_id');
+
+            classSelect.addEventListener('change', function() {
+                const classId = this.value;
+                classroomSelect.disabled = true;
+                classroomSelect.innerHTML = '<option value="">Chargement des salles...</option>';
+
+                if (classId) {
+                    fetch(`/api/classes/${classId}/classrooms`)
+                        .then(response => response.json())
+                        .then(data => {
+                            classroomSelect.innerHTML = '<option value="">Sélectionnez une salle</option>';
+                            
+                            data.forEach(classroom => {
+                                // Ne pas afficher les salles pleines
+                                if (classroom.available_seats > 0) {
+                                    const option = document.createElement('option');
+                                    option.value = classroom.id;
+                                    option.textContent = `${classroom.name} (Places disponibles: ${classroom.available_seats}/${classroom.capacity})`;
+                                    classroomSelect.appendChild(option);
+                                }
+                            });
+                            
+                            classroomSelect.disabled = false;
+                        })
+                        .catch(error => {
+                            console.error('Erreur:', error);
+                            classroomSelect.innerHTML = '<option value="">Erreur de chargement des salles</option>';
+                            classroomSelect.disabled = true;
+                        });
+                } else {
+                    classroomSelect.innerHTML = '<option value="">Sélectionnez d\'abord une classe</option>';
+                    classroomSelect.disabled = true;
+                }
+            });
         });
     </script>
 </x-app-layout>

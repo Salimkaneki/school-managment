@@ -140,7 +140,12 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/update/{id}', [StudentController::class, 'update'])->name('student.update');
         });
 
+        Route::get('/api/classes/{classId}/classrooms', [StudentController::class, 'getClassrooms']);
+
+
         Route::get('/students-edit/{id}', [StudentController::class, 'edit'])->name('edit-students');
+
+
         Route::put('/teachers/{id}', [TeacherController::class, 'update'])->name('teachers.update');
 
 

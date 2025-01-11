@@ -23,7 +23,7 @@ class StudentController extends Controller
     // Méthode pour afficher la liste des élèves
     public function index()
     {
-        $students = Student::with('classModel', 'academicYear')->orderBy('last_name', 'asc')->paginate(10);
+        $students = Student::with('classModel', 'academicYear', 'classroom')->orderBy('last_name', 'asc')->paginate(10);
         return view('students.index', compact('students')); // Retourne la vue de la liste des élèves
     }
 

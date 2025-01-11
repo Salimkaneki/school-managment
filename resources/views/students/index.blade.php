@@ -241,6 +241,10 @@
                                                                                                     <small style="color: #000;">Classe</small>
                                                                                                     <div style="color: #000; font-weight: 500;">{{ $student->classModel->name ?? 'Non assigné' }}</div>
                                                                                                 </div>
+                                                                                                <div class="col-sm-4">
+                                                                                                    <small style="color: #000;">Salle de classe</small>
+                                                                                                    <div style="color: #000; font-weight: 500;">{{ $student->classroom->name ?? 'Non assigné' }}</div>
+                                                                                                </div>
                                                                                                 <div class="col-sm-6">
                                                                                                     <small style="color: #000;">Année Académique</small>
                                                                                                     <div style="color: #000; font-weight: 500;">{{ $student->academicYear->name ?? 'Non assigné' }}</div>

@@ -48,32 +48,31 @@ class StudentController extends Controller
             'gender' => 'required|in:male,female,other',
             'nationality' => 'required|string|max:100',
         ]);
-
-            // Vérifier la capacité de la salle
-            $classroom = Classroom::find($request->classroom_id);
-            $currentStudentsCount = Student::where('classroom_id', $request->classroom_id)->count();
-
-            if ($currentStudentsCount >= $classroom->capacity) {
-                return back()->withErrors(['classroom_id' => 'Cette salle de classe est déjà pleine.'])->withInput();
-            }
-
-            Student::create($validatedData);
-            return redirect()->route('student-list')->with('success', 'Élève ajouté avec succès.');
-
-        // Traitement de la photo d'élève s'il y a une photo téléchargée
+    
+        // Vérifier la capacité de la salle
+        $classroom = Classroom::find($request->classroom_id);
+        $currentStudentsCount = Student::where('classroom_id', $request->classroom_id)->count();
+    
+        if ($currentStudentsCount >= $classroom->capacity) {
+            return back()->withErrors(['classroom_id' => 'Cette salle de classe est déjà pleine.'])->withInput();
+        }
+    
+        // Traitement de la photo
         if ($request->hasFile('photo')) {
-            $photoPath = $request->file('photo')->store('students_photos', 'public'); // Stocker la photo
+            $photoPath = $request->file('photo')->store('students_photos', 'public');
             $validatedData['photo'] = $photoPath;
         }
-
-
+    
         // Traitement des contacts d'urgence
-        $validatedData['emergency_contacts'] = json_encode($request->emergency_contacts); // Sérialise les contacts
-
-        // Enregistrement de l'élève dans la base de données
+        if ($request->has('emergency_contacts')) {
+            $validatedData['emergency_contacts'] = json_encode($request->emergency_contacts);
+        } else {
+            $validatedData['emergency_contacts'] = json_encode([]);
+        }
+    
+        // Création de l'étudiant avec toutes les données validées
         Student::create($validatedData);
-
-        // Redirection après succès avec un message
+    
         return redirect()->route('student-list')->with('success', 'Élève ajouté avec succès.');
     }
 

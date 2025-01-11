@@ -316,8 +316,8 @@ Route::middleware(['auth'])->group(function () {
             return view('account-pages.signup');
         })->name('signup');
 
-        Route::get('/sign-up', [RegisterController::class, 'create'])->name('sign-up');
-        Route::post('/sign-up', [RegisterController::class, 'store']);
+        // Route::get('/sign-up', [RegisterController::class, 'create'])->name('sign-up');
+        // Route::post('/sign-up', [RegisterController::class, 'store']);
 
         Route::get('/sign-in', [LoginController::class, 'create'])->name('sign-in');
         Route::post('/sign-in', [LoginController::class, 'store']);

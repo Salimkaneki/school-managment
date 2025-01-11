@@ -50,8 +50,7 @@
                                                     Restez connecté(e)
                                                 </label>
                                             </div>
-                                            <a href="{{ route('password.request') }}"
-                                                class="text-xs font-weight-bold ms-auto">Mot de passe oublié ?</a>
+
                                         </div>
                                         
                                         <div class="text-center">
@@ -60,12 +59,12 @@
                                     </form>
                                 </div>
 
-                                <div class="card-footer text-center pt-0 px-lg-2 px-1">
+                                <!-- <div class="card-footer text-center pt-0 px-lg-2 px-1">
                                     <p class="mb-4 text-xs mx-auto">
                                         Nouvel utilisateur ?
-                                        <a href="{{ route('sign-up') }}" class="text-dark font-weight-bold">Créer un compte</a>
+                                        <a href="#" class="text-dark font-weight-bold">Créer un compte</a>
                                     </p>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
 

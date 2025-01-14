@@ -26,11 +26,11 @@ class SchoolEventController extends Controller
         $event = SchoolEvent::create($validatedData);
 
         // Créer une notification-+
-        SchoolEvent::create([
-            'title' => 'Nouvel Événement',
-            'description' => 'Un nouvel événement a été créé: ' . $event->title,
-            'event_date' => Carbon::now(),
-        ]);
+        // SchoolEvent::create([
+        //     'title' => 'Nouvel Événement',
+        //     'description' => 'Un nouvel événement a été créé: ' . $event->title,
+        //     'event_date' => Carbon::now(),
+        // ]);
 
         return redirect()->route('event-list')->with('success', 'Événement créé avec succès.');
     }

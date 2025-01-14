@@ -36,10 +36,15 @@
                                         </div>
                                         
                                         <label>Mot de passe</label>
-                                        <div class="mb-3">
+                                        <div class="mb-3 position-relative">
                                             <input type="password" id="password" name="password"
                                                 class="form-control" placeholder="Entrez votre mot de passe"
                                                 aria-label="Password" aria-describedby="password-addon">
+                                            <button type="button" 
+                                                class="btn position-absolute top-50 end-0 translate-middle-y border-0 bg-transparent"
+                                                onclick="togglePassword()">
+                                                <i class="fa fa-eye" id="toggleIcon"></i>
+                                            </button>
                                         </div>
                                         
                                         <div class="d-flex align-items-center">
@@ -50,7 +55,6 @@
                                                     Restez connecté(e)
                                                 </label>
                                             </div>
-
                                         </div>
                                         
                                         <div class="text-center">
@@ -84,5 +88,23 @@
             </div>
         </section>
     </main>
-</x-guest-layout>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <script>
+    function togglePassword() {
+        const passwordInput = document.getElementById('password');
+        const toggleIcon = document.getElementById('toggleIcon');
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleIcon.classList.remove('fa-eye');
+            toggleIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            toggleIcon.classList.remove('fa-eye-slash');
+            toggleIcon.classList.add('fa-eye');
+        }
+    }
+    </script>
+</x-guest-layout>

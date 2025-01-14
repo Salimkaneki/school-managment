@@ -281,9 +281,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/events', [SchoolEventController::class, 'index'])->name('event-list');
         Route::get('/events/create', [SchoolEventController::class, 'create'])->name('events.create');
         Route::post('/events', [SchoolEventController::class, 'store'])->name('events.store');
-        Route::get('/events/{event}', [SchoolEventController::class, 'show'])->name('events.show');
         Route::delete('/delete-event/{id}', [SchoolEventController::class, 'destroy'])->name('delete-event');
     });
+    
+    Route::get('/events/{event}', [SchoolEventController::class, 'show'])->name('events.show');
 
     // Route::prefix('attendance')->group(function () {
 

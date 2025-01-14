@@ -42,6 +42,12 @@ class SchoolEventController extends Controller
         return view('events.index', compact('events'));
     }
 
+    public function show($id)
+    {
+        $event = SchoolEvent::findOrFail($id);
+        return view('events.show', compact('event'));
+    }
+
     public function destroy($id)
     {
         $event = SchoolEvent::findOrFail($id);

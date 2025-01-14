@@ -1,7 +1,4 @@
 <div>
-    <!-- You must be the change you wish to see in the world. - Mahatma Gandhi -->
-
-    {{-- resources/views/components/school-notification-bell.blade.php --}}
 <li class="nav-item dropdown pe-2 d-flex align-items-center">
     <a href="javascript:;" class="nav-link text-body p-0" id="notificationDropdown"
         data-bs-toggle="dropdown" aria-expanded="false">

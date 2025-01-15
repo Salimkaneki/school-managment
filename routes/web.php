@@ -286,23 +286,6 @@ Route::middleware(['auth'])->group(function () {
     
     Route::get('/events/{event}', [SchoolEventController::class, 'show'])->name('events.show');
 
-    // Route::prefix('attendance')->group(function () {
-
-    //     // Route to show the form for creating a new event
-    //     Route::get('/create', function () {
-    //         return view('attendances.create');
-    //     })->name('create-attendance');
-
-    //     // Route to handle form submission and store the event
-    //     // Route::post('/store', [SchoolEventController::class, 'store'])->name('store-event');
-
-    //     // // Route to show the list of events
-    //     // Route::get('/list', [SchoolEventController::class, 'index'])->name('event-list');
-
-    // });
-
-
-
 
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
 

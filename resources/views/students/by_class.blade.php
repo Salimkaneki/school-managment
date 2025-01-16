@@ -32,15 +32,6 @@
                     <option value="{{ $class->id }}">{{ $class->name }}</option>
                   @endforeach
                 </select>
-                <button id="download-btn" class="btn btn-primary mt-2" style="display:none;">
-                  <span class="btn-inner--icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
-                      <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-                      <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
-                    </svg>
-                  </span>
-                  <span class="btn-inner--text">Télécharger PDF</span>
-                </button>
               </div>
               <div id="students-table" class="table-responsive p-4">
                 <!-- Les élèves seront affichés ici -->
@@ -59,7 +50,6 @@ document.getElementById('class-select').addEventListener('change', function() {
 
   if (!classId) {
     document.getElementById('students-table').innerHTML = '';
-    document.getElementById('download-btn').style.display = 'none';
     return;
   }
 
@@ -95,8 +85,8 @@ document.getElementById('class-select').addEventListener('change', function() {
     if (data.length > 0) {
       data.forEach(student => {
         let photoUrl = student.photo 
-          ? `{{ asset('storage') }}/${student.photo}` // Génère l'URL de l'image
-          : '/path/to/default/photo.jpg'; // Image par défaut si pas de photo
+          ? `{{ asset('storage') }}/${student.photo}`
+          : '/path/to/default/photo.jpg';
         tableContent += `<tr>
                           <td>
                             <img src="${photoUrl}" alt="Photo de ${student.first_name}" class="avatar avatar-sm rounded-circle me-2">
@@ -140,10 +130,8 @@ document.getElementById('class-select').addEventListener('change', function() {
                           </td>
                         </tr>`;
       });
-      document.getElementById('download-btn').style.display = 'inline-block';
     } else {
       tableContent += `<tr><td colspan="6" class="text-center text-secondary">Aucun élève trouvé pour cette classe.</td></tr>`;
-      document.getElementById('download-btn').style.display = 'none';
     }
 
     tableContent += `</tbody></table>`;
@@ -152,11 +140,5 @@ document.getElementById('class-select').addEventListener('change', function() {
   .catch(error => {
     console.error('Erreur lors de la récupération des données des élèves:', error);
   });
-});
-
-// Ajouter le lien de téléchargement PDF
-document.getElementById('download-btn').addEventListener('click', () => {
-  let classId = document.getElementById('class-select').value;
-  window.location.href = `#`.replace(':class_id', classId);
 });
 </script>

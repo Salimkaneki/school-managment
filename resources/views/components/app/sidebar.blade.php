@@ -328,7 +328,7 @@
                     <div class="icon icon-shape icon-sm px-0 text-center d-flex align-items-center justify-content-center">
                         <i class="fas fa-list text-white"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Liste des programmes</span>
+                    <span class="nav-link-text ms-1">Emplois du temps</span>
                 </a>
             </li>
 

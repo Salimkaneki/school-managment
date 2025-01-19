@@ -14,6 +14,13 @@ class Attendance extends Model
         'class_id',
         'date',
         'present',
+        'absence_times'
+    ];
+
+    protected $casts = [
+        'absence_times' => 'array',
+        'present' => 'boolean',
+        'date' => 'date'
     ];
 
     // Optionnel : définir les relations

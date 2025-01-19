@@ -33,6 +33,7 @@
                                         <a href="{{ route('create-student') }}" class="dropdown-item">Ajouter un Élève</a>
                                         <a href="{{ route('show-students-by-class') }}" class="dropdown-item">Élèves par Classe</a>
                                         <a href="{{ route('attendances.create') }}" class="dropdown-item">Enregistrer une Absence</a>
+                                        <a href="{{ route('attendances.index') }}" class="dropdown-item">Liste des Absences</a>
                                       </div>
                                     </div>
                                 </div>

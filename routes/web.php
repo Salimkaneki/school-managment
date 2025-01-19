@@ -259,6 +259,10 @@ Route::middleware(['auth'])->group(function () {
             
             // Enregistrer les présences
             Route::post('/', [AttendanceController::class, 'store'])->name('attendances.store');
+
+            Route::get('/{attendance}/data', [AttendanceController::class, 'getAbsenceData'])->name('attendances.data');
+            Route::put('/{attendance}', [AttendanceController::class, 'update'])->name('attendances.update');
+            Route::delete('/{attendance}', [AttendanceController::class, 'destroy'])->name('attendances.destroy');
         });
         
         

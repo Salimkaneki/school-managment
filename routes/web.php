@@ -265,9 +265,7 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/{attendance}', [AttendanceController::class, 'destroy'])->name('attendances.destroy');
         });
         
-        
-        
-        
+               
     // Define the route prefix for events
     Route::prefix('event')->group(function () {
 
@@ -322,19 +320,19 @@ Route::middleware(['auth'])->group(function () {
         return view('account-pages.signin');
     })->name('signin');
 
-    Route::get('/prof', function () {
-        return view('tlistdraft');
-    });
-    Route::get('/class', function () {
-        return view('cdraft');
-    });
+    // Route::get('/prof', function () {
+    //     return view('tlistdraft');
+    // });
+    // Route::get('/class', function () {
+    //     return view('cdraft');
+    // });
 
-    Route::get('/student', function () {
-        return view('sdraft');
-    });
-    Route::get('/teacher', function () {
-        return view('tlistdraft');
-    });
+    // Route::get('/student', function () {
+    //     return view('sdraft');
+    // });
+    // Route::get('/teacher', function () {
+    //     return view('tlistdraft');
+    // });
 
 
 

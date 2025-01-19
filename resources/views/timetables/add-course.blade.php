@@ -13,7 +13,7 @@
                             <form action="{{ route('timetables.addCourse', $timetable->id) }}" method="POST">
                                 @csrf
 
-                                <!-- Sélection de la Salle et du Jour sur la même ligne -->
+                                <!-- Première ligne: Salle et Jour -->
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="classroom_id" class="form-label">Salle</label>
@@ -38,7 +38,7 @@
                                     </div>
                                 </div>
 
-                                <!-- Sélection du Cours et du Professeur -->
+                                <!-- Deuxième ligne: Cours et Professeur -->
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="course" class="form-label">Cours</label>
@@ -60,19 +60,23 @@
                                     </div>
                                 </div>
 
-                                <!-- Sélection des Heures de Début et de Fin -->
+                                <!-- Troisième ligne: Créneau horaire -->
                                 <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="start_time" class="form-label">Heure de Début</label>
-                                        <input type="time" id="start_time" name="start_time" onchange="updateEndTime()" required>
+                                    <div class="col-md-12">
+                                        <label for="time_slot_id" class="form-label">Créneau Horaire</label>
+                                        <select class="form-select" id="time_slot_id" name="time_slot_id" required>
+                                            <option value="" selected disabled>Choisissez un créneau horaire</option>
+                                            @foreach($timeSlots as $timeSlot)
+                                                <option value="{{ $timeSlot->id }}">
+                                                    {{ \Carbon\Carbon::parse($timeSlot->start_time)->format('H:i') }} - 
+                                                    {{ \Carbon\Carbon::parse($timeSlot->end_time)->format('H:i') }}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="end_time" class="form-label">Heure de Fin</label>
-                                        <input type="time" id="end_time" name="end_time" required>
-                                        </div>
                                 </div>
 
-                                <!-- Gestion des erreurs (affichage des messages d'erreur si conflit de créneau) -->
+                                <!-- Messages d'erreur -->
                                 @if ($errors->any())
                                     <div class="alert alert-danger">
                                         <ul>
@@ -84,9 +88,14 @@
                                 @endif
 
                                 <!-- Bouton de soumission -->
-                                <div class="row mb-3">
+                                <div class="row">
                                     <div class="col-md-12">
-                                        <button type="submit" class="btn btn-primary">Ajouter le Cours</button>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-plus me-1"></i> Ajouter le Cours
+                                        </button>
+                                        <a href="#" class="btn btn-secondary">
+                                            <i class="fas fa-times me-1"></i> Annuler
+                                        </a>
                                     </div>
                                 </div>
                             </form>
@@ -95,13 +104,6 @@
                 </div>
             </div>
         </div>
+        <x-app.footer />
     </main>
 </x-app-layout>
-
-
-<script>
-function updateEndTime() {
-    var startTime = document.getElementById("start_time").value;
-    document.getElementById("end_time").min = startTime;
-}
-</script>

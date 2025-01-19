@@ -71,8 +71,11 @@ class TimetableController extends Controller
         $courses = Course::all();
         $teachers = Teacher::all();
         $classrooms = Classroom::all();
-
-        return view('timetables.add-course', compact('timetable', 'courses', 'teachers', 'classrooms'));
+        $timeSlots = TimeSlot::where('is_active', true)
+                            ->orderBy('start_time')
+                            ->get();
+    
+        return view('timetables.add-course', compact('timetable', 'courses', 'teachers', 'classrooms', 'timeSlots'));
     }
 
 
@@ -82,19 +85,21 @@ class TimetableController extends Controller
         $request->validate([
             'course_id' => 'required|exists:courses,id',
             'teacher_id' => 'required|exists:teachers,id',
-            'start_time' => 'required|date_format:H:i',
-            'end_time' => 'required|date_format:H:i',
+            'time_slot_id' => 'required|exists:time_slots,id', // Nouvelle validation
             'day' => 'required|in:Lundi,Mardi,Mercredi,Jeudi,Vendredi',
             'classroom_id' => 'required|exists:classrooms,id',
         ]);
+    
+        // Récupérer le créneau horaire sélectionné
+        $timeSlot = TimeSlot::findOrFail($request->time_slot_id);
     
         // Vérifier si un cours existe déjà dans le même créneau horaire
         $existingCourse = DB::table('timetable_courses')
             ->where('classroom_id', $request->classroom_id)
             ->where('day', $request->day)
-            ->where(function ($query) use ($request) {
-                $query->whereBetween('start_time', [$request->start_time, $request->end_time])
-                    ->orWhereBetween('end_time', [$request->start_time, $request->end_time]);
+            ->where(function ($query) use ($timeSlot) {
+                $query->whereBetween('start_time', [$timeSlot->start_time, $timeSlot->end_time])
+                    ->orWhereBetween('end_time', [$timeSlot->start_time, $timeSlot->end_time]);
             })
             ->first();
     
@@ -102,14 +107,14 @@ class TimetableController extends Controller
             return redirect()->back()->withErrors(['error' => 'Un cours existe déjà dans ce créneau horaire pour cette salle de classe.']);
         }
     
-        // Ajouter le cours spécifiquement à cet emploi du temps
+        // Ajouter le cours avec les horaires du créneau sélectionné
         $timetable = Timetable::find($timetable_id);
         $timetable->courses()->attach($request->course_id, [
             'teacher_id' => $request->teacher_id,
-            'start_time' => $request->start_time,
-            'end_time' => $request->end_time,
+            'start_time' => $timeSlot->start_time,
+            'end_time' => $timeSlot->end_time,
             'day' => $request->day,
-            'classroom_id' => $request->classroom_id,  // Associer la salle de classe correcte
+            'classroom_id' => $request->classroom_id,
         ]);
     
         return redirect()->route('timetables.index')->with('success', 'Cours ajouté avec succès.');

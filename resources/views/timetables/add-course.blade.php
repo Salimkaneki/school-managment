@@ -93,7 +93,7 @@
                                         <button type="submit" class="btn btn-primary">
                                             <i class="fas fa-plus me-1"></i> Ajouter le Cours
                                         </button>
-                                        <a href="#" class="btn btn-secondary">
+                                        <a href="{{ route('timetables.index') }}" class="btn btn-secondary">
                                             <i class="fas fa-times me-1"></i> Annuler
                                         </a>
                                     </div>

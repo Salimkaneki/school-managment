@@ -12,4 +12,12 @@ class UserController extends Controller
         $users = User::all();
         return view('laravel-examples.users-management', compact('users'));
     }
+
+    public function gest_users(){
+        return view('gest-users');
+    }
+
+    public function gest_profile(){
+        return view('gest-profile');
+    }
 }

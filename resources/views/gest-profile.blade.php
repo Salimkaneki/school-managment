@@ -1,74 +1,66 @@
 <x-app-layout>
-    <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
-
-        <x-app.navbar />
-        
-        <div class="px-5 py-4 container-fluid">
-            <div class="mt-5 mb-5 mt-lg-9 row justify-content-center">
-                <div class="col-lg-9 col-12">
-                    <div class="card card-body" id="profile">
-                        <img src="../assets/img/header-orange-purple.jpg" alt="pattern-lines"
-                            class="top-0 rounded-2 position-absolute start-0 w-100 h-100">
-                        <div class="row z-index-2 justify-content-center align-items-center">
-                            <div class="col-sm-auto col-4">
-                                <div class="avatar avatar-xl position-relative">
-                                    <img src="../assets/img/team-2.jpg" alt="profile"
-                                        class="w-100 h-100 object-fit-cover border-radius-lg shadow-sm">
-                                </div>
-                            </div>
-                            <div class="col-sm-auto col-8 my-auto">
-                                <div class="h-100">
-                                    <h5 class="mb-1 font-weight-bolder">John Doe</h5>
-                                    <p class="mb-0 font-weight-bold text-sm">Développeur Web</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mb-5 row justify-content-center">
-                <div class="col-lg-9 col-12">
-                    <div class="card" id="basic-info">
-                        <div class="card-header">
-                            <h5>Informations de base</h5>
-                        </div>
-                        <div class="pt-0 card-body">
-                            <form action="#" method="POST">
-                                @csrf
-                                <div class="row">
-                                    <div class="col-6">
-                                        <label for="name">Nom</label>
-                                        <input type="text" name="name" id="name" class="form-control">
-                                    </div>
-                                    <div class="col-6">
-                                        <label for="email">Email</label>
-                                        <input type="email" name="email" id="email" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-6">
-                                        <label for="location">Localisation</label>
-                                        <input type="text" name="location" id="location" class="form-control">
-                                    </div>
-                                    <div class="col-6">
-                                        <label for="phone">Téléphone</label>
-                                        <input type="text" name="phone" id="phone" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-12">
-                                        <label for="about">À propos</label>
-                                        <textarea name="about" id="about" rows="4" class="form-control"></textarea>
-                                    </div>
-                                </div>
-                                <button type="submit" class="mt-4 btn btn-primary btn-sm float-end">Enregistrer</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <x-app.footer />
-    </main>
+   <main class="main-content position-relative h-100 border-radius-lg overflow-hidden">
+       <x-app.navbar />
+       
+       <div class="container-fluid py-4">
+           <div class="row">
+               <div class="col-12">
+                   <div class="card w-100">
+                       <div class="card-header pb-0">
+                           <div class="d-flex align-items-center">
+                               <h6 class="mb-0">Mon Profil</h6>
+                               <div class="ms-auto">
+                                   <button class="btn btn-primary btn-sm">Éditer</button>
+                               </div>
+                           </div>
+                       </div>
+                       <div class="card-body">
+                           <div class="row">
+                               <div class="col-md-3 text-center">
+                                   <img src="avatar.jpg" class="rounded-circle avatar w-100 max-width-200 mb-3" alt="Photo de profil">
+                               </div>
+                               <div class="col-md-9">
+                                   <div class="row">
+                                       <div class="col-12">
+                                           <h4 class="mb-2">Nom Utilisateur</h4>
+                                           <p class="text-muted">email@exemple.com</p>
+                                       </div>
+                                   </div>
+                                   
+                                   <hr class="horizontal gray-light my-4">
+                                   
+                                   <div class="row">
+                                       <div class="col-md-6">
+                                           <h6 class="text-xs text-uppercase text-muted">Informations personnelles</h6>
+                                           <div class="mb-3">
+                                               <small class="text-muted d-block">Nom</small>
+                                               <span>Nom Utilisateur</span>
+                                           </div>
+                                           <div>
+                                               <small class="text-muted d-block">Email</small>
+                                               <span>email@exemple.com</span>
+                                           </div>
+                                       </div>
+                                       <div class="col-md-6">
+                                           <h6 class="text-xs text-uppercase text-muted">Autres détails</h6>
+                                           <div>
+                                               <small class="text-muted d-block">Inscrit le</small>
+                                               <span>01/01/2024</span>
+                                           </div>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </main>
 </x-app-layout>
+
+<style>
+.max-width-200 {
+    max-width: 200px;
+}
+</style>

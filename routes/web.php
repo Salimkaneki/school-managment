@@ -21,6 +21,9 @@ use App\Http\Controllers\TimeSlotController;
 // use App\Http\Controllers\NotificationController;
 use App\Models\SchoolEvent;
 use PHPUnit\Framework\Attributes\Group;
+use App\Http\Controllers\AdminDashboardController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -340,3 +343,6 @@ Route::middleware(['auth'])->group(function () {
 
 
 Route::post('/students', [StudentController::class, 'store'])->name('students.store');
+
+
+Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');

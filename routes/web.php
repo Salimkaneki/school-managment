@@ -330,9 +330,10 @@ Route::middleware(['auth'])->group(function () {
     //     return view('cdraft');
     // });
 
-    // Route::get('/student', function () {
-    //     return view('sdraft');
-    // });
+    Route::get('/student', function () {
+        return view('sdraft');
+    });
+    
     // Route::get('/teacher', function () {
     //     return view('tlistdraft');
     // });

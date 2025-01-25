@@ -13,7 +13,7 @@
                         <button type="button"
                             class="btn btn-sm btn-white btn-icon d-flex align-items-center mb-0 ms-md-auto mb-sm-0 mb-2 me-2">
                             <span class="btn-inner--icon">
-                                <span class="p-1 bg-success rounded-circle d-flex ms-auto me-2">
+                                <span class="p-1 bg-success rounded-circle d-flex ms-auto me-2"> 
                                     <span class="visually-hidden">New</span>
                                 </span>
                             </span>

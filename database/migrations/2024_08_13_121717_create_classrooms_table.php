@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->integer('capacity');
             $table->foreignId('class_model_id')->constrained()->onDelete('cascade');
+            $table->foreignId('class_model_id')->constrained('class_models')->onDelete('cascade');
+            $table->foreignId('school_id')->constrained('schools')->onDelete('cascade');
             $table->timestamps();
         });        
     }

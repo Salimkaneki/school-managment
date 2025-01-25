@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('nationality')->nullable();
             $table->integer('seniority')->nullable();
             $table->string('subject')->nullable();
+            $table->foreignId('school_id')->constrained('schools')->onDelete('cascade');
             $table->timestamps();
         });
     }

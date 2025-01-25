@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->decimal('fees', 10, 2);
+            $table->foreignId('school_id')->constrained('schools')->onDelete('cascade');
             $table->timestamps();
         });
     }

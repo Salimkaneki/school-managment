@@ -24,6 +24,7 @@ class CreateTimetableCoursesTable extends Migration
             
             // Assurer que les créneaux horaires ne se chevauchent pas
             $table->unique(['classroom_id', 'day', 'start_time', 'end_time'], 'classroom_schedule_unique');
+            $table->foreignId('school_id')->constrained('schools')->onDelete('cascade');
         });
         
     

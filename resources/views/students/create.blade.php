@@ -231,6 +231,9 @@
                                                     <label class="form-label mt-2">Téléphone du Père | Tuteur</label>
                                                     <input type="text" class="form-control" name="emergency_contacts[0][phone]" 
                                                            value="{{ old('emergency_contacts.0.phone') }}" placeholder="Téléphone du Père | Tuteur">
+                                                    <label class="form-label mt-2">Email du Père | Tuteur</label>
+                                                    <input type="email" class="form-control" name="father_email" 
+                                                           value="{{ old('father_email') }}" placeholder="Email du Père | Tuteur">
                                                 </div>
 
                                                 <!-- Contact Mère/Tutrice -->
@@ -241,6 +244,9 @@
                                                     <label class="form-label mt-2">Téléphone de la Mère | Tutrice</label>
                                                     <input type="text" class="form-control" name="emergency_contacts[1][phone]" 
                                                            value="{{ old('emergency_contacts.1.phone') }}" placeholder="Téléphone de la Mère | Tutrice">
+                                                    <label class="form-label mt-2">Email de la Mère | Tutrice</label>
+                                                    <input type="email" class="form-control" name="mother_email" 
+                                                           value="{{ old('mother_email') }}" placeholder="Email de la Mère | Tutrice">
                                                 </div>
                                             </div>
                                         </div>

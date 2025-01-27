@@ -19,12 +19,12 @@ return new class extends Migration
             $table->string('phone_number')->nullable();
             $table->enum('gender', ['male', 'female', 'other']);
             $table->date('date_of_birth');
-            $table->string('place_of_birth'); // Added place of birth
-            $table->string('address'); // Added address
-            $table->string('nationality'); // Added nationality
+            $table->string('place_of_birth'); 
+            $table->string('address'); 
+            $table->string('nationality'); 
             $table->foreignId('class_id')->constrained('class_models')->onDelete('cascade');
             $table->string('previous_school_name')->nullable();
-            $table->json('emergency_contacts')->nullable(); // Changed to match the controller's JSON storage
+            $table->json('emergency_contacts')->nullable(); 
             $table->string('photo')->nullable();
             $table->unsignedBigInteger('academic_year_id')->nullable();
             $table->foreign('academic_year_id')->references('id')->on('academic_years')->onDelete('set null');

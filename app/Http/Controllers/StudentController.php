@@ -47,6 +47,8 @@ class StudentController extends Controller
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'gender' => 'required|in:male,female,other',
             'nationality' => 'required|string|max:100',
+            'father_email' => 'nullable|email|max:255', 
+            'mother_email' => 'nullable|email|max:255',
         ]);
     
         // Vérifier la capacité de la salle

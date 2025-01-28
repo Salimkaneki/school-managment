@@ -21,7 +21,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <form action="#">
+                            <form action="">
                                 <!-- Informations générales -->
                                 <h5 class="mb-4">Informations générales</h5>
                                 <div class="row">

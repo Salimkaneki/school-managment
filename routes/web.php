@@ -351,3 +351,36 @@ Route::post('/students', [StudentController::class, 'store'])->name('students.st
 
 
 Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+
+
+use App\Http\Controllers\SchoolController;
+
+    Route::prefix('schools')->name('schools.')->group(function () {
+        // Liste des écoles
+        Route::get('/', [SchoolController::class, 'index'])
+            ->name('index-schools');
+
+        // Formulaire de création
+        Route::get('/create', [SchoolController::class, 'create'])
+            ->name('create-school');
+
+        // Enregistrement d'une nouvelle école
+        Route::post('/', [SchoolController::class, 'store'])
+            ->name('store');
+
+        // Affichage d'une école
+        Route::get('/{school}', [SchoolController::class, 'show'])
+            ->name('show');
+
+        // Formulaire d'édition
+        Route::get('/{school}/edit', [SchoolController::class, 'edit'])
+            ->name('edit');
+
+        // Mise à jour d'une école
+        Route::put('/{school}', [SchoolController::class, 'update'])
+            ->name('update');
+
+        // Suppression d'une école
+        Route::delete('/{school}', [SchoolController::class, 'destroy'])
+            ->name('destroy');
+    });

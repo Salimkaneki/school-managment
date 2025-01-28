@@ -22,6 +22,7 @@ class School extends Model
         'postal_code',
         'has_sports_equipment',
         'has_library',
+        'teaching_staff_count',
         'has_computer_room',
         'has_handicap_access',
         'rules_document_path',

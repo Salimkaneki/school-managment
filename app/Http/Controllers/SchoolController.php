@@ -34,7 +34,7 @@ class SchoolController extends Controller
             'name' => 'required|string|max:255',
             'type' => 'required|string',
             'languages' => 'required|array',
-            'staff_count' => 'required|integer|min:1',
+            'teaching_staff_count' => 'required|integer|min:1',
             'email' => 'required|email',
             'phone' => 'required|string',
             'address' => 'required|string',

@@ -235,6 +235,10 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/api/classes/{class}/classrooms', [TimetableController::class, 'getClassroomsByClass']);
 
+        Route::prefix('')->group(function (){
+
+        });
+
 
 
         // Routes pour les créneaux horaires (TimeSlots)

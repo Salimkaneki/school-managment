@@ -66,7 +66,7 @@ class SchoolController extends Controller
 
         School::create($validated);
 
-        return redirect()->route('schools.index')
+        return redirect()->route('schools.index-schools')
             ->with('success', 'École créée avec succès');
     }
 

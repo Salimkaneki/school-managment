@@ -19,8 +19,8 @@ return new class extends Migration
             $table->enum('type', ['École primaire', 'Collège', 'Lycée', 'École professionnelle']);
             
             // Informations pédagogiques
-            $table->json('languages')->nullable(); // Stockage des langues en JSON
-            $table->integer('teaching_staff_count')->nullable();
+            $table->json('languages'); // Stockage des langues en JSON
+            $table->integer('teaching_staff_count');
             
             // Coordonnées
             $table->string('email')->unique();
@@ -35,12 +35,12 @@ return new class extends Migration
             $table->boolean('has_sports_equipment')->default(false);
             $table->boolean('has_library')->default(false);
             $table->boolean('has_computer_room')->default(false);
-            $table->boolean('has_accessibility')->default(false);
+            $table->boolean('has_handicap_access')->default(false);
             
-            // Documents administratifs
-            $table->string('rules_document')->nullable();
-            $table->string('school_project')->nullable();
-            $table->string('logo')->nullable();
+            // Documents administratifs (chemins des fichiers)
+            $table->string('rules_document_path')->nullable();
+            $table->string('project_document_path')->nullable();
+            $table->string('logo_path')->nullable();
             
             // Timestamps
             $table->timestamps();

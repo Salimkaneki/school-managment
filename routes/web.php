@@ -42,6 +42,12 @@ Route::middleware(['auth'])->group(function () {
         return redirect('/dashboard');
     });
 
+    Route::middleware(['auth:school'])->group(function () {
+        Route::get('/', function () {
+            return redirect('/dashboard');
+        });
+    });
+
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/tables', function () {
@@ -322,6 +328,39 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/reset-password', [ResetPasswordController::class, 'store']);
     });
 
+    Route::middleware(['guest'])->group(function () {
+        Route::get('/sign-in', [LoginController::class, 'create'])->name('login');
+        Route::post('/sign-in', [LoginController::class, 'store']);
+    });
+    
+   // Routes pour tous les utilisateurs authentifiés
+    Route::middleware(['auth:web,school'])->group(function () {
+        // Route de déconnexion
+        Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
+
+        // Redirection de la racine vers le dashboard
+        Route::get('/', function () {
+            return redirect('/dashboard');
+        });
+
+        // Dashboard commun
+        Route::get('/dashboard', function () {
+            return view('dashboard');
+        })->name('dashboard');
+
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+
+        // Routes des fonctionnalités communes
+        // ... autres routes accessibles à tous les utilisateurs authentifiés ...
+
+        // Routes réservées aux administrateurs
+        Route::middleware(['auth:web'])->group(function () {
+            // Route::resource('schools', SchoolController::class);
+            // ... autres routes admin uniquement ...
+        });
+    }); 
+
 
     Route::get('/signin', function () {
         return view('account-pages.signin');
@@ -348,6 +387,27 @@ Route::middleware(['auth'])->group(function () {
 
 
 Route::post('/students', [StudentController::class, 'store'])->name('students.store');
+
+// Routes pour les visiteurs non authentifiés
+Route::middleware(['guest'])->group(function () {
+    // Page d'inscription
+    Route::get('/signup', function () {
+        return view('account-pages.signup');
+    })->name('signup');
+
+    // Routes de connexion
+    Route::get('/sign-in', [LoginController::class, 'create'])->name('sign-in'); // Changé de 'login' à 'sign-in'
+    Route::post('/sign-in', [LoginController::class, 'store']);
+
+    // Routes de récupération de mot de passe
+    Route::get('/forgot-password', [ForgotPasswordController::class, 'create'])
+        ->name('password.request');
+    Route::post('/forgot-password', [ForgotPasswordController::class, 'store'])
+        ->name('password.email');
+    Route::get('/reset-password/{token}', [ResetPasswordController::class, 'create'])
+        ->name('password.reset');
+    Route::post('/reset-password', [ResetPasswordController::class, 'store']);
+});
 
 
 Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
@@ -385,19 +445,3 @@ use App\Http\Controllers\SchoolLoginController;
         Route::delete('/{school}', [SchoolController::class, 'destroy'])
             ->name('destroy');
     });
-
-
-//     // Routes pour l'authentification des écoles
-// Route::middleware('guest:school')->group(function () {
-//     Route::get('/school/sign-in', [SchoolLoginController::class, 'create'])->name('school.login');
-//     Route::post('/school/sign-in', [SchoolLoginController::class, 'store']);
-// });
- 
-// Route::middleware('auth:school')->group(function () {
-//     Route::post('/school/logout', [SchoolLoginController::class, 'destroy'])->name('school.logout');
-//     Route::get('/school/dashboard', function () {
-//         return view('school.dashboard');
-//     })->name('school.dashboard');
-    
-//     // Autres routes protégées pour les écoles...
-// });

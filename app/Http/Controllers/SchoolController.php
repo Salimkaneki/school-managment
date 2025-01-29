@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\School;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
+
 
 class SchoolController extends Controller
 {
@@ -39,33 +41,38 @@ class SchoolController extends Controller
             'phone' => 'required|string',
             'address' => 'required|string',
             'city' => 'required|string',
-            'postal_code' => 'required|string'
+            'postal_code' => 'required|string',
+            'username' => 'required|string|unique:schools,username|min:4',
+            'password' => 'required|string|min:8'
         ]);
-
+    
+        // Hasher le mot de passe avant de le stocker
+        $validated['password'] = Hash::make($request->password);
+    
         // Traitement des fichiers
         if ($request->hasFile('rules_document')) {
             $validated['rules_document_path'] = $request->file('rules_document')
                 ->store('schools/rules', 'public');
         }
-
+    
         if ($request->hasFile('project_document')) {
             $validated['project_document_path'] = $request->file('project_document')
                 ->store('schools/projects', 'public');
         }
-
+    
         if ($request->hasFile('logo')) {
             $validated['logo_path'] = $request->file('logo')
                 ->store('schools/logos', 'public');
         }
-
+    
         // Traitement des équipements
         $validated['has_sports_equipment'] = $request->has('has_sports_equipment');
         $validated['has_library'] = $request->has('has_library');
         $validated['has_computer_room'] = $request->has('has_computer_room');
         $validated['has_handicap_access'] = $request->has('has_handicap_access');
-
+    
         School::create($validated);
-
+    
         return redirect()->route('schools.index-schools')
             ->with('success', 'École créée avec succès');
     }
@@ -95,44 +102,22 @@ class SchoolController extends Controller
             'name' => 'required|string|max:255',
             'type' => 'required|string',
             'languages' => 'required|array',
-            'staff_count' => 'required|integer|min:1',
+            'teaching_staff_count' => 'required|integer|min:1',
             'email' => 'required|email',
             'phone' => 'required|string',
             'address' => 'required|string',
             'city' => 'required|string',
-            'postal_code' => 'required|string'
+            'postal_code' => 'required|string',
+            'username' => 'required|string|unique:schools,username,'.$school->id.'|min:4',
+            'password' => 'nullable|string|min:8'
         ]);
-
-        // Mise à jour des fichiers si nécessaire
-        if ($request->hasFile('rules_document')) {
-            // Supprimer l'ancien fichier
-            Storage::disk('public')->delete($school->rules_document_path);
-            $validated['rules_document_path'] = $request->file('rules_document')
-                ->store('schools/rules', 'public');
+    
+        // Ne mettre à jour le mot de passe que s'il est fourni
+        if ($request->filled('password')) {
+            $validated['password'] = Hash::make($request->password);
         }
-
-        if ($request->hasFile('project_document')) {
-            Storage::disk('public')->delete($school->project_document_path);
-            $validated['project_document_path'] = $request->file('project_document')
-                ->store('schools/projects', 'public');
-        }
-
-        if ($request->hasFile('logo')) {
-            Storage::disk('public')->delete($school->logo_path);
-            $validated['logo_path'] = $request->file('logo')
-                ->store('schools/logos', 'public');
-        }
-
-        // Mise à jour des équipements
-        $validated['has_sports_equipment'] = $request->has('has_sports_equipment');
-        $validated['has_library'] = $request->has('has_library');
-        $validated['has_computer_room'] = $request->has('has_computer_room');
-        $validated['has_handicap_access'] = $request->has('has_handicap_access');
-
-        $school->update($validated);
-
-        return redirect()->route('schools.index-schools')
-            ->with('success', 'École mise à jour avec succès');
+    
+        // ... reste du code ...
     }
 
     /**

@@ -5,64 +5,48 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
-
+use App\Models\School;
 
 class LoginController extends Controller
 {
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         return view('auth.signin');
     }
 
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-
         $credentials = $request->only('email', 'password');
+        $rememberMe = $request->has('rememberMe');
 
-        $rememberMe = $request->rememberMe ? true : false;
-
+        // Tentative de connexion en tant qu'administrateur
         if (Auth::attempt($credentials, $rememberMe)) {
             $request->session()->regenerate();
-
             return redirect()->intended('/dashboard');
         }
 
-
+        // Tentative de connexion en tant qu'école
+        if (Auth::guard('school')->attempt($credentials, $rememberMe)) {
+            $request->session()->regenerate();
+            return redirect()->intended('/dashboard');
+        }
 
         return back()->withErrors([
-            'message' => 'The provided credentials do not match our records.',
+            'message' => 'Les identifiants fournis ne correspondent à aucun compte.',
         ])->withInput($request->only('email'));
     }
 
-
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Request $request)
     {
-        Auth::logout();
-
+        if (Auth::guard('school')->check()) {
+            Auth::guard('school')->logout();
+        } else {
+            Auth::logout();
+        }
+    
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
-
-        return redirect('/sign-in');
+    
+        return redirect()->route('sign-in'); // Assurez-vous d'utiliser 'sign-in' ici aussi
     }
 }

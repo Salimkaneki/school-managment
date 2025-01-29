@@ -5,10 +5,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
 
-class School extends Model
+class School extends Authenticatable
 {
     use HasFactory;
+    use Notifiable, SoftDeletes;
+
+
+    protected $guarded = [];
 
     protected $fillable = [
         'name',
@@ -27,7 +34,9 @@ class School extends Model
         'has_handicap_access',
         'rules_document_path',
         'project_document_path',
-        'logo_path'
+        'logo_path',
+        'username', 
+        'password',
     ];
 
     protected $casts = [
@@ -37,4 +46,42 @@ class School extends Model
         'has_computer_room' => 'boolean',
         'has_handicap_access' => 'boolean',
     ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+
+
+    // Implémentation des méthodes requises par l'interface Authenticatable
+    public function getAuthIdentifierName()
+    {
+        return 'id';
+    }
+
+    public function getAuthIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getAuthPassword()
+    {
+        return $this->password;
+    }
+
+    public function getRememberToken()
+    {
+        return $this->{$this->getRememberTokenName()};
+    }
+
+    public function setRememberToken($value)
+    {
+        $this->{$this->getRememberTokenName()} = $value;
+    }
+
+    public function getRememberTokenName()
+    {
+        return 'remember_token';
+    }
 }

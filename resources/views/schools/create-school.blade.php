@@ -82,6 +82,25 @@
                                     </div>
                                 </div>
 
+                                <!-- Identifiants de connexion -->
+                                <h5 class="mb-4 mt-5">Identifiants de connexion</h5>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Nom d'utilisateur</label>
+                                        <input type="text" name="username" class="form-control @error('username') is-invalid @enderror" value="{{ old('username') }}" required>
+                                        @error('username')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Mot de passe</label>
+                                        <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" required>
+                                        @error('password')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
                                 <!-- Contact -->
                                 <h5 class="mb-4 mt-5">Coordonnées</h5>
                                 <div class="row">

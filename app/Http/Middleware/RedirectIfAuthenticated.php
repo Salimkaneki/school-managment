@@ -27,4 +27,20 @@ class RedirectIfAuthenticated
 
         return $next($request);
     }
+
+    // public function handle($request, Closure $next, string ...$guards)
+    // {
+    //     $guards = empty($guards) ? [null] : $guards;
+
+    //     foreach ($guards as $guard) {
+    //         if (Auth::guard($guard)->check()) {
+    //             if ($guard === 'school') {
+    //                 return redirect('/school/dashboard');
+    //             }
+    //             return redirect('/dashboard');
+    //         }
+    //     }
+
+    //     return $next($request);
+    // }
 }

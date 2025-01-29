@@ -40,6 +40,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'school' => [ // Guard pour les écoles
+            'driver' => 'session',
+            'provider' => 'schools',
+        ],
     ],
 
     /*
@@ -65,10 +70,10 @@ return [
             'model' => App\Models\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'schools' => [ // Provider pour les écoles
+            'driver' => 'eloquent',
+            'model' => App\Models\School::class,
+        ],
     ],
 
     /*
@@ -94,6 +99,13 @@ return [
         'users' => [
             'provider' => 'users',
             'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'schools' => [
+            'provider' => 'schools',
+            'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
         ],

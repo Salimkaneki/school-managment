@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class School extends Authenticatable
+{
+    use Notifiable, SoftDeletes;
+
+    protected $fillable = [
+        'name', 'type', 'languages', 'teaching_staff_count',
+        'email', 'phone', 'address', 'city', 'postal_code',
+        'has_sports_equipment', 'has_library', 'has_computer_room', 'has_handicap_access',
+        'rules_document_path', 'project_document_path', 'logo_path',
+        'username', 'password',
+    ];
+
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
+
+    // Hachage automatique du mot de passe
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
+}

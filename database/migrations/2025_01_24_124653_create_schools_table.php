@@ -41,6 +41,12 @@ return new class extends Migration
             $table->string('rules_document_path')->nullable();
             $table->string('project_document_path')->nullable();
             $table->string('logo_path')->nullable();
+
+            // Identifiants de connexion
+            $table->string('username')->unique(); // Nom d'utilisateur unique pour l'école
+            $table->string('password'); // Mot de passe sécurisé
+            $table->rememberToken(); // Pour la persistance de la connexion
+
             
             // Timestamps
             $table->timestamps();

@@ -354,6 +354,7 @@ Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name
 
 
 use App\Http\Controllers\SchoolController;
+use App\Http\Controllers\SchoolLoginController;
 
     Route::prefix('schools')->name('schools.')->group(function () {
         // Liste des écoles
@@ -384,3 +385,19 @@ use App\Http\Controllers\SchoolController;
         Route::delete('/{school}', [SchoolController::class, 'destroy'])
             ->name('destroy');
     });
+
+
+//     // Routes pour l'authentification des écoles
+// Route::middleware('guest:school')->group(function () {
+//     Route::get('/school/sign-in', [SchoolLoginController::class, 'create'])->name('school.login');
+//     Route::post('/school/sign-in', [SchoolLoginController::class, 'store']);
+// });
+ 
+// Route::middleware('auth:school')->group(function () {
+//     Route::post('/school/logout', [SchoolLoginController::class, 'destroy'])->name('school.logout');
+//     Route::get('/school/dashboard', function () {
+//         return view('school.dashboard');
+//     })->name('school.dashboard');
+    
+//     // Autres routes protégées pour les écoles...
+// });

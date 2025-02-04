@@ -41,10 +41,10 @@ return [
             'provider' => 'users',
         ],
 
-        'school' => [ // Guard pour les écoles
-            'driver' => 'session',
-            'provider' => 'schools',
-        ],
+        // 'school' => [ // Guard pour les écoles
+        //     'driver' => 'session',
+        //     'provider' => 'schools',
+        // ],
     ],
 
     /*
@@ -67,13 +67,14 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
-        ],
-
-        'schools' => [ // Provider pour les écoles
-            'driver' => 'eloquent',
+            // 'model' => App\Models\User::class,
             'model' => App\Models\School::class,
         ],
+
+        // 'schools' => [ // Provider pour les écoles
+        //     'driver' => 'eloquent',
+        //     'model' => App\Models\School::class,
+        // ],
     ],
 
     /*
@@ -103,12 +104,12 @@ return [
             'throttle' => 60,
         ],
 
-        'schools' => [
-            'provider' => 'schools',
-            'table' => 'password_resets',
-            'expire' => 60,
-            'throttle' => 60,
-        ],
+        // 'schools' => [
+        //     'provider' => 'schools',
+        //     'table' => 'password_resets',
+        //     'expire' => 60,
+        //     'throttle' => 60,
+        // ],
     ],
 
     /*

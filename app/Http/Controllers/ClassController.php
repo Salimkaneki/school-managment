@@ -5,14 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\ClassModel;
 use App\Models\Classroom;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+
 
 class ClassController extends Controller
 {
     public function index()
     {
-        $classes = ClassModel::withCount('classrooms')->paginate(10);
+        $classes = ClassModel::where('school_id', Auth::id())->withCount('classrooms')->paginate(10);
         return view('classes.class-list', compact('classes'));
     }
+    
 
     public function store(Request $request)
     {
@@ -24,20 +28,26 @@ class ClassController extends Controller
             'classrooms.*.capacity' => 'required|integer|min:1',
         ]);
 
+        // dd(Auth::id()); // Ajoutez cette ligne pour vérifier
+
+    
         $classModel = ClassModel::create([
             'name' => $request->name,
             'description' => $request->description,
             'fees' => $request->fees,
+            'school_id' => Auth::id(),  // Ajout de cette ligne
         ]);
-
+    
         foreach ($request->classrooms as $classroom) {
             Classroom::create([
                 'name' => $classroom['name'],
                 'capacity' => $classroom['capacity'],
                 'class_model_id' => $classModel->id,
+                'school_id' => Auth::id(),  // Ajout de cette ligne
+
             ]);
         }
-
+    
         return redirect()->route('class-list')->with('success', 'Classe créée avec succès.');
     }
 
@@ -63,6 +73,8 @@ class ClassController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'fees' => $request->fees,
+            'school_id' => Auth::id(),  // Ajout de cette ligne
+
         ]);
 
         if ($request->has('classrooms')) {
@@ -73,6 +85,8 @@ class ClassController extends Controller
                     'name' => $classroom['name'],
                     'capacity' => $classroom['capacity'],
                     'class_model_id' => $class->id,
+                    'school_id' => Auth::id(),  // Ajout de cette ligne
+
                 ]);
             }
         }

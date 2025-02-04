@@ -52,6 +52,17 @@ class School extends Authenticatable
         'remember_token',
     ];
 
+        // Relations
+        public function classes()
+        {
+            return $this->hasMany(ClassModel::class);
+        }
+    
+        public function classrooms()
+        {
+            return $this->hasMany(Classroom::class);
+        }
+
 
 
     // Implémentation des méthodes requises par l'interface Authenticatable

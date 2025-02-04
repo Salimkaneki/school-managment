@@ -14,6 +14,7 @@ class ClassModel extends Model
         'description',
         'fees',
         'trimester_id',
+        'school_id',
     ];
 
     public function students()

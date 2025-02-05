@@ -22,6 +22,8 @@ use App\Http\Controllers\TimeSlotController;
 use App\Models\SchoolEvent;
 use PHPUnit\Framework\Attributes\Group;
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\SchoolController;
+use App\Http\Controllers\SchoolLoginController;
 
 
 
@@ -400,11 +402,12 @@ Route::post('/students', [StudentController::class, 'store'])->name('students.st
 // });
 
 
+
+
 Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
 
-use App\Http\Controllers\SchoolController;
-use App\Http\Controllers\SchoolLoginController;
+
 
     Route::prefix('schools')->name('schools.')->group(function () {
         // Liste des écoles

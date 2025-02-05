@@ -374,7 +374,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/gest-users', [App\Http\Controllers\UserController::class, 'gest_users']);
     Route::get('/gest-profile', [App\Http\Controllers\UserController::class, 'gest_profile']);
 
-
+ 
 
 Route::post('/students', [StudentController::class, 'store'])->name('students.store');
 

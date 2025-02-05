@@ -17,7 +17,7 @@ class SchoolSeeder extends Seeder
     {
         School::create([
             'name' => 'École Démo',
-            'type' => 'Privée',
+            'type' => 'École primaire',  // Exemple de valeur valide
             'languages' => json_encode(['Français', 'Anglais']),
             'teaching_staff_count' => 25,
             'email' => 'ecole.demo@example.com',

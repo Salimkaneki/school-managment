@@ -6,17 +6,18 @@ use App\Models\ClassModel;
 use App\Models\Classroom;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
-
+use Illuminate\Support\Facades\DB;
 
 class ClassController extends Controller
 {
     public function index()
     {
-        $classes = ClassModel::where('school_id', Auth::id())->withCount('classrooms')->paginate(10);
+        $classes = ClassModel::where('school_id', Auth::guard('web')->user()->id)
+            ->withCount('classrooms')
+            ->paginate(10);
+
         return view('classes.class-list', compact('classes'));
     }
-    
 
     public function store(Request $request)
     {
@@ -28,32 +29,41 @@ class ClassController extends Controller
             'classrooms.*.capacity' => 'required|integer|min:1',
         ]);
 
-        // dd(Auth::id()); // Ajoutez cette ligne pour vérifier
+        DB::beginTransaction();
 
-    
-        $classModel = ClassModel::create([
-            'name' => $request->name,
-            'description' => $request->description,
-            'fees' => $request->fees,
-            'school_id' => Auth::id(),  // Ajout de cette ligne
-        ]);
-    
-        foreach ($request->classrooms as $classroom) {
-            Classroom::create([
-                'name' => $classroom['name'],
-                'capacity' => $classroom['capacity'],
-                'class_model_id' => $classModel->id,
-                'school_id' => Auth::id(),  // Ajout de cette ligne
-
+        try {
+            $classModel = ClassModel::create([
+                'name' => $request->name,
+                'description' => $request->description,
+                'fees' => $request->fees,
+                'school_id' => Auth::guard('web')->user()->id,
             ]);
+
+            if ($request->has('classrooms') && count($request->classrooms) > 0) {
+                foreach ($request->classrooms as $classroom) {
+                    Classroom::create([
+                        'name' => $classroom['name'],
+                        'capacity' => $classroom['capacity'],
+                        'class_model_id' => $classModel->id,
+                        'school_id' => Auth::guard('web')->user()->id,
+                    ]);
+                }
+            }
+
+            DB::commit();
+            return redirect()->route('class-list')->with('success', 'Classe créée avec succès.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Une erreur est survenue, veuillez réessayer.');
         }
-    
-        return redirect()->route('class-list')->with('success', 'Classe créée avec succès.');
     }
 
     public function edit($id)
     {
-        $class = ClassModel::with('classrooms')->findOrFail($id);
+        $class = ClassModel::where('school_id', Auth::guard('web')->user()->id)
+            ->with('classrooms')
+            ->findOrFail($id);
+
         return view('classes.edit-class', compact('class'));
     }
 
@@ -67,39 +77,55 @@ class ClassController extends Controller
             'classrooms.*.capacity' => 'required|integer|min:1',
         ]);
 
-        $class = ClassModel::findOrFail($id);
-        
-        $class->update([
-            'name' => $request->name,
-            'description' => $request->description,
-            'fees' => $request->fees,
-            'school_id' => Auth::id(),  // Ajout de cette ligne
+        $class = ClassModel::where('school_id', Auth::guard('web')->user()->id)
+            ->findOrFail($id);
 
-        ]);
+        DB::beginTransaction();
 
-        if ($request->has('classrooms')) {
-            $class->classrooms()->delete();
-            
-            foreach ($request->classrooms as $classroom) {
-                Classroom::create([
-                    'name' => $classroom['name'],
-                    'capacity' => $classroom['capacity'],
-                    'class_model_id' => $class->id,
-                    'school_id' => Auth::id(),  // Ajout de cette ligne
+        try {
+            $class->update([
+                'name' => $request->name,
+                'description' => $request->description,
+                'fees' => $request->fees,
+            ]);
 
-                ]);
+            if ($request->has('classrooms') && count($request->classrooms) > 0) {
+                $class->classrooms()->delete();
+
+                foreach ($request->classrooms as $classroom) {
+                    Classroom::create([
+                        'name' => $classroom['name'],
+                        'capacity' => $classroom['capacity'],
+                        'class_model_id' => $class->id,
+                        'school_id' => Auth::guard('web')->user()->id,
+                    ]);
+                }
             }
-        }
 
-        return redirect()->route('class-list')->with('success', 'Classe mise à jour avec succès.');
+            DB::commit();
+            return redirect()->route('class-list')->with('success', 'Classe mise à jour avec succès.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Une erreur est survenue, veuillez réessayer.');
+        }
     }
 
     public function destroy($id)
     {
-        $class = ClassModel::findOrFail($id);
-        $class->classrooms()->delete();
-        $class->delete();
+        $class = ClassModel::where('school_id', Auth::guard('web')->user()->id)
+            ->findOrFail($id);
 
-        return redirect()->route('class-list')->with('success', 'Classe supprimée avec succès.');
+        DB::beginTransaction();
+
+        try {
+            $class->classrooms()->delete();
+            $class->delete();
+
+            DB::commit();
+            return redirect()->route('class-list')->with('success', 'Classe supprimée avec succès.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Une erreur est survenue lors de la suppression.');
+        }
     }
 }

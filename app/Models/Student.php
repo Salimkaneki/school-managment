@@ -53,4 +53,11 @@ class Student extends Model
         return $this->hasMany(Payment::class);
     }
 
+    //Relation avec l'école
+    public function school()
+    {
+        return $this->belongsTo(School::class, 'school_id');
+    }
+    
+
 }

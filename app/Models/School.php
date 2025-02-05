@@ -63,6 +63,11 @@ class School extends Authenticatable
             return $this->hasMany(Classroom::class);
         }
 
+        public function users()
+        {
+            return $this->hasMany(User::class);
+        }
+
 
 
     // Implémentation des méthodes requises par l'interface Authenticatable
@@ -95,4 +100,10 @@ class School extends Authenticatable
     {
         return 'remember_token';
     }
+
+    public function students()
+    {
+        return $this->hasMany(Student::class, 'school_id');
+    }
+
 }

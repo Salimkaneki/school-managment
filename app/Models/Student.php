@@ -17,6 +17,7 @@ class Student extends Model
         'phone_number',
         'nationality',
         'class_id',
+        'classroom_id',
         'academic_year_id',
         'previous_school_name',
         'emergency_contacts',
@@ -24,7 +25,8 @@ class Student extends Model
         'gender',
         'address',
         'place_of_birth',
-        'classroom_id'
+        'classroom_id',
+        'school_id',  
     ];
 
 

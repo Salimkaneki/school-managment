@@ -44,11 +44,7 @@ Route::middleware(['auth'])->group(function () {
         return redirect('/dashboard');
     });
 
-    // Route::middleware(['auth:school'])->group(function () {
-    //     Route::get('/', function () {
-    //         return redirect('/dashboard');
-    //     });
-    // });
+
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -75,9 +71,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/list', [TeacherController::class, 'index'])->name('index-teacher');
 
 
-            // Route::get('/edit', function () {
-            //     return view('teachers.edit');
-            // })->name('edit-teacher');
+
 
             Route::post('/teachers', [TeacherController::class, 'store'])->name('teachers.store');
             Route::get('/teachers', [TeacherController::class, 'index'])->name('teachers.index');
@@ -402,6 +396,11 @@ Route::post('/students', [StudentController::class, 'store'])->name('students.st
 // });
 
 
+Route::get('/getClassrooms/{classId}', [StudentController::class, 'getClassrooms'])->name('getClassrooms');
+
+Route::get('/getStudentsByClass/{classId}', [PaymentController::class, 'getStudentsByClass'])
+    ->name('getStudentsByClass')
+    ->middleware('auth');
 
 
 Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');

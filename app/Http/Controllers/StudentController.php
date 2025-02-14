@@ -15,7 +15,7 @@ class StudentController extends Controller
     // Liste des élèves d'une école spécifique
     public function index()
     {
-        $schoolId = Auth::guard('web')->user()->school_id;
+        $schoolId = Auth::id();
         $students = Student::where('school_id', $schoolId)
             ->with('classModel', 'academicYear', 'classroom')
             ->orderBy('last_name', 'asc')
@@ -26,8 +26,8 @@ class StudentController extends Controller
     // Affichage du formulaire d'ajout
     public function create()
     {
-        $schoolId = Auth::guard('web')->user()->school_id;
-        $classes = ClassModel::where('school_id', $schoolId)->get();
+        $schoolId = Auth::id();
+        $classes = ClassModel::where('school_id', Auth::id())->get();
         $academicYears = AcademicYear::all();
         return view('students.create', compact('classes', 'academicYears'));
     }
@@ -35,29 +35,39 @@ class StudentController extends Controller
     // Enregistrement d'un élève
     public function store(Request $request)
     {
-        $schoolId = Auth::guard('web')->user()->school_id;
+        // Récupérer le school_id de l'utilisateur connecté
+        $schoolId = Auth::id();
         
+        // Valider les données
         $validatedData = $this->validateStudent($request);
         
-        // Vérification de la capacité de la classe
+        // Vérifier la capacité de la classe
         if (!$this->checkClassroomCapacity($request->classroom_id)) {
             return back()->withErrors(['classroom_id' => 'Cette salle de classe est pleine.'])->withInput();
         }
         
-        $validatedData['photo'] = $this->handlePhotoUpload($request);
-        $validatedData['emergency_contacts'] = json_encode($request->emergency_contacts ?? []);
+        // Ajouter le school_id aux données validées
         $validatedData['school_id'] = $schoolId;
         
+        // Gérer la photo
+        $validatedData['photo'] = $this->handlePhotoUpload($request);
+        
+        // Encoder les contacts d'urgence
+        $validatedData['emergency_contacts'] = json_encode($request->emergency_contacts ?? []);
+        
+        // Créer l'étudiant avec toutes les données validées
         Student::create($validatedData);
+        
         return redirect()->route('student-list')->with('success', 'Élève ajouté avec succès.');
     }
 
     // Mise à jour d'un élève
     public function update(Request $request, $id)
     {
-        $schoolId = Auth::guard('web')->user()->school_id;
+    // Récupérer le school_id de l'utilisateur connecté
+        $schoolId = Auth::id();
         $student = Student::where('id', $id)->where('school_id', $schoolId)->firstOrFail();
-        
+                
         $validatedData = $this->validateStudent($request, $student);
         $validatedData['photo'] = $this->handlePhotoUpload($request, $student);
         $validatedData['emergency_contacts'] = json_encode($request->emergency_contacts ?? []);
@@ -69,7 +79,7 @@ class StudentController extends Controller
     // Suppression d'un élève
     public function destroy($id)
     {
-        $schoolId = Auth::guard('web')->user()->school_id;
+        $schoolId = Auth::id();
         $student = Student::where('id', $id)->where('school_id', $schoolId)->firstOrFail();
         
         if ($student->photo) {
@@ -92,6 +102,7 @@ class StudentController extends Controller
             'address' => 'required|string|max:255',
             'place_of_birth' => 'required|string|max:255',
             'class_id' => 'required|exists:class_models,id',
+            'classroom_id' => 'required|exists:classrooms,id', // Ajoutez cette ligne si elle manque
             'academic_year_id' => 'required|exists:academic_years,id',
             'gender' => 'required|in:male,female,other',
             'nationality' => 'required|string|max:100',
@@ -117,4 +128,24 @@ class StudentController extends Controller
         }
         return $student->photo ?? null;
     }
+
+    public function getClassrooms($classId)
+    {
+        $classrooms = Classroom::where('class_model_id', $classId)
+            ->get()
+            ->map(function($classroom) {
+                $occupiedSeats = Student::where('classroom_id', $classroom->id)->count();
+                $availableSeats = $classroom->capacity - $occupiedSeats;
+                
+                return [
+                    'id' => $classroom->id,
+                    'name' => $classroom->name,
+                    'capacity' => $classroom->capacity,
+                    'available_seats' => $availableSeats
+                ];
+            });
+    
+        return response()->json($classrooms);
+    }
+
 }

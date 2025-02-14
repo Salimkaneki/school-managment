@@ -20,7 +20,7 @@ class Classroom extends Model
 
     public function classModel()
     {
-        return $this->belongsTo(ClassModel::class);
+        return $this->belongsTo(ClassModel::class, 'class_id');
     }
 
     public function students()
@@ -30,6 +30,6 @@ class Classroom extends Model
     
     public function classes()
 {
-    return $this->belongsToMany(ClassModel::class, 'class_classroom');
+    return $this->belongsToMany(ClassModel::class, 'class_classroom', 'class_id');
 }
 }

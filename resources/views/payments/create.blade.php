@@ -101,58 +101,104 @@
     <script>
         const students = @json($students);
 
-        function filterStudents(classSelect) {
-            const classId = classSelect.value;
-            const studentSelect = document.getElementById('student_id');
-            const totalFeesInput = document.getElementById('total_fees');
-            const totalPreviousPaidInput = document.getElementById('total_previous_paid');
-            const remainingBalanceInput = document.getElementById('remaining_balance');
-            const amountPaidInput = document.getElementById('amount_paid');
+        // function filterStudents(classSelect) {
+        //     const classId = classSelect.value;
+        //     const studentSelect = document.getElementById('student_id');
+        //     const totalFeesInput = document.getElementById('total_fees');
+        //     const totalPreviousPaidInput = document.getElementById('total_previous_paid');
+        //     const remainingBalanceInput = document.getElementById('remaining_balance');
+        //     const amountPaidInput = document.getElementById('amount_paid');
 
-            // Récupérer les frais de la classe sélectionnée
-            const selectedClass = classSelect.options[classSelect.selectedIndex];
-            const fees = selectedClass.getAttribute('data-fees');
-            totalFeesInput.value = fees;
+        //     // Récupérer les frais de la classe sélectionnée
+        //     const selectedClass = classSelect.options[classSelect.selectedIndex];
+        //     const fees = selectedClass.getAttribute('data-fees');
+        //     totalFeesInput.value = fees;
 
-            // Filtrer les étudiants appartenant à la classe sélectionnée
-            studentSelect.innerHTML = '<option value="" disabled selected>Choisir un élève</option>';
-            students.forEach(student => {
-                if (student.class_id == classId) {
-                    const option = document.createElement('option');
-                    option.value = student.id;
-                    option.textContent = `${student.first_name} ${student.last_name}`;
-                    option.dataset.totalFees = student.total_fees;
-                    option.dataset.totalPreviousPaid = student.total_previous_paid;
-                    option.dataset.remainingBalance = student.remaining_balance;
-                    studentSelect.appendChild(option);
-                }
-            });
+        //     // Filtrer les étudiants appartenant à la classe sélectionnée
+        //     studentSelect.innerHTML = '<option value="" disabled selected>Choisir un élève</option>';
+        //     students.forEach(student => {
+        //         if (student.class_id == classId) {
+        //             const option = document.createElement('option');
+        //             option.value = student.id;
+        //             option.textContent = `${student.first_name} ${student.last_name}`;
+        //             option.dataset.totalFees = student.total_fees;
+        //             option.dataset.totalPreviousPaid = student.total_previous_paid;
+        //             option.dataset.remainingBalance = student.remaining_balance;
+        //             studentSelect.appendChild(option);
+        //         }
+        //     });
 
-            // Réinitialiser les champs
-            totalPreviousPaidInput.value = '';
-            remainingBalanceInput.value = '';
-            amountPaidInput.value = '';
-        }
+        //     // Réinitialiser les champs
+        //     totalPreviousPaidInput.value = '';
+        //     remainingBalanceInput.value = '';
+        //     amountPaidInput.value = '';
+        // }
 
-        function updatePaymentInfo(studentSelect) {
-            const selectedOption = studentSelect.options[studentSelect.selectedIndex];
-            const totalFees = parseFloat(selectedOption.dataset.totalFees) || 0;
-            const totalPreviousPaid = parseFloat(selectedOption.dataset.totalPreviousPaid) || 0;
-            const remainingBalance = parseFloat(selectedOption.dataset.remainingBalance) || 0;
+        // function updatePaymentInfo(studentSelect) {
+        //     const selectedOption = studentSelect.options[studentSelect.selectedIndex];
+        //     const totalFees = parseFloat(selectedOption.dataset.totalFees) || 0;
+        //     const totalPreviousPaid = parseFloat(selectedOption.dataset.totalPreviousPaid) || 0;
+        //     const remainingBalance = parseFloat(selectedOption.dataset.remainingBalance) || 0;
 
-            document.getElementById('total_fees').value = totalFees.toFixed(2);
-            document.getElementById('total_previous_paid').value = totalPreviousPaid.toFixed(2);
-            document.getElementById('remaining_balance').value = remainingBalance.toFixed(2);
-        }
+        //     document.getElementById('total_fees').value = totalFees.toFixed(2);
+        //     document.getElementById('total_previous_paid').value = totalPreviousPaid.toFixed(2);
+        //     document.getElementById('remaining_balance').value = remainingBalance.toFixed(2);
+        // }
 
-        // Calcul du solde restant après paiement
-        document.getElementById('amount_paid').addEventListener('input', function() {
-            const totalFees = parseFloat(document.getElementById('total_fees').value) || 0;
-            const totalPreviousPaid = parseFloat(document.getElementById('total_previous_paid').value) || 0;
-            const amountPaid = parseFloat(this.value) || 0;
+        // // Calcul du solde restant après paiement
+        // document.getElementById('amount_paid').addEventListener('input', function() {
+        //     const totalFees = parseFloat(document.getElementById('total_fees').value) || 0;
+        //     const totalPreviousPaid = parseFloat(document.getElementById('total_previous_paid').value) || 0;
+        //     const amountPaid = parseFloat(this.value) || 0;
             
-            const remainingBalance = Math.max(0, totalFees - totalPreviousPaid - amountPaid);
-            document.getElementById('remaining_balance').value = remainingBalance.toFixed(2);
+        //     const remainingBalance = Math.max(0, totalFees - totalPreviousPaid - amountPaid);
+        //     document.getElementById('remaining_balance').value = remainingBalance.toFixed(2);
+        // });
+
+        function filterStudents(classSelect) {
+    const classId = classSelect.value;
+    const studentSelect = document.getElementById('student_id');
+    const totalFeesInput = document.getElementById('total_fees');
+    const totalPreviousPaidInput = document.getElementById('total_previous_paid');
+    const remainingBalanceInput = document.getElementById('remaining_balance');
+    const amountPaidInput = document.getElementById('amount_paid');
+
+    // Récupérer les frais de la classe sélectionnée
+    const selectedClass = classSelect.options[classSelect.selectedIndex];
+    const fees = selectedClass.getAttribute('data-fees');
+    totalFeesInput.value = fees;
+
+    // Réinitialiser le select des étudiants
+    studentSelect.innerHTML = '<option value="" disabled selected>Chargement des élèves...</option>';
+    studentSelect.disabled = true;
+
+    // Appeler l'API pour récupérer les élèves de la classe
+    fetch(`/getStudentsByClass/${classId}`)
+        .then(response => response.json())
+        .then(students => {
+            studentSelect.innerHTML = '<option value="" disabled selected>Choisir un élève</option>';
+            
+            students.forEach(student => {
+                const option = document.createElement('option');
+                option.value = student.id;
+                option.textContent = `${student.first_name} ${student.last_name}`;
+                option.dataset.totalFees = student.total_fees;
+                option.dataset.totalPreviousPaid = student.total_previous_paid;
+                option.dataset.remainingBalance = student.remaining_balance;
+                studentSelect.appendChild(option);
+            });
+            
+            studentSelect.disabled = false;
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            studentSelect.innerHTML = '<option value="" disabled selected>Erreur de chargement</option>';
         });
+
+    // Réinitialiser les champs
+    totalPreviousPaidInput.value = '';
+    remainingBalanceInput.value = '';
+    amountPaidInput.value = '';
+}
     </script>
 </x-app-layout>

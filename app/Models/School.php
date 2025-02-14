@@ -106,4 +106,9 @@ class School extends Authenticatable
         return $this->hasMany(Student::class, 'school_id');
     }
 
+    public function payments()
+    {
+        return $this->hasMany(Payment::class, 'school_id');
+    }
+
 }

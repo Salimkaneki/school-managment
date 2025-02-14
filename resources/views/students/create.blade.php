@@ -74,7 +74,10 @@
                                                 </div>
                                                 <div class="col-md-6 mb-3">
                                                     <label for="classroom_id" class="form-label">Salle de classe *</label>
-                                                    <select class="form-control" id="classroom_id" name="classroom_id" required disabled>
+                                                    <select class="form-control @error('classroom_id') is-invalid @enderror" 
+                                                            id="classroom_id" 
+                                                            name="classroom_id" 
+                                                            required>
                                                         <option value="" disabled selected>Sélectionnez d'abord une classe</option>
                                                     </select>
                                                 </div>
@@ -291,7 +294,7 @@
                 classroomSelect.innerHTML = '<option value="">Chargement des salles...</option>';
 
                 if (classId) {
-                    fetch(`/api/classes/${classId}/classrooms`)
+                    fetch(`/getClassrooms/${classId}`)
                         .then(response => response.json())
                         .then(data => {
                             classroomSelect.innerHTML = '<option value="">Sélectionnez une salle</option>';

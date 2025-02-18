@@ -10,22 +10,19 @@ use Illuminate\Support\Facades\Auth;
 
 class TeacherController extends Controller
 {
-    // Affiche la liste des professeurs
     public function index()
     {
-        $teachers = Teacher::where('school_id', Auth::guard('web')->user()->id)
+        $teachers = Teacher::where('school_id', Auth::id())
             ->orderBy('last_name', 'asc')
             ->paginate(10);
         return view('teachers.index', ['teachers' => $teachers]);
     }
 
-    // Affiche le formulaire de création
     public function create()
     {
         return view('teachers.create');
     }
 
-    // Enregistre un nouveau professeur
     public function store(Request $request)
     {
        $validatedData = $request->validate([
@@ -43,7 +40,7 @@ class TeacherController extends Controller
            'address' => 'required|string|max:255',
        ]);
     
-       $validatedData['school_id'] = Auth::guard('web')->user()->id;
+       $validatedData['school_id'] = Auth::id();
     
        if ($request->hasFile('photo')) {
            $photoPath = $request->file('photo')->store('teachers', 'public');
@@ -56,17 +53,14 @@ class TeacherController extends Controller
            ->with('success', 'Enseignant ajouté avec succès.');
     }
 
-    // Affiche les détails d'un professeur
     public function show(Teacher $teacher)
     {
-        // Vérifier que le professeur appartient à l'école connectée
-        if ($teacher->school_id !== Auth::guard('web')->user()->id) {
+        if ($teacher->school_id !== Auth::id()) {
             abort(403, 'Non autorisé');
         }
         return view('teachers.show', compact('teacher'));
     }
 
-    // Affiche le formulaire d'édition
     public function edit($id)
     {
         $teacher = Teacher::findOrFail($id);
@@ -77,8 +71,7 @@ class TeacherController extends Controller
     {
         $teacher = Teacher::findOrFail($id);
         
-        // Vérifier que le professeur appartient à l'école connectée
-        if ($teacher->school_id !== Auth::guard('web')->user()->id) {
+        if ($teacher->school_id !== Auth::id()) {
             abort(403, 'Non autorisé');
         }
     
@@ -97,7 +90,7 @@ class TeacherController extends Controller
             'address' => 'required|string|max:255',
         ]);
     
-        $validated['school_id'] = Auth::guard('web')->user()->id;
+        $validated['school_id'] = Auth::id();
     
         if ($request->hasFile('photo')) {
             if ($teacher->photo) {
@@ -114,11 +107,8 @@ class TeacherController extends Controller
             ->with('success', 'Les informations du professeur ont été mises à jour avec succès.');
     }
 
-
-    // Supprime un professeur
     public function destroy(Teacher $teacher)
     {
-        // Supprime la photo si elle existe
         if ($teacher->photo && Storage::disk('public')->exists($teacher->photo)) {
             Storage::disk('public')->delete($teacher->photo);
         }
@@ -127,81 +117,5 @@ class TeacherController extends Controller
         
         return redirect()->route('index-teacher')
             ->with('success', 'Enseignant supprimé avec succès.');
-    }
-
-    // Recherche des professeurs
-    public function search(Request $request)
-    {
-        $query = $request->input('query');
-        
-        $teachers = Teacher::where('school_id', Auth::guard('web')->user()->id)
-            ->where(function($q) use ($query) {
-                $q->where('first_name', 'LIKE', "%{$query}%")
-                  ->orWhere('last_name', 'LIKE', "%{$query}%")
-                  ->orWhere('email', 'LIKE', "%{$query}%")
-                  ->orWhere('subject', 'LIKE', "%{$query}%");
-            })
-            ->paginate(10);
-                
-        return view('teachers.index', compact('teachers', 'query'));
-    }
-
-    // Exporte la liste des professeurs en CSV
-    public function export()
-    {
-        $filename = "teachers-" . date('Y-m-d') . ".csv";
-        $handle = fopen('php://temp', 'w+');
-        
-        // En-têtes du CSV
-        fputcsv($handle, [
-            'ID', 'Prénom', 'Nom', 'Email', 'Téléphone',
-            'Genre', 'Nationalité', 'Années d\'expérience', 'Matière'
-        ]);
-    
-        // Données filtrées par école
-        $teachers = Teacher::where('school_id', Auth::guard('web')->user()->id)->get();
-    
-        foreach ($teachers as $teacher) {
-            fputcsv($handle, [
-                $teacher->id,
-                $teacher->first_name,
-                $teacher->last_name,
-                $teacher->email,
-                $teacher->phone_number,
-                $teacher->gender,
-                $teacher->nationality,
-                $teacher->seniority,
-                $teacher->subject
-            ]);
-        }
-    
-        rewind($handle);
-        $content = stream_get_contents($handle);
-        fclose($handle);
-    
-        return response($content)
-            ->header('Content-Type', 'text/csv')
-            ->header('Content-Disposition', "attachment; filename={$filename}");
-    }
-
-    // Filtre les professeurs par matière
-    public function filterBySubject($subject)
-    {
-        $teachers = Teacher::where('school_id', Auth::guard('web')->user()->id)
-            ->where('subject', $subject)
-            ->orderBy('last_name', 'asc')
-            ->paginate(10);
-                
-        return view('teachers.index', compact('teachers', 'subject'));
-    }
-
-    // Active/désactive un professeur
-    public function toggleStatus(Teacher $teacher)
-    {
-        $teacher->update(['is_active' => !$teacher->is_active]);
-        
-        $status = $teacher->is_active ? 'activé' : 'désactivé';
-        return redirect()->back()
-            ->with('success', "Le statut de l'enseignant a été {$status}.");
     }
 }

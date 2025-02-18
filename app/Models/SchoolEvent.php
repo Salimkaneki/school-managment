@@ -17,7 +17,8 @@ class SchoolEvent extends Model
         'event_date',
         'is_notification',
         'parent_event_id',
-        'read'
+        'read',
+        'school_id'
     ];
 
     protected $casts = [
@@ -43,5 +44,10 @@ class SchoolEvent extends Model
     public function notifications()
     {
         return $this->hasMany(SchoolEvent::class, 'parent_event_id');
+    }
+
+    public function school()
+    {
+        return $this->belongsTo(School::class);
     }
 }

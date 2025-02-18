@@ -111,4 +111,8 @@ class School extends Authenticatable
         return $this->hasMany(Payment::class, 'school_id');
     }
 
+    public function events(){
+        return $this->hasMany(SchoolEvent::class);
+    }
+
 }

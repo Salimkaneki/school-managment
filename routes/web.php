@@ -242,6 +242,7 @@ Route::middleware(['auth'])->group(function () {
         });
 
 
+
         // Routes pour les créneaux horaires (TimeSlots)
         Route::prefix('time-slots')->group(function () {
             Route::get('/', [TimeSlotController::class, 'index'])->name('time-slots.index');

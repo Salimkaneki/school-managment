@@ -14,6 +14,7 @@ class Timetable extends Model
         'teacher_id',
         'course_id',
         'classroom_id',
+        'school_id',
         'type',
         'start_time',
         'end_time',

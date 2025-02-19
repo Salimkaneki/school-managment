@@ -10,7 +10,8 @@ class TimeSlot extends Model
     protected $fillable = [
         'start_time', 
         'end_time', 
-        'is_active'
+        'is_active',
+        'school_id'
     ];
 
     protected $casts = [

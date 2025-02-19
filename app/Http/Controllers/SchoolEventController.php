@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SchoolEvent;
+use App\Models\School;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -34,6 +35,26 @@ class SchoolEventController extends Controller
 
         return redirect()->route('event-list')
             ->with('success', 'Événement créé avec succès.');
+    }
+
+    public function getNotifications()
+    {
+        $school = School::find(Auth::id());
+        
+        // Récupérer uniquement les événements de l'école connectée
+        $recentEvents = SchoolEvent::where('school_id', $school->id)
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+            
+        $unreadCount = SchoolEvent::where('school_id', $school->id)
+            ->where('created_at', '>', $school->last_notification_read ?? now()->subYears(10))
+            ->count();
+
+        return [
+            'recentEvents' => $recentEvents,
+            'unreadCount' => $unreadCount
+        ];
     }
 
     public function show(SchoolEvent $event)

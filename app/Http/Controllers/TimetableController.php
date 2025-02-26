@@ -124,6 +124,7 @@ class TimetableController extends Controller
             'end_time' => $timeSlot->end_time,
             'day' => $request->day,
             'classroom_id' => $request->classroom_id,
+            'school_id' => Auth::id(),
         ]);
     
         return redirect()->route('timetables.index')->with('success', 'Cours ajouté avec succès.');

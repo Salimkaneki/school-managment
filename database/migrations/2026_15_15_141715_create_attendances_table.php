@@ -20,7 +20,7 @@ return new class extends Migration
             $table->boolean('present')->default(false);
             $table->timestamps();
         });
-        
+
     }
 
     /**

@@ -135,10 +135,7 @@ Route::middleware(['auth'])->group(function () {
 
             Route::post('/by-class', [StudentController::class, 'getStudentsByClass'])->name('students-by-class');
 
-            // Route::get('/students-by-class', [StudentController::class, 'showStudentsByClass'])->name('show-students-by-class');
             Route::post('/students-by-class', [StudentController::class, 'getStudentsByClass'])->name('students-by-class');
-
-            Route::post('/download-by-class/{classId}', [StudentController::class, 'downloadByClass'])->name('download-by-class');
 
             Route::delete('/delete/{id}', [StudentController::class, 'destroy'])->name('student.delete');
 

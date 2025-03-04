@@ -150,8 +150,9 @@ class StudentController extends Controller
 
     public function getStudentsByClass(Request $request)
     {
-        $classId = $request->class_id;
-        $schoolId = Auth::user()->school_id; 
+        // Modification : utiliser input() au lieu de requête JSON
+        $classId = $request->input('class_id');
+        $schoolId = Auth::id(); // Utilisez Auth::id() comme dans vos autres méthodes
     
         if (!$classId) {
             return response()->json(['error' => 'Aucune classe sélectionnée.'], 400);

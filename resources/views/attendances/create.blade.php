@@ -55,33 +55,32 @@
     document.getElementById('class_id').addEventListener('change', function() {
         let classId = this.value;
         let studentSelect = document.getElementById('student_id');
-        studentSelect.innerHTML = '<option value="" disabled selected>-- Sélectionnez un élève --</option>'; // Réinitialise la liste des élèves
+        studentSelect.innerHTML = '<option value="" disabled selected>-- Sélectionnez un élève --</option>'; 
 
         if (!classId) {
-            return; // Si aucune classe n'est sélectionnée, ne rien faire
+            return; 
         }
 
         fetch('{{ route("students-by-class") }}', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded',
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
-            body: JSON.stringify({ class_id: classId })
+            body: `class_id=${classId}`
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Erreur réseau.');
+                throw new Error('Erreur lors de la récupération des élèves');
             }
             return response.json();
         })
         .then(data => {
-            if (data.error) {
-                console.error(data.error);
+            if (data.length === 0) {
+                console.log('Aucun élève trouvé');
                 return;
             }
             
-            // Remplir la liste des élèves avec les données reçues
             data.forEach(student => {
                 let option = document.createElement('option');
                 option.value = student.id;
@@ -90,10 +89,10 @@
             });
         })
         .catch(error => {
-            console.error('Erreur lors de la récupération des élèves:', error);
+            console.error('Erreur:', error);
+            alert('Impossible de récupérer les élèves. Veuillez réessayer.');
         });
     });
-
 
     document.getElementById('add-time').addEventListener('click', function() {
         const absenceTimes = document.getElementById('absence-times');

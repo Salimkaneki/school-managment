@@ -70,22 +70,21 @@ class SchoolSeeder extends Seeder
         // ]);
 
         School::create([
-            'name' => 'École Sainte Marie',
-            'type' => 'Collège',
+            'name' => 'École Lumière',
+            'type' => 'Lycée',
             'languages' => json_encode(['Français', 'Anglais']),
-            'teaching_staff_count' => 25,
-            'email' => 'sainte.marie@gest-school.com',
-            'phone' => '+2289023xxxx',
-            'address' => '456, Rue de l’Éducation',
+            'teaching_staff_count' => 40,
+            'email' => 'ecolelumiere@gest-school.com',
+            'phone' => '+2287000xxxx',
+            'address' => '123, Avenue de la Lumière',
             'city' => 'Lomé',
-            'postal_code' => '00001',
-            'username' => 'saintemarie', // Un username unique !
-            'password' => Hash::make('SainteMarie2025###'),
+            'postal_code' => '11111',
+            'username' => 'ecolelumiere',
+            'password' => Hash::make('EcoleLumiere2025#'),
             'has_sports_equipment' => true,
-            'has_library' => false,
+            'has_library' => true,
             'has_computer_room' => true,
             'has_handicap_access' => true,
         ]);
-        
     }
 }

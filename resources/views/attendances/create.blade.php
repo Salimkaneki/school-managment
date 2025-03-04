@@ -55,10 +55,10 @@
     document.getElementById('class_id').addEventListener('change', function() {
         let classId = this.value;
         let studentSelect = document.getElementById('student_id');
-        studentSelect.innerHTML = '<option value="" disabled selected>-- Sélectionnez un élève --</option>'; // Reset student dropdown
+        studentSelect.innerHTML = '<option value="" disabled selected>-- Sélectionnez un élève --</option>'; // Réinitialise la liste des élèves
 
         if (!classId) {
-            return; // If no class selected, do nothing
+            return; // Si aucune classe n'est sélectionnée, ne rien faire
         }
 
         fetch('{{ route("students-by-class") }}', {
@@ -76,6 +76,12 @@
             return response.json();
         })
         .then(data => {
+            if (data.error) {
+                console.error(data.error);
+                return;
+            }
+            
+            // Remplir la liste des élèves avec les données reçues
             data.forEach(student => {
                 let option = document.createElement('option');
                 option.value = student.id;
@@ -84,10 +90,10 @@
             });
         })
         .catch(error => {
-            console.error('Error:', error);
-            alert('Une erreur est survenue lors de la récupération des élèves.');
+            console.error('Erreur lors de la récupération des élèves:', error);
         });
     });
+
 
     document.getElementById('add-time').addEventListener('click', function() {
         const absenceTimes = document.getElementById('absence-times');

@@ -102,7 +102,7 @@ class StudentController extends Controller
             'address' => 'required|string|max:255',
             'place_of_birth' => 'required|string|max:255',
             'class_id' => 'required|exists:class_models,id',
-            'classroom_id' => 'required|exists:classrooms,id', // Ajoutez cette ligne si elle manque
+            'classroom_id' => 'required|exists:classrooms,id', 
             'academic_year_id' => 'required|exists:academic_years,id',
             'gender' => 'required|in:male,female,other',
             'nationality' => 'required|string|max:100',
@@ -147,5 +147,27 @@ class StudentController extends Controller
     
         return response()->json($classrooms);
     }
+
+    public function getStudentsByClass(Request $request)
+    {
+        $classId = $request->class_id;
+        $schoolId = Auth::user()->school_id; 
+    
+        if (!$classId) {
+            return response()->json(['error' => 'Aucune classe sélectionnée.'], 400);
+        }
+    
+        $students = Student::where('class_id', $classId)
+                           ->where('school_id', $schoolId) 
+                           ->get(['id', 'first_name', 'last_name']);
+    
+        if ($students->isEmpty()) {
+            return response()->json(['message' => 'Aucun élève trouvé pour cette classe.'], 404);
+        }
+    
+        return response()->json($students);
+    }
+    
+
 
 }

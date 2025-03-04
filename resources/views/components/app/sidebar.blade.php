@@ -356,6 +356,21 @@
                     <span class="nav-link-text ms-1">Liste des paiements</span>
                 </a>
             </li>
+
+            <li class="nav-item mt-3">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder text-white opacity-6">ÉVÉNEMENTS</h6>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link {{ Route::currentRouteName() == 'events.index' ? 'active' : '' }}" 
+                   href="{{route('events.create')}}">
+                    <div class="icon icon-shape icon-sm px-0 text-center d-flex align-items-center justify-content-center">
+                        <i class="fas fa-calendar-alt text-white"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Événements</span>
+                </a>
+            </li>
+            
         </ul>
     </div>
 

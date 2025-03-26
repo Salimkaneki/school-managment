@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\ClassModel;
 use App\Models\Classroom;
 use App\Models\Student;
+use App\Models\StudentEmergencyContact;
 use App\Models\AcademicYear;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
@@ -33,47 +35,121 @@ class StudentController extends Controller
     }
 
     // Enregistrement d'un élève
+    // public function store(Request $request)
+    // {
+    //     // Récupérer le school_id de l'utilisateur connecté
+    //     $schoolId = Auth::id();
+        
+    //     // Valider les données
+    //     $validatedData = $this->validateStudent($request);
+        
+    //     // Vérifier la capacité de la classe
+    //     if (!$this->checkClassroomCapacity($request->classroom_id)) {
+    //         return back()->withErrors(['classroom_id' => 'Cette salle de classe est pleine.'])->withInput();
+    //     }
+        
+    //     // Ajouter le school_id aux données validées
+    //     $validatedData['school_id'] = $schoolId;
+        
+    //     // Gérer la photo
+    //     $validatedData['photo'] = $this->handlePhotoUpload($request);
+        
+    //     // Encoder les contacts d'urgence
+    //     $validatedData['emergency_contacts'] = json_encode($request->emergency_contacts ?? []);
+        
+    //     // Créer l'étudiant avec toutes les données validées
+    //     Student::create($validatedData);
+        
+    //     return redirect()->route('student-list')->with('success', 'Élève ajouté avec succès.');
+    // }
+
     public function store(Request $request)
     {
-        // Récupérer le school_id de l'utilisateur connecté
-        $schoolId = Auth::id();
-        
-        // Valider les données
-        $validatedData = $this->validateStudent($request);
-        
-        // Vérifier la capacité de la classe
-        if (!$this->checkClassroomCapacity($request->classroom_id)) {
-            return back()->withErrors(['classroom_id' => 'Cette salle de classe est pleine.'])->withInput();
-        }
-        
-        // Ajouter le school_id aux données validées
-        $validatedData['school_id'] = $schoolId;
-        
-        // Gérer la photo
-        $validatedData['photo'] = $this->handlePhotoUpload($request);
-        
-        // Encoder les contacts d'urgence
-        $validatedData['emergency_contacts'] = json_encode($request->emergency_contacts ?? []);
-        
-        // Créer l'étudiant avec toutes les données validées
-        Student::create($validatedData);
-        
-        return redirect()->route('student-list')->with('success', 'Élève ajouté avec succès.');
+        return DB::transaction(function () use ($request) {
+            $schoolId = Auth::id();
+            
+            // Valider les données de l'étudiant
+            $validatedData = $this->validateStudent($request);
+            
+            // Vérifier la capacité de la salle de classe
+            if (!$this->checkClassroomCapacity($request->classroom_id)) {
+                return back()->withErrors(['classroom_id' => 'Cette salle de classe est pleine.'])->withInput();
+            }
+            
+            $validatedData['school_id'] = $schoolId;
+            $validatedData['photo'] = $this->handlePhotoUpload($request);
+            
+            // Créer l'étudiant
+            $student = Student::create($validatedData);
+            
+            // Gérer les contacts d'urgence
+            $this->createEmergencyContacts($student, $request->emergency_contacts);
+            
+            return redirect()->route('student-list')->with('success', 'Élève ajouté avec succès.');
+        });
     }
 
     // Mise à jour d'un élève
+    // public function update(Request $request, $id)
+    // {
+    // // Récupérer le school_id de l'utilisateur connecté
+    //     $schoolId = Auth::id();
+    //     $student = Student::where('id', $id)->where('school_id', $schoolId)->firstOrFail();
+                
+    //     $validatedData = $this->validateStudent($request, $student);
+    //     $validatedData['photo'] = $this->handlePhotoUpload($request, $student);
+    //     $validatedData['emergency_contacts'] = json_encode($request->emergency_contacts ?? []);
+        
+    //     $student->update($validatedData);
+    //     return redirect()->route('student-list')->with('success', 'Élève modifié avec succès.');
+    // }
+
     public function update(Request $request, $id)
     {
-    // Récupérer le school_id de l'utilisateur connecté
-        $schoolId = Auth::id();
-        $student = Student::where('id', $id)->where('school_id', $schoolId)->firstOrFail();
-                
-        $validatedData = $this->validateStudent($request, $student);
-        $validatedData['photo'] = $this->handlePhotoUpload($request, $student);
-        $validatedData['emergency_contacts'] = json_encode($request->emergency_contacts ?? []);
-        
-        $student->update($validatedData);
-        return redirect()->route('student-list')->with('success', 'Élève modifié avec succès.');
+        return DB::transaction(function () use ($request, $id) {
+            $schoolId = Auth::id();
+            $student = Student::where('id', $id)->where('school_id', $schoolId)->firstOrFail();
+            
+            $validatedData = $this->validateStudent($request, $student);
+            $validatedData['photo'] = $this->handlePhotoUpload($request, $student);
+            
+            $student->update($validatedData);
+            
+            // Mettre à jour les contacts d'urgence
+            // Supprimer les anciens contacts
+            $student->emergencyContacts()->delete();
+            
+            // Créer de nouveaux contacts
+            $this->createEmergencyContacts($student, $request->emergency_contacts);
+            
+            return redirect()->route('student-list')->with('success', 'Élève modifié avec succès.');
+        });
+    }
+
+    private function createEmergencyContacts(Student $student, $contactsData)
+    {
+        if (empty($contactsData)) {
+            return;
+        }
+
+        // Types de contacts prédéfinis
+        $contactTypes = ['father', 'mother', 'guardian'];
+
+        foreach ($contactsData as $index => $contactData) {
+            // Vérifier que les données essentielles sont présentes
+            if (!empty($contactData['name']) && !empty($contactData['phone'])) {
+                // Déterminer le type de contact
+                $type = $contactTypes[$index] ?? 'guardian';
+
+                StudentEmergencyContact::create([
+                    'student_id' => $student->id,
+                    'name' => $contactData['name'],
+                    'country_code' => $contactData['country_code'] ?? '+225', // Code par défaut si non spécifié
+                    'phone_number' => $contactData['phone'],
+                    'type' => $type
+                ]);
+            }
+        }
     }
 
     // Suppression d'un élève

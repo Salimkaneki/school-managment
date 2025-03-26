@@ -223,35 +223,76 @@
                                                 </div>
                                             </div>
                                             
-                                            <div class="col-md-6">
-                                                <h6>Contacts d'Urgence</h6>
-                                                
-                                                <!-- Contact Père/Tuteur -->
-                                                <div class="mb-3">
-                                                    <label class="form-label">Nom du Père | Tuteur</label>
-                                                    <input type="text" class="form-control" name="emergency_contacts[0][name]" 
-                                                           value="{{ old('emergency_contacts.0.name') }}" placeholder="Nom du Père | Tuteur">
-                                                    <label class="form-label mt-2">Téléphone du Père | Tuteur</label>
-                                                    <input type="text" class="form-control" name="emergency_contacts[0][phone]" 
-                                                           value="{{ old('emergency_contacts.0.phone') }}" placeholder="Téléphone du Père | Tuteur">
-                                                    <label class="form-label mt-2">Email du Père | Tuteur</label>
-                                                    <input type="email" class="form-control" name="father_email" 
-                                                           value="{{ old('father_email') }}" placeholder="Email du Père | Tuteur">
+                                            <!-- Section: Contacts d'Urgence -->
+                                            <div class="card mb-4">
+                                                <div class="card-header">
+                                                    <h6 class="card-title mb-0">Contacts d'Urgence</h6>
                                                 </div>
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <!-- Contact du Père / Tuteur -->
+                                                        <div class="col-md-6 mb-3">
+                                                            <label class="form-label">Nom du Père | Tuteur *</label>
+                                                            <input type="text" class="form-control" name="emergency_contacts[0][name]" 
+                                                                value="{{ old('emergency_contacts.0.name') }}" placeholder="Nom du Père | Tuteur" required>
 
-                                                <!-- Contact Mère/Tutrice -->
-                                                <div class="mb-3">
-                                                    <label class="form-label">Nom de la Mère | Tutrice</label>
-                                                    <input type="text" class="form-control" name="emergency_contacts[1][name]" 
-                                                           value="{{ old('emergency_contacts.1.name') }}" placeholder="Nom de la Mère | Tutrice">
-                                                    <label class="form-label mt-2">Téléphone de la Mère | Tutrice</label>
-                                                    <input type="text" class="form-control" name="emergency_contacts[1][phone]" 
-                                                           value="{{ old('emergency_contacts.1.phone') }}" placeholder="Téléphone de la Mère | Tutrice">
-                                                    <label class="form-label mt-2">Email de la Mère | Tutrice</label>
-                                                    <input type="email" class="form-control" name="mother_email" 
-                                                           value="{{ old('mother_email') }}" placeholder="Email de la Mère | Tutrice">
+                                                            <label class="form-label mt-2">Téléphone du Père | Tuteur *</label>
+                                                            <div class="input-group">
+                                                                <select class="form-select" name="emergency_contacts[0][country_code]" required>
+                                                                    <option value="+225">🇨🇮 Côte d'Ivoire (+225)</option>
+                                                                    <option value="+229">🇧🇯 Bénin (+229)</option>
+                                                                    <option value="+226">🇧🇫 Burkina Faso (+226)</option>
+                                                                    <option value="+223">🇲🇱 Mali (+223)</option>
+                                                                    <option value="+227">🇳🇪 Niger (+227)</option>
+                                                                    <option value="+234">🇳🇬 Nigéria (+234)</option>
+                                                                    <option value="+228">🇹🇬 Togo (+228)</option>
+                                                                    <option value="+220">🇬🇲 Gambie (+220)</option>
+                                                                    <option value="+221">🇸🇳 Sénégal (+221)</option>
+                                                                    <option value="+232">🇸🇱 Sierra Leone (+232)</option>
+                                                                    <option value="+233">🇬🇭 Ghana (+233)</option>
+                                                                    <option value="+231">🇱🇷 Libéria (+231)</option>
+                                                                    <option value="+224">🇬🇳 Guinée (+224)</option>
+                                                                    <option value="+245">🇬🇼 Guinée-Bissau (+245)</option>
+                                                                    <option value="+216">🇲🇷 Mauritanie (+216)</option>
+                                                                </select>
+                                                                <input type="text" class="form-control" name="emergency_contacts[0][phone]" 
+                                                                    value="{{ old('emergency_contacts.0.phone') }}" placeholder="Numéro de téléphone" required>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Contact de la Mère / Tutrice -->
+                                                        <div class="col-md-6 mb-3">
+                                                            <label class="form-label">Nom de la Mère | Tutrice *</label>
+                                                            <input type="text" class="form-control" name="emergency_contacts[1][name]" 
+                                                                value="{{ old('emergency_contacts.1.name') }}" placeholder="Nom de la Mère | Tutrice" required>
+
+                                                            <label class="form-label mt-2">Téléphone de la Mère | Tutrice *</label>
+                                                            <div class="input-group">
+                                                                <select class="form-select" name="emergency_contacts[1][country_code]" required>
+                                                                    <option value="+225">🇨🇮 Côte d'Ivoire (+225)</option>
+                                                                    <option value="+229">🇧🇯 Bénin (+229)</option>
+                                                                    <option value="+226">🇧🇫 Burkina Faso (+226)</option>
+                                                                    <option value="+223">🇲🇱 Mali (+223)</option>
+                                                                    <option value="+227">🇳🇪 Niger (+227)</option>
+                                                                    <option value="+234">🇳🇬 Nigéria (+234)</option>
+                                                                    <option value="+228">🇹🇬 Togo (+228)</option>
+                                                                    <option value="+220">🇬🇲 Gambie (+220)</option>
+                                                                    <option value="+221">🇸🇳 Sénégal (+221)</option>
+                                                                    <option value="+232">🇸🇱 Sierra Leone (+232)</option>
+                                                                    <option value="+233">🇬🇭 Ghana (+233)</option>
+                                                                    <option value="+231">🇱🇷 Libéria (+231)</option>
+                                                                    <option value="+224">🇬🇳 Guinée (+224)</option>
+                                                                    <option value="+245">🇬🇼 Guinée-Bissau (+245)</option>
+                                                                    <option value="+216">🇲🇷 Mauritanie (+216)</option>
+                                                                </select>
+                                                                <input type="text" class="form-control" name="emergency_contacts[1][phone]" 
+                                                                    value="{{ old('emergency_contacts.1.phone') }}" placeholder="Numéro de téléphone" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>

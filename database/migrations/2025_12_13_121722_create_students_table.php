@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('nationality'); 
             $table->foreignId('class_id')->constrained('class_models')->onDelete('cascade');
             $table->string('previous_school_name')->nullable();
-            $table->json('emergency_contacts')->nullable(); 
+            // $table->json('emergency_contacts')->nullable(); 
             $table->string('photo')->nullable();
             $table->unsignedBigInteger('academic_year_id')->nullable();
             $table->foreign('academic_year_id')->references('id')->on('academic_years')->onDelete('set null');

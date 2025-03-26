@@ -61,5 +61,9 @@ class Student extends Model
         return $this->belongsTo(School::class, 'school_id');
     }
     
+    public function emergencyContacts()
+    {
+        return $this->hasMany(StudentEmergencyContact::class);
+    }
 
 }

@@ -1,6 +1,5 @@
 <x-app-layout>
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
-        {{-- @include('components.app.admin_sidebar') --}}
         <x-app.navbar />
 
         <div class="container-fluid py-4 px-5">
@@ -16,7 +15,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="card-body">
                             <form>
                                 <div class="row">
@@ -28,15 +27,36 @@
                                         </select>
                                     </div>
                                     <div class="col-md-6 mb-3">
-                                        <label class="form-label">Groupe de destinataires</label>
-                                        <select class="form-select" multiple>
-                                            <option>Tous les administrateurs</option>
-                                            <option>Enseignants</option>
-                                            <option>Parents</option>
-                                            <option>Élèves</option>
+                                        <label class="form-label">Classe</label>
+                                        <select class="form-select">
+                                            <option value="">Toutes les classes</option>
+                                            <option value="1">Classe A</option>
+                                            <option value="2">Classe B</option>
                                         </select>
                                     </div>
                                 </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Parents d'élèves</label>
+                                    <select class="form-select form-select-sm" multiple>
+                                        <option value="+22893522532">Diop Anta (+22893522532)</option>
+                                        <option value="+22870454663">Hyara Jeanne (+22870454663)</option>
+                                    </select>
+                                </div>
+
+                                {{-- <div class="mb-3">
+                                    <label class="form-label">Numéro spécifique</label>
+                                    <div class="input-group">
+                                        <select class="form-select w-auto" id="countryCode">
+                                            <option value="+228">🇹🇬 +228</option>
+                                            <option value="+229">🇧🇯 +229</option>
+                                            <option value="+225">🇨🇮 +225</option>
+                                        </select>
+                                        <input type="tel" class="form-control" placeholder="Numéro de téléphone" id="phoneNumber" style="max-width: 200px;">
+                                        <button type="button" class="btn btn-success" id="addNumber">Ajouter</button>
+                                    </div>
+                                    <ul class="list-group mt-2" id="numberList"></ul>
+                                </div> --}}
 
                                 <div class="mb-3">
                                     <label class="form-label">Numéro spécifique</label>
@@ -45,24 +65,8 @@
 
                                 <div class="mb-3">
                                     <label class="form-label">Message</label>
-                                    <textarea class="form-control" rows="4" placeholder="Rédigez votre message ici..." maxlength="1000"></textarea>
+                                    <textarea class="form-control" rows="4" id="messageInput" maxlength="1000"></textarea>
                                     <small class="text-muted">Caractères restants: <span id="charCount">1000</span></small>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6 mb-3 whatsapp-only" style="display: none;">
-                                        <label class="form-label">Pièces jointes (WhatsApp uniquement)</label>
-                                        <input type="file" class="form-control" accept="image/*,video/*">
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Modèle de message</label>
-                                        <select class="form-select">
-                                            <option>Sélectionner un modèle</option>
-                                            <option>Rappel réunion</option>
-                                            <option>Information générale</option>
-                                            <option>Alerte urgente</option>
-                                        </select>
-                                    </div>
                                 </div>
 
                                 <div class="d-flex justify-content-end mt-3">
@@ -78,4 +82,12 @@
 
         <x-app.footer />
     </main>
+
+    <script>
+        document.getElementById("messageInput").addEventListener("input", function () {
+            let maxLength = 1000;
+            let currentLength = this.value.length;
+            document.getElementById("charCount").textContent = maxLength - currentLength;
+        });
+    </script>
 </x-app-layout>

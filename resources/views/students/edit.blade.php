@@ -69,6 +69,19 @@
                                                 </select>
                                                 @error('class_id')<div class="text-danger">{{ $message }}</div>@enderror
                                             </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label for="classroom_id" class="form-label">Salle de classe *</label>
+                                                <select class="form-control @error('classroom_id') is-invalid @enderror" id="classroom_id" name="classroom_id" required>
+                                                    <option value="" disabled>Sélectionnez une salle de classe</option>
+                                                    @foreach ($classrooms as $classroom)
+                                                        <option value="{{ $classroom->id }}" {{ $student->classroom_id == $classroom->id ? 'selected' : '' }}>
+                                                            {{ $classroom->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                @error('classroom_id')<div class="text-danger">{{ $message }}</div>@enderror
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -196,28 +209,39 @@
                                             
                                             <div class="col-md-6">
                                                 <h6>Contacts d'Urgence</h6>
-                                                @php
-                                                    $emergencyContacts = json_decode($student->emergency_contacts, true) ?? [[], []];
-                                                @endphp
                                                 
                                                 <!-- Contact Père/Tuteur -->
                                                 <div class="mb-3">
-                                                    <label class="form-label">Nom du Père | Tuteur</label>
+                                                    <label class="form-label">Nom du Père | Tuteur *</label>
                                                     <input type="text" class="form-control" name="emergency_contacts[0][name]" 
-                                                        value="{{ $emergencyContacts[0]['name'] ?? '' }}">
-                                                    <label class="form-label mt-2">Téléphone du Père | Tuteur</label>
-                                                    <input type="text" class="form-control" name="emergency_contacts[0][phone]" 
-                                                        value="{{ $emergencyContacts[0]['phone'] ?? '' }}">
+                                                        value="{{ $student->emergencyContacts->where('type', 'father')->first()->name ?? '' }}" required>
+
+                                                    <label class="form-label mt-2">Téléphone du Père | Tuteur *</label>
+                                                    <div class="input-group">
+                                                        <select class="form-select" name="emergency_contacts[0][country_code]" required>
+                                                            <option value="+225" {{ isset($student->emergencyContacts) && $student->emergencyContacts->where('type', 'father')->first()->country_code == '+225' ? 'selected' : '' }}>🇨🇮 Côte d'Ivoire (+225)</option>
+                                                            <!-- Ajoutez les autres pays comme dans votre formulaire de création -->
+                                                        </select>
+                                                        <input type="text" class="form-control" name="emergency_contacts[0][phone]" 
+                                                            value="{{ $student->emergencyContacts->where('type', 'father')->first()->phone_number ?? '' }}" required>
+                                                    </div>
                                                 </div>
 
                                                 <!-- Contact Mère/Tutrice -->
                                                 <div class="mb-3">
-                                                    <label class="form-label">Nom de la Mère | Tutrice</label>
+                                                    <label class="form-label">Nom de la Mère | Tutrice *</label>
                                                     <input type="text" class="form-control" name="emergency_contacts[1][name]" 
-                                                        value="{{ $emergencyContacts[1]['name'] ?? '' }}">
-                                                    <label class="form-label mt-2">Téléphone de la Mère | Tutrice</label>
-                                                    <input type="text" class="form-control" name="emergency_contacts[1][phone]" 
-                                                        value="{{ $emergencyContacts[1]['phone'] ?? '' }}">
+                                                        value="{{ $student->emergencyContacts->where('type', 'mother')->first()->name ?? '' }}" required>
+
+                                                    <label class="form-label mt-2">Téléphone de la Mère | Tutrice *</label>
+                                                    <div class="input-group">
+                                                        <select class="form-select" name="emergency_contacts[1][country_code]" required>
+                                                            <option value="+225" {{ isset($student->emergencyContacts) && $student->emergencyContacts->where('type', 'mother')->first()->country_code == '+225' ? 'selected' : '' }}>🇨🇮 Côte d'Ivoire (+225)</option>
+                                                            <!-- Ajoutez les autres pays comme dans votre formulaire de création -->
+                                                        </select>
+                                                        <input type="text" class="form-control" name="emergency_contacts[1][phone]" 
+                                                            value="{{ $student->emergencyContacts->where('type', 'mother')->first()->phone_number ?? '' }}" required>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -250,6 +274,56 @@
                 }
                 reader.readAsDataURL(file);
             }
+        });
+
+        document.querySelector('form').addEventListener('submit', function(e) {
+        
+            // Vérifier que les champs nom et téléphone sont remplis
+            const fatherName = document.querySelector('input[name="emergency_contacts[0][name]"]').value;
+            const fatherPhone = document.querySelector('input[name="emergency_contacts[0][phone]"]').value;
+            const motherName = document.querySelector('input[name="emergency_contacts[1][name]"]').value;
+            const motherPhone = document.querySelector('input[name="emergency_contacts[1][phone]"]').value;
+            
+            if (!fatherName || !fatherPhone || !motherName || !motherPhone) {
+                e.preventDefault();
+                alert('Veuillez remplir tous les champs des contacts d\'urgence');
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const classSelect = document.getElementById('class_id');
+            const classroomSelect = document.getElementById('classroom_id');
+
+            classSelect.addEventListener('change', function() {
+                const classId = this.value;
+                classroomSelect.disabled = true;
+                classroomSelect.innerHTML = '<option value="">Chargement des salles...</option>';
+
+                if (classId) {
+                    fetch(`/getClassrooms/${classId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            classroomSelect.innerHTML = '<option value="">Sélectionnez une salle</option>';
+                            
+                            data.forEach(classroom => {
+                                const option = document.createElement('option');
+                                option.value = classroom.id;
+                                option.textContent = `${classroom.name} (Places disponibles: ${classroom.available_seats}/${classroom.capacity})`;
+                                classroomSelect.appendChild(option);
+                            });
+                            
+                            classroomSelect.disabled = false;
+                        })
+                        .catch(error => {
+                            console.error('Erreur:', error);
+                            classroomSelect.innerHTML = '<option value="">Erreur de chargement des salles</option>';
+                            classroomSelect.disabled = true;
+                        });
+                } else {
+                    classroomSelect.innerHTML = '<option value="">Sélectionnez d\'abord une classe</option>';
+                    classroomSelect.disabled = true;
+                }
+            });
         });
     </script>
 </x-app-layout>

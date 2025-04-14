@@ -10,6 +10,7 @@ use App\Models\StudentEmergencyContact;
 use App\Models\AcademicYear;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
@@ -34,7 +35,6 @@ class StudentController extends Controller
         return view('students.create', compact('classes', 'academicYears'));
     }
 
-
     public function store(Request $request)
     {
         return DB::transaction(function () use ($request) {
@@ -54,28 +54,28 @@ class StudentController extends Controller
             // Créer l'étudiant
             $student = Student::create($validatedData);
             
-            // Gérer les contacts d'urgence
-            $this->createEmergencyContacts($student, $request->emergency_contacts);
+            // Gérer les contacts d'urgence avec la nouvelle fonction
+            $this->handleEmergencyContacts($student, $request->emergency_contacts);
             
             return redirect()->route('student-list')->with('success', 'Élève ajouté avec succès.');
         });
-    
     }
 
     public function edit($id)
     {
         $schoolId = Auth::id();
-        $student = Student::where('id', $id)->where('school_id', $schoolId)->firstOrFail();
+        $student = Student::where('id', $id)
+            ->where('school_id', $schoolId)
+            ->with('emergencyContacts') // Charger les contacts d'urgence
+            ->firstOrFail();
+
         $classes = ClassModel::where('school_id', $schoolId)->get();
         $academicYears = AcademicYear::all();
         $classrooms = Classroom::where('class_model_id', $student->class_id)->get();
-        $emergencyContacts = $student->emergencyContacts;
     
-        return view('students.edit', compact('student', 'classes', 'academicYears', 'classrooms', 'emergencyContacts'));
+        return view('students.edit', compact('student', 'classes', 'academicYears', 'classrooms'));
     }
     
-
-
     public function update(Request $request, $id)
     {
         return DB::transaction(function () use ($request, $id) {
@@ -87,39 +87,62 @@ class StudentController extends Controller
             
             $student->update($validatedData);
             
-            // Mettre à jour les contacts d'urgence
-            // Supprimer les anciens contacts
-            $student->emergencyContacts()->delete();
-            
-            // Créer de nouveaux contacts
-            $this->createEmergencyContacts($student, $request->emergency_contacts);
+            // Utiliser la méthode unifiée pour gérer les contacts d'urgence
+            $this->handleEmergencyContacts($student, $request->emergency_contacts);
             
             return redirect()->route('student-list')->with('success', 'Élève modifié avec succès.');
         });
     }
 
-    private function createEmergencyContacts(Student $student, $contactsData)
+    // Méthode unifiée pour gérer les contacts d'urgence (création et mise à jour)
+    private function handleEmergencyContacts(Student $student, $contactsData)
     {
+        // Supprimer les contacts existants si c'est une mise à jour
+        $student->emergencyContacts()->delete();
+        
         if (empty($contactsData)) {
+            Log::info('Aucune donnée de contact fournie');
             return;
         }
+
+        Log::info('Données de contact reçues:', ['data' => $contactsData]);
 
         // Types de contacts prédéfinis
         $contactTypes = ['father', 'mother', 'guardian'];
 
         foreach ($contactsData as $index => $contactData) {
-            // Vérifier que les données essentielles sont présentes
-            if (!empty($contactData['name']) && !empty($contactData['phone'])) {
-                // Déterminer le type de contact
-                $type = $contactTypes[$index] ?? 'guardian';
+            try {
+                // Vérifier que les données essentielles sont présentes
+                if (!empty($contactData['name']) && !empty($contactData['phone'])) {
+                    // Déterminer le type de contact
+                    $type = $contactTypes[$index] ?? 'guardian';
 
-                StudentEmergencyContact::create([
-                    'student_id' => $student->id,
-                    'name' => $contactData['name'],
-                    'country_code' => $contactData['country_code'] ?? '+225', // Code par défaut si non spécifié
-                    'phone_number' => $contactData['phone'],
-                    'type' => $type
+                    Log::info('Création contact d\'urgence:', [
+                        'student_id' => $student->id,
+                        'class_id' => $student->class_id,
+                        'name' => $contactData['name'],
+                        'country_code' => $contactData['country_code'] ?? '+225',
+                        'phone' => $contactData['phone'],
+                        'type' => $type
+                    ]);
+
+                    StudentEmergencyContact::create([
+                        'student_id' => $student->id,
+                        'class_id' => $student->class_id,
+                        'name' => $contactData['name'],
+                        'country_code' => $contactData['country_code'] ?? '+225',
+                        'phone_number' => $contactData['phone'],
+                        'type' => $type
+                    ]);
+                } else {
+                    Log::warning('Données de contact incomplètes', ['data' => $contactData]);
+                }
+            } catch (\Exception $e) {
+                Log::error('Erreur lors de la création du contact d\'urgence', [
+                    'error' => $e->getMessage(),
+                    'data' => $contactData
                 ]);
+                throw $e; // Relancer l'exception pour que la transaction échoue
             }
         }
     }
@@ -134,7 +157,12 @@ class StudentController extends Controller
             Storage::disk('public')->delete($student->photo);
         }
         
+        // Supprimer d'abord les contacts d'urgence pour éviter les violations de clé étrangère
+        $student->emergencyContacts()->delete();
+        
+        // Puis supprimer l'étudiant
         $student->delete();
+        
         return redirect()->route('student-list')->with('success', 'Élève supprimé avec succès.');
     }
 
@@ -155,6 +183,10 @@ class StudentController extends Controller
             'gender' => 'required|in:male,female,other',
             'nationality' => 'required|string|max:100',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            // Validation pour les contacts d'urgence
+            'emergency_contacts' => 'required|array|min:2',
+            'emergency_contacts.*.name' => 'required|string|max:255',
+            'emergency_contacts.*.phone' => 'required|string|max:20',
         ]);
     }
 
@@ -198,9 +230,9 @@ class StudentController extends Controller
 
     public function getStudentsByClass(Request $request)
     {
-        // Modification : utiliser input() au lieu de requête JSON
+        // Utiliser input() au lieu de requête JSON
         $classId = $request->input('class_id');
-        $schoolId = Auth::id(); // Utilisez Auth::id() comme dans vos autres méthodes
+        $schoolId = Auth::id();
     
         if (!$classId) {
             return response()->json(['error' => 'Aucune classe sélectionnée.'], 400);
@@ -216,7 +248,4 @@ class StudentController extends Controller
     
         return response()->json($students);
     }
-    
-
-
 }

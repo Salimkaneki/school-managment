@@ -69,7 +69,7 @@ class SchoolSeeder extends Seeder
         //     'has_handicap_access' => true,
         // ]);
 
-        School::create([
+        School::create(attributes: attributes: [
             'name' => 'École Lumière',
             'type' => 'Lycée',
             'languages' => json_encode(['Français', 'Anglais']),

@@ -65,5 +65,4 @@ class Student extends Model
     {
         return $this->hasMany(StudentEmergencyContact::class);
     }
-
 }

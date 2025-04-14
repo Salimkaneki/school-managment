@@ -221,21 +221,6 @@
                                     </div>
                                 </div>
 
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="is_active" class="form-label">Statut</label>
-                                        <select class="form-control @error('is_active') is-invalid @enderror" 
-                                                id="is_active" 
-                                                name="is_active">
-                                            <option value="1" {{ old('is_active', $teacher->is_active) ? 'selected' : '' }}>Actif</option>
-                                            <option value="0" {{ old('is_active', $teacher->is_active) ? '' : 'selected' }}>Inactif</option>
-                                        </select>
-                                        @error('is_active')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-
                                 <div class="row">
                                     <div class="col-12 d-flex justify-content-end gap-2">
                                         <a href="{{ route('show-teacher', $teacher) }}" class="btn btn-secondary">Annuler</a>

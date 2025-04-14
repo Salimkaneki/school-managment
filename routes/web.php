@@ -139,7 +139,6 @@ Route::middleware(['auth'])->group(function () {
 
             Route::delete('/delete/{id}', [StudentController::class, 'destroy'])->name('student.delete');
 
-            Route::get('/edit/{id}', [StudentController::class, 'edit'])->name('student.edit');
             Route::put('/update/{id}', [StudentController::class, 'update'])->name('student.update');
         });
 

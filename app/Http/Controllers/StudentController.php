@@ -34,34 +34,6 @@ class StudentController extends Controller
         return view('students.create', compact('classes', 'academicYears'));
     }
 
-    // Enregistrement d'un élève
-    // public function store(Request $request)
-    // {
-    //     // Récupérer le school_id de l'utilisateur connecté
-    //     $schoolId = Auth::id();
-        
-    //     // Valider les données
-    //     $validatedData = $this->validateStudent($request);
-        
-    //     // Vérifier la capacité de la classe
-    //     if (!$this->checkClassroomCapacity($request->classroom_id)) {
-    //         return back()->withErrors(['classroom_id' => 'Cette salle de classe est pleine.'])->withInput();
-    //     }
-        
-    //     // Ajouter le school_id aux données validées
-    //     $validatedData['school_id'] = $schoolId;
-        
-    //     // Gérer la photo
-    //     $validatedData['photo'] = $this->handlePhotoUpload($request);
-        
-    //     // Encoder les contacts d'urgence
-    //     $validatedData['emergency_contacts'] = json_encode($request->emergency_contacts ?? []);
-        
-    //     // Créer l'étudiant avec toutes les données validées
-    //     Student::create($validatedData);
-        
-    //     return redirect()->route('student-list')->with('success', 'Élève ajouté avec succès.');
-    // }
 
     public function store(Request $request)
     {
@@ -87,22 +59,22 @@ class StudentController extends Controller
             
             return redirect()->route('student-list')->with('success', 'Élève ajouté avec succès.');
         });
+    
     }
 
-    // Mise à jour d'un élève
-    // public function update(Request $request, $id)
-    // {
-    // // Récupérer le school_id de l'utilisateur connecté
-    //     $schoolId = Auth::id();
-    //     $student = Student::where('id', $id)->where('school_id', $schoolId)->firstOrFail();
-                
-    //     $validatedData = $this->validateStudent($request, $student);
-    //     $validatedData['photo'] = $this->handlePhotoUpload($request, $student);
-    //     $validatedData['emergency_contacts'] = json_encode($request->emergency_contacts ?? []);
-        
-    //     $student->update($validatedData);
-    //     return redirect()->route('student-list')->with('success', 'Élève modifié avec succès.');
-    // }
+    public function edit($id)
+    {
+        $schoolId = Auth::id();
+        $student = Student::where('id', $id)->where('school_id', $schoolId)->firstOrFail();
+        $classes = ClassModel::where('school_id', $schoolId)->get();
+        $academicYears = AcademicYear::all();
+        $classrooms = Classroom::where('class_model_id', $student->class_id)->get();
+        $emergencyContacts = $student->emergencyContacts;
+    
+        return view('students.edit', compact('student', 'classes', 'academicYears', 'classrooms', 'emergencyContacts'));
+    }
+    
+
 
     public function update(Request $request, $id)
     {

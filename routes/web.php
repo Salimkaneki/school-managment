@@ -438,3 +438,24 @@ Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name
     });
 
 
+    // use App\Http\Controllers\CommunicationController;
+
+    // Route::get('/communications/create', [CommunicationController::class, 'create'])->name('communications.create');
+    // Route::post('/communications', [CommunicationController::class, 'store'])->name('communications.store');
+    // Route::get('/test-twilio', [CommunicationController::class, 'testTwilioConnection']);
+
+    // // Route::get('/test-twilio', function() {
+    // //     try {
+    // //         $communicationService = new \App\Services\CommunicationService();
+    // //         $result = $communicationService->testConnection();
+    // //         return response()->json([
+    // //             'success' => $result,
+    // //             'message' => $result ? 'Connexion réussie' : 'Échec de connexion'
+    // //         ]);
+    // //     } catch (\Exception $e) {
+    // //         return response()->json([
+    // //             'success' => false,
+    // //             'message' => $e->getMessage()
+    // //         ]);
+    // //     }
+    // // });

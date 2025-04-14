@@ -190,23 +190,21 @@
                                         <label for="nationality" class="form-label">
                                             <i class="fas fa-globe me-2 text-black"></i>Nationalité
                                         </label>
-                                        <select 
-                                            class="form-select @error('nationality') is-invalid @enderror" 
+                                        <input 
+                                            type="text" 
+                                            class="form-control @error('nationality') is-invalid @enderror" 
                                             id="nationality" 
                                             name="nationality" 
+                                            value="{{ old('nationality') }}" 
+                                            placeholder="Entrez votre nationalité" 
                                             required
                                         >
-                                            <option value="" disabled selected>Choisissez une nationalité</option>
-                                            <option value="Togo" {{ old('nationality') == 'Togo' ? 'selected' : '' }}>Togo</option>
-                                            <option value="Bénin" {{ old('nationality') == 'Bénin' ? 'selected' : '' }}>Bénin</option>
-                                            <option value="Cameroun" {{ old('nationality') == 'Cameroun' ? 'selected' : '' }}>Cameroun</option>
-                                            <option value="Ghana" {{ old('nationality') == 'Ghana' ? 'selected' : '' }}>Ghana</option>
-                                            <option value="Sénégal" {{ old('nationality') == 'Sénégal' ? 'selected' : '' }}>Sénégal</option>
-                                        </select>
+                                    
                                         @error('nationality')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
+                                    
 
                                     <div class="col-md-6">
                                         <label for="seniority" class="form-label">

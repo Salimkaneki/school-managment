@@ -33,43 +33,43 @@ class SchoolSeeder extends Seeder
         //     'has_handicap_access' => false,
         // ]);
 
-        // School::create([
-        //     'name' => 'École Les Moineaux',
-        //     'type' => 'École primaire',
-        //     'languages' => json_encode(['Français']),
-        //     'teaching_staff_count' => 20,
-        //     'email' => 'moineaux@example.com',
-        //     'phone' => '+2287053xxxx',
-        //     'address' => '456, Avenue des Oiseaux',
-        //     'city' => 'Lomé',
-        //     'postal_code' => '00000',
-        //     'username' => 'moineaux',
-        //     'password' => Hash::make('Moineaux2025@'),
-        //     'has_sports_equipment' => true,
-        //     'has_library' => true,
-        //     'has_computer_room' => false,
-        //     'has_handicap_access' => false,
-        // ]);
+        School::create([
+            'name' => 'École Les Moineaux',
+            'type' => 'École primaire',
+            'languages' => json_encode(['Français']),
+            'teaching_staff_count' => 20,
+            'email' => 'moineaux@example.com',
+            'phone' => '+2287053xxxx',
+            'address' => '456, Avenue des Oiseaux',
+            'city' => 'Lomé',
+            'postal_code' => '00000',
+            'username' => 'moineaux',
+            'password' => Hash::make('Moineaux2025@'),
+            'has_sports_equipment' => true,
+            'has_library' => true,
+            'has_computer_room' => false,
+            'has_handicap_access' => false,
+        ]);
 
-        // School::create([
-        //     'name' => 'École Divine Grace',
-        //     'type' => 'École primaire',
-        //     'languages' => json_encode(['Français', 'Anglais']),
-        //     'teaching_staff_count' => 30,
-        //     'email' => 'divine.grace@example.com',
-        //     'phone' => '+2287053xxxx',
-        //     'address' => '789, Boulevard de la Grâce',
-        //     'city' => 'Lomé',
-        //     'postal_code' => '00000',
-        //     'username' => 'divinegrace',
-        //     'password' => Hash::make('DivineGrace2025#'),
-        //     'has_sports_equipment' => true,
-        //     'has_library' => true,
-        //     'has_computer_room' => true,
-        //     'has_handicap_access' => true,
-        // ]);
+        School::create([
+            'name' => 'École Divine Grace',
+            'type' => 'École primaire',
+            'languages' => json_encode(['Français', 'Anglais']),
+            'teaching_staff_count' => 30,
+            'email' => 'divine.grace@example.com',
+            'phone' => '+2287053xxxx',
+            'address' => '789, Boulevard de la Grâce',
+            'city' => 'Lomé',
+            'postal_code' => '00000',
+            'username' => 'divinegrace',
+            'password' => Hash::make('DivineGrace2025#'),
+            'has_sports_equipment' => true,
+            'has_library' => true,
+            'has_computer_room' => true,
+            'has_handicap_access' => true,
+        ]);
 
-        School::create(attributes: attributes: [
+        School::create( [
             'name' => 'École Lumière',
             'type' => 'Lycée',
             'languages' => json_encode(['Français', 'Anglais']),

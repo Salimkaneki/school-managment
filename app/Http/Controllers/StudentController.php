@@ -41,18 +41,54 @@ class StudentController extends Controller
             $schoolId = Auth::id();
             
             // Valider les données de l'étudiant
-            $validatedData = $this->validateStudent($request);
+            $validatedData = $request->validate([
+                'first_name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
+                'email' => 'required|email|unique:students,email',
+                'date_of_birth' => 'required|date',
+                'phone_number' => 'nullable|string|max:20',
+                'address' => 'required|string|max:255',
+                'place_of_birth' => 'required|string|max:255',
+                'class_id' => 'required|exists:class_models,id',
+                'classroom_id' => 'required|exists:classrooms,id', 
+                'academic_year_id' => 'required|exists:academic_years,id',
+                'gender' => 'required|in:male,female,other',
+                'nationality' => 'required|string|max:100',
+                'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'previous_school_name' => 'nullable|string|max:255',
+                // Validation pour les contacts d'urgence
+                'emergency_contacts' => 'required|array|min:2',
+                'emergency_contacts.*.name' => 'required|string|max:255',
+                'emergency_contacts.*.phone' => 'required|string|max:20',
+            ]);
             
             // Vérifier la capacité de la salle de classe
             if (!$this->checkClassroomCapacity($request->classroom_id)) {
                 return back()->withErrors(['classroom_id' => 'Cette salle de classe est pleine.'])->withInput();
             }
             
-            $validatedData['school_id'] = $schoolId;
-            $validatedData['photo'] = $this->handlePhotoUpload($request);
+            // Préparation des données pour la création de l'étudiant
+            // IMPORTANT: Exclure les contacts d'urgence qui seront traités séparément
+            $studentData = [
+                'first_name' => $validatedData['first_name'],
+                'last_name' => $validatedData['last_name'],
+                'email' => $validatedData['email'],
+                'date_of_birth' => $validatedData['date_of_birth'],
+                'phone_number' => $validatedData['phone_number'] ?? null,
+                'address' => $validatedData['address'],
+                'place_of_birth' => $validatedData['place_of_birth'],
+                'class_id' => $validatedData['class_id'],
+                'classroom_id' => $validatedData['classroom_id'],
+                'academic_year_id' => $validatedData['academic_year_id'],
+                'gender' => $validatedData['gender'],
+                'nationality' => $validatedData['nationality'],
+                'previous_school_name' => $validatedData['previous_school_name'] ?? null,
+                'school_id' => $schoolId,
+                'photo' => $this->handlePhotoUpload($request)
+            ];
             
             // Créer l'étudiant
-            $student = Student::create($validatedData);
+            $student = Student::create($studentData);
             
             // Gérer les contacts d'urgence avec la nouvelle fonction
             $this->handleEmergencyContacts($student, $request->emergency_contacts);
@@ -82,10 +118,48 @@ class StudentController extends Controller
             $schoolId = Auth::id();
             $student = Student::where('id', $id)->where('school_id', $schoolId)->firstOrFail();
             
-            $validatedData = $this->validateStudent($request, $student);
-            $validatedData['photo'] = $this->handlePhotoUpload($request, $student);
+            // Valider les données de l'étudiant
+            $validatedData = $request->validate([
+                'first_name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
+                'email' => 'required|email|unique:students,email,' . $student->id,
+                'date_of_birth' => 'required|date',
+                'phone_number' => 'nullable|string|max:20',
+                'address' => 'required|string|max:255',
+                'place_of_birth' => 'required|string|max:255',
+                'class_id' => 'required|exists:class_models,id',
+                'classroom_id' => 'required|exists:classrooms,id', 
+                'academic_year_id' => 'required|exists:academic_years,id',
+                'gender' => 'required|in:male,female,other',
+                'nationality' => 'required|string|max:100',
+                'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'previous_school_name' => 'nullable|string|max:255',
+                // Validation pour les contacts d'urgence
+                'emergency_contacts' => 'required|array|min:2',
+                'emergency_contacts.*.name' => 'required|string|max:255',
+                'emergency_contacts.*.phone' => 'required|string|max:20',
+            ]);
             
-            $student->update($validatedData);
+            // Préparation des données pour la mise à jour de l'étudiant
+            // IMPORTANT: Exclure les contacts d'urgence
+            $studentData = [
+                'first_name' => $validatedData['first_name'],
+                'last_name' => $validatedData['last_name'],
+                'email' => $validatedData['email'],
+                'date_of_birth' => $validatedData['date_of_birth'],
+                'phone_number' => $validatedData['phone_number'] ?? null,
+                'address' => $validatedData['address'],
+                'place_of_birth' => $validatedData['place_of_birth'],
+                'class_id' => $validatedData['class_id'],
+                'classroom_id' => $validatedData['classroom_id'],
+                'academic_year_id' => $validatedData['academic_year_id'],
+                'gender' => $validatedData['gender'],
+                'nationality' => $validatedData['nationality'],
+                'previous_school_name' => $validatedData['previous_school_name'] ?? null,
+                'photo' => $this->handlePhotoUpload($request, $student)
+            ];
+            
+            $student->update($studentData);
             
             // Utiliser la méthode unifiée pour gérer les contacts d'urgence
             $this->handleEmergencyContacts($student, $request->emergency_contacts);
@@ -97,56 +171,54 @@ class StudentController extends Controller
     // Méthode unifiée pour gérer les contacts d'urgence (création et mise à jour)
     private function handleEmergencyContacts(Student $student, $contactsData)
     {
-        // Supprimer les contacts existants si c'est une mise à jour
+        // Supprimer les anciens contacts
         $student->emergencyContacts()->delete();
-        
+    
         if (empty($contactsData)) {
-            Log::info('Aucune donnée de contact fournie');
+            Log::info('Aucun contact d\'urgence fourni pour l\'étudiant', ['student_id' => $student->id]);
             return;
         }
-
-        Log::info('Données de contact reçues:', ['data' => $contactsData]);
-
-        // Types de contacts prédéfinis
-        $contactTypes = ['father', 'mother', 'guardian'];
-
-        foreach ($contactsData as $index => $contactData) {
-            try {
-                // Vérifier que les données essentielles sont présentes
-                if (!empty($contactData['name']) && !empty($contactData['phone'])) {
-                    // Déterminer le type de contact
-                    $type = $contactTypes[$index] ?? 'guardian';
-
-                    Log::info('Création contact d\'urgence:', [
+    
+        // Définir les types par défaut dans l'ordre
+        $defaultTypes = ['father', 'mother', 'guardian'];
+    
+        foreach ($contactsData as $index => $contact) {
+            $name = $contact['name'] ?? null;
+            $phone = $contact['phone'] ?? null;
+            $countryCode = $contact['country_code'] ?? '+225';
+            $type = $defaultTypes[$index] ?? 'guardian';
+    
+            if ($name && $phone) {
+                try {
+                    $emergencyContact = [
                         'student_id' => $student->id,
                         'class_id' => $student->class_id,
-                        'name' => $contactData['name'],
-                        'country_code' => $contactData['country_code'] ?? '+225',
-                        'phone' => $contactData['phone'],
-                        'type' => $type
-                    ]);
-
-                    StudentEmergencyContact::create([
+                        'name' => $name,
+                        'country_code' => $countryCode,
+                        'phone_number' => $phone,
+                        'type' => $type,
+                    ];
+    
+                    StudentEmergencyContact::create($emergencyContact);
+    
+                    Log::info("Contact d'urgence enregistré avec succès", $emergencyContact);
+                } catch (\Exception $e) {
+                    Log::error("Erreur lors de la création d'un contact d'urgence", [
+                        'error' => $e->getMessage(),
                         'student_id' => $student->id,
-                        'class_id' => $student->class_id,
-                        'name' => $contactData['name'],
-                        'country_code' => $contactData['country_code'] ?? '+225',
-                        'phone_number' => $contactData['phone'],
-                        'type' => $type
+                        'contact' => $contact,
                     ]);
-                } else {
-                    Log::warning('Données de contact incomplètes', ['data' => $contactData]);
+                    throw $e; // Laisser échouer la transaction
                 }
-            } catch (\Exception $e) {
-                Log::error('Erreur lors de la création du contact d\'urgence', [
-                    'error' => $e->getMessage(),
-                    'data' => $contactData
+            } else {
+                Log::warning("Contact d'urgence ignoré à cause de données manquantes", [
+                    'index' => $index,
+                    'contact' => $contact
                 ]);
-                throw $e; // Relancer l'exception pour que la transaction échoue
             }
         }
     }
-
+    
     // Suppression d'un élève
     public function destroy($id)
     {
@@ -164,30 +236,6 @@ class StudentController extends Controller
         $student->delete();
         
         return redirect()->route('student-list')->with('success', 'Élève supprimé avec succès.');
-    }
-
-    // Validation des données étudiant
-    private function validateStudent(Request $request, $student = null)
-    {
-        return $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:students,email,' . ($student->id ?? ''),
-            'date_of_birth' => 'required|date',
-            'phone_number' => 'nullable|string|max:20',
-            'address' => 'required|string|max:255',
-            'place_of_birth' => 'required|string|max:255',
-            'class_id' => 'required|exists:class_models,id',
-            'classroom_id' => 'required|exists:classrooms,id', 
-            'academic_year_id' => 'required|exists:academic_years,id',
-            'gender' => 'required|in:male,female,other',
-            'nationality' => 'required|string|max:100',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            // Validation pour les contacts d'urgence
-            'emergency_contacts' => 'required|array|min:2',
-            'emergency_contacts.*.name' => 'required|string|max:255',
-            'emergency_contacts.*.phone' => 'required|string|max:20',
-        ]);
     }
 
     // Vérifier la capacité de la salle de classe

@@ -299,20 +299,20 @@ class PaymentController extends Controller
             ->where('class_id', $classId)
             ->get()
             ->map(function($student) {
-                $totalPreviousPaid = $student->payments->sum('amount_paid');
+                $totalPreviousPaid = $student->payments->sum('amount_paid') ?? 0;
                 $classFees = $student->class->fees ?? 0;
                 $remainingBalance = max(0, $classFees - $totalPreviousPaid);
-
+    
                 return [
                     'id' => $student->id,
                     'first_name' => $student->first_name,
                     'last_name' => $student->last_name,
-                    'total_fees' => $classFees,
-                    'total_previous_paid' => $totalPreviousPaid,
-                    'remaining_balance' => $remainingBalance
+                    'total_fees' => (float)$classFees, // Cast explicite pour éviter les problèmes
+                    'total_previous_paid' => (float)$totalPreviousPaid, // Cast explicite
+                    'remaining_balance' => (float)$remainingBalance // Cast explicite
                 ];
             });
-
+    
         return response()->json($students);
     }
 }

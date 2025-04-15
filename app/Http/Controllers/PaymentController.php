@@ -99,64 +99,73 @@ class PaymentController extends Controller
     // }
 
     public function store(Request $request)
-{
-    try {
-        DB::beginTransaction();
-
-        $schoolId = Auth::id();
-
-        // Modifions la validation
-        $validated = $request->validate([
-            'class_id' => 'required|exists:class_models,id',
-            'student_id' => 'required|exists:students,id',
-            'total_fees' => 'required|numeric|min:0',
-            'amount_paid' => 'required|numeric|min:0',
-            'remaining_balance' => 'nullable|numeric|min:0' // Rendu optionnel car calculé
-        ]);
-
-        // Vérifier si l'étudiant existe, appartient à la classe et à l'école
-        $student = Student::where('id', $validated['student_id'])
-                        ->where('class_id', $validated['class_id'])
-                        ->where('school_id', $schoolId)
-                        ->firstOrFail();
-
-        // Calculer le total déjà payé
-        $totalPreviousPaid = Payment::where('student_id', $validated['student_id'])
-                                  ->where('school_id', $schoolId)
-                                  ->sum('amount_paid');
-
-        // Calculer le solde restant
-        $currentBalance = $validated['total_fees'] - $totalPreviousPaid;
-
-        if ($validated['amount_paid'] > $currentBalance) {
-            throw new \Exception('Le montant payé ne peut pas dépasser le solde restant.');
+    {
+        try {
+            DB::beginTransaction();
+    
+            $schoolId = Auth::id();
+    
+            $validated = $request->validate([
+                'class_id' => 'required|exists:class_models,id',
+                'student_id' => 'required|exists:students,id',
+                'total_fees' => 'required|numeric|min:0',
+                'amount_paid' => 'required|numeric|min:0',
+                'remaining_balance' => 'nullable|numeric|min:0'
+            ]);
+    
+            // Vérifier si l'étudiant existe
+            $student = Student::where('id', $validated['student_id'])
+                            ->where('class_id', $validated['class_id'])
+                            ->where('school_id', $schoolId)
+                            ->firstOrFail();
+    
+            // Vérifier si un paiement existe déjà pour cet étudiant
+            $existingPayment = Payment::where('student_id', $validated['student_id'])
+                                    ->where('school_id', $schoolId)
+                                    ->first();
+    
+            if ($existingPayment) {
+                // Si un paiement existe, mettre à jour le montant payé et le solde restant
+                $newAmountPaid = $existingPayment->amount_paid + $validated['amount_paid'];
+                $newRemainingBalance = $validated['total_fees'] - $newAmountPaid;
+                
+                if ($newRemainingBalance < 0) {
+                    throw new \Exception('Le montant payé ne peut pas dépasser le montant total dû.');
+                }
+    
+                $existingPayment->update([
+                    'amount_paid' => $newAmountPaid,
+                    'remaining_balance' => $newRemainingBalance,
+                    'updated_at' => now() // Mettre à jour la date pour refléter le nouveau paiement
+                ]);
+    
+                $payment = $existingPayment;
+            } else {
+                // Sinon, créer un nouveau paiement
+                $remainingBalance = $validated['total_fees'] - $validated['amount_paid'];
+                
+                $payment = Payment::create([
+                    'student_id' => $validated['student_id'],
+                    'school_id' => $schoolId,
+                    'amount_due' => $validated['total_fees'],
+                    'amount_paid' => $validated['amount_paid'],
+                    'remaining_balance' => $remainingBalance
+                ]);
+            }
+    
+            DB::commit();
+            return redirect()
+                ->route('payment-list')
+                ->with('success', 'Paiement enregistré avec succès.');
+    
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Erreur lors de l\'enregistrement du paiement: ' . $e->getMessage());
+            return back()
+                ->withInput()
+                ->withErrors(['error' => $e->getMessage()]);
         }
-
-        // Calculer le nouveau solde restant
-        $remainingBalance = $currentBalance - $validated['amount_paid'];
-
-        // Créer le paiement avec school_id
-        $payment = Payment::create([
-            'student_id' => $validated['student_id'],
-            'school_id' => $schoolId,
-            'amount_due' => $validated['total_fees'],
-            'amount_paid' => $validated['amount_paid'],
-            'remaining_balance' => $remainingBalance
-        ]);
-
-        DB::commit();
-        return redirect()
-            ->route('payment-list')
-            ->with('success', 'Paiement enregistré avec succès.');
-
-    } catch (\Exception $e) {
-        DB::rollBack();
-        Log::error('Erreur lors de l\'enregistrement du paiement: ' . $e->getMessage());
-        return back()
-            ->withInput()
-            ->withErrors(['error' => $e->getMessage()]);
     }
-}
 
     public function index()
     {
@@ -218,40 +227,20 @@ class PaymentController extends Controller
             $payment = Payment::where('school_id', $schoolId)->findOrFail($id);
 
             $validated = $request->validate([
-                'amount_paid' => [
-                    'required',
-                    'numeric',
-                    'min:0',
-                    function ($attribute, $value, $fail) use ($payment, $schoolId) {
-                        // Vérifier si le nouveau montant est cohérent
-                        $totalPaid = Payment::where('student_id', $payment->student_id)
-                                          ->where('school_id', $schoolId)
-                                          ->where('id', '!=', $payment->id)
-                                          ->sum('amount_paid') + $value;
-
-                        if ($totalPaid > $payment->amount_due) {
-                            $fail('Le total des paiements ne peut pas dépasser le montant dû.');
-                        }
-                    },
-                ],
+                'amount_paid' => 'required|numeric|min:0',
                 'remaining_balance' => 'required|numeric|min:0'
             ]);
 
             // Vérifier la cohérence du solde restant
-            $newRemainingBalance = $payment->amount_due - 
-                                 ($validated['amount_paid'] + 
-                                  Payment::where('student_id', $payment->student_id)
-                                        ->where('school_id', $schoolId)
-                                        ->where('id', '!=', $payment->id)
-                                        ->sum('amount_paid'));
+            $newRemainingBalance = $payment->amount_due - $validated['amount_paid'];
 
-            if (abs($newRemainingBalance - $validated['remaining_balance']) > 0.01) {
-                throw new \Exception('Le calcul du solde restant est incorrect.');
+            if ($newRemainingBalance < 0) {
+                throw new \Exception('Le montant payé ne peut pas dépasser le montant total dû.');
             }
 
             $payment->update([
                 'amount_paid' => $validated['amount_paid'],
-                'remaining_balance' => $validated['remaining_balance']
+                'remaining_balance' => $newRemainingBalance
             ]);
 
             DB::commit();
@@ -299,17 +288,22 @@ class PaymentController extends Controller
             ->where('class_id', $classId)
             ->get()
             ->map(function($student) {
+                // Consolider tous les paiements en une seule somme
                 $totalPreviousPaid = $student->payments->sum('amount_paid') ?? 0;
                 $classFees = $student->class->fees ?? 0;
                 $remainingBalance = max(0, $classFees - $totalPreviousPaid);
+                
+                // Récupérer l'ID du paiement existant ou null s'il n'existe pas
+                $existingPaymentId = $student->payments->first() ? $student->payments->first()->id : null;
     
                 return [
                     'id' => $student->id,
                     'first_name' => $student->first_name,
                     'last_name' => $student->last_name,
-                    'total_fees' => (float)$classFees, // Cast explicite pour éviter les problèmes
-                    'total_previous_paid' => (float)$totalPreviousPaid, // Cast explicite
-                    'remaining_balance' => (float)$remainingBalance // Cast explicite
+                    'total_fees' => (float)$classFees,
+                    'total_previous_paid' => (float)$totalPreviousPaid,
+                    'remaining_balance' => (float)$remainingBalance,
+                    'existing_payment_id' => $existingPaymentId
                 ];
             });
     

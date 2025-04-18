@@ -65,9 +65,8 @@
                                                                 </svg>
                                                             </a>
 
-                                                            <!-- Icône Ajouter Cours -->
-                                                            <a href="{{ route('timetables.addCourse', $timetable->id) }}" 
-                                                            class="btn btn-link text-primary px-3 mb-0">
+                                                            <a href="{{ route('timetables.addCourse', ['id' => $timetable->id, 'classroom_id' => $timetable->classroom_id]) }}" 
+                                                                class="btn btn-link text-primary px-3 mb-0">
                                                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                     <path d="M12 7V17M7 12H17" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                                                     <path d="M3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12Z" stroke="#3B82F6" stroke-width="2"/>

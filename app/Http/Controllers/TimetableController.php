@@ -65,10 +65,9 @@ class TimetableController extends Controller
         ]);
     }
 
-    // Afficher le formulaire pour ajouter un cours
-    public function showAddCourseForm($id)
+    public function showAddCourseForm($id, Request $request)
     {
-        $timetable = Timetable::where('school_id', Auth::id())->findOrFail($id);
+        $timetable = Timetable::where('school_id', Auth::id())->with(['class', 'classroom'])->findOrFail($id);
         $courses = Course::where('school_id', Auth::id())->get();
         $teachers = Teacher::where('school_id', Auth::id())->get();
         $classrooms = Classroom::where('school_id', Auth::id())->get();
@@ -76,12 +75,24 @@ class TimetableController extends Controller
                             ->where('school_id', Auth::id())
                             ->orderBy('start_time')
                             ->get();
-    
-        return view('timetables.add-course', compact('timetable', 'courses', 'teachers', 'classrooms', 'timeSlots'));
+        
+        // Récupérer le classroom_id depuis l'URL ou utiliser celui de l'emploi du temps
+        $selectedClassroomId = $request->classroom_id ?? $timetable->classroom_id;
+        
+        return view('timetables.add-course', compact('timetable', 'courses', 'teachers', 
+                                                   'classrooms', 'timeSlots', 'selectedClassroomId'));
     }
 
     public function addCourse(Request $request, $timetable_id)
     {
+        // Récupérer l'emploi du temps avant la validation
+        $timetable = Timetable::where('school_id', Auth::id())->findOrFail($timetable_id);
+        
+        // Pré-remplir classroom_id avec la valeur de l'emploi du temps si non spécifié
+        if (!$request->has('classroom_id')) {
+            $request->merge(['classroom_id' => $timetable->classroom_id]);
+        }
+    
         $request->validate([
             'course_id' => 'required|exists:courses,id',
             'teacher_id' => 'required|exists:teachers,id',
@@ -113,9 +124,6 @@ class TimetableController extends Controller
         if ($existingCourse) {
             return redirect()->back()->withErrors(['error' => 'Un cours existe déjà dans ce créneau horaire pour cette salle de classe.']);
         }
-    
-        // Vérifier que l'emploi du temps appartient à l'école connectée
-        $timetable = Timetable::where('school_id', Auth::id())->findOrFail($timetable_id);
         
         // Ajouter le cours avec les horaires du créneau sélectionné
         $timetable->courses()->attach($request->course_id, [

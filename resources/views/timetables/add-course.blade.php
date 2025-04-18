@@ -17,12 +17,19 @@
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="classroom_id" class="form-label">Salle</label>
-                                        <select class="form-select" id="classroom_id" name="classroom_id" required>
-                                            <option value="" selected disabled>Choisissez une salle</option>
+                                        <select class="form-select" id="classroom_id" name="classroom_id" required {{ isset($selectedClassroomId) ? 'disabled' : '' }}>
+                                            <option value="" disabled>Choisissez une salle</option>
                                             @foreach($classrooms as $classroom)
-                                                <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
+                                                <option value="{{ $classroom->id }}" {{ isset($selectedClassroomId) && $selectedClassroomId == $classroom->id ? 'selected' : '' }}>
+                                                    {{ $classroom->name }}
+                                                </option>
                                             @endforeach
                                         </select>
+                                        
+                                        <!-- Champ caché pour envoyer la valeur même si le select est désactivé -->
+                                        @if(isset($selectedClassroomId))
+                                            <input type="hidden" name="classroom_id" value="{{ $selectedClassroomId }}">
+                                        @endif
                                     </div>
                                     <div class="col-md-6">
                                         <label for="day" class="form-label">Jour</label>

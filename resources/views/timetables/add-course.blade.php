@@ -30,7 +30,7 @@
                                         @if(isset($selectedClassroomId))
                                             <input type="hidden" name="classroom_id" value="{{ $selectedClassroomId }}">
                                         @endif
-                                    </div>
+                                    </div>   
                                     <div class="col-md-6">
                                         <label for="day" class="form-label">Jour</label>
                                         <select class="form-select" id="day" name="day" required>

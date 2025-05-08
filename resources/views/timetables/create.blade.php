@@ -34,14 +34,14 @@
                                     <i class="fas fa-clock me-2"></i>Gérer les Créneaux Horaires
                                 </a>
                                 
-                                <div class="dropdown-divider"></div>
+                                <!-- <div class="dropdown-divider"></div>
                                 <div class="dropdown-header">Ressources</div>
                                 <a href="#" class="dropdown-item">
                                     <i class="fas fa-graduation-cap me-2"></i>Gérer les Classes
                                 </a>
                                 <a href="#" class="dropdown-item">
                                     <i class="fas fa-door-open me-2"></i>Gérer les Salles de Classe
-                                </a>
+                                </a> -->
                             </div>
                         </div>
                     </div>

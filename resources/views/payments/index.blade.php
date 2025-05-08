@@ -20,7 +20,7 @@
                                         </span>
                                         <span class="btn-inner--text">Retour</span>
                                     </a>
-                                    <div class="dropdown">
+                                    <!-- <div class="dropdown">
                                         <button class="btn btn-sm btn-dark btn-icon d-flex align-items-center me-2 dropdown-toggle" type="button" id="actionMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <span class="btn-inner--icon">
                                                 <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="d-block me-2">
@@ -33,7 +33,7 @@
                                             <a href="#" class="dropdown-item">Voir les Paiements par Classe</a>
                                             <a href="#" class="dropdown-item">Gérer les Emplois du Temps</a>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>

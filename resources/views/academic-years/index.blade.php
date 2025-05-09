@@ -47,14 +47,20 @@
                                                     <span style="background-color: #dc3545; color: white; padding: 2px 8px; border-radius: 3px; font-weight: 500; font-size: 12px;">
                                                         Inactif
                                                     </span>
+                                                    <form action="{{ route('academic-years.activate', $year->id) }}" method="POST" style="display:inline;">
+                                                        @csrf
+                                                        <button type="submit" class="text-primary ms-2" style="border: none; background: none; cursor: pointer;">
+                                                            Activer
+                                                        </button>
+                                                    </form>
                                                 @endif
                                             </td>
                                             <td>
                                                 <a href="{{ route('academic-years.edit', $year->id) }}" class="text-primary">Modifier</a>
-                                                <form action="{{ route('academic-years.destroy', $year->id) }}" method="POST" style="display:inline;">
+                                                <form action="{{ route('academic-years.destroy', $year->id) }}" method="POST" style="display:inline;" class="delete-form">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="text-danger ms-3" style="border: none; background: none; cursor: pointer;">
+                                                    <button type="submit" class="text-danger ms-3 delete-btn" style="border: none; background: none; cursor: pointer;">
                                                         Supprimer
                                                     </button>
                                                 </form>
@@ -74,4 +80,26 @@
         </div>
         <x-app.footer />
     </main>
+
+    <!-- Script pour la confirmation de suppression -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Récupérer tous les formulaires de suppression
+            const deleteForms = document.querySelectorAll('.delete-form');
+            
+            // Ajouter un écouteur d'événement à chaque formulaire
+            deleteForms.forEach(form => {
+                form.addEventListener('submit', function(event) {
+                    // Empêcher la soumission par défaut du formulaire
+                    event.preventDefault();
+                    
+                    // Demander confirmation
+                    if (confirm('Êtes-vous sûr de vouloir supprimer cette année académique ? Cette action est irréversible.')) {
+                        // Si l'utilisateur confirme, soumettre le formulaire
+                        this.submit();
+                    }
+                });
+            });
+        });
+    </script>
 </x-app-layout>

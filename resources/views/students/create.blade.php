@@ -238,25 +238,8 @@
 
                                                             <label class="form-label mt-2">Téléphone du Père | Tuteur *</label>
                                                             <div class="input-group">
-                                                                <select class="form-select" name="emergency_contacts[0][country_code]" required>
-                                                                    <option value="+225">🇨🇮 Côte d'Ivoire (+225)</option>
-                                                                    <option value="+229">🇧🇯 Bénin (+229)</option>
-                                                                    <option value="+226">🇧🇫 Burkina Faso (+226)</option>
-                                                                    <option value="+223">🇲🇱 Mali (+223)</option>
-                                                                    <option value="+227">🇳🇪 Niger (+227)</option>
-                                                                    <option value="+234">🇳🇬 Nigéria (+234)</option>
-                                                                    <option value="+228">🇹🇬 Togo (+228)</option>
-                                                                    <option value="+220">🇬🇲 Gambie (+220)</option>
-                                                                    <option value="+221">🇸🇳 Sénégal (+221)</option>
-                                                                    <option value="+232">🇸🇱 Sierra Leone (+232)</option>
-                                                                    <option value="+233">🇬🇭 Ghana (+233)</option>
-                                                                    <option value="+231">🇱🇷 Libéria (+231)</option>
-                                                                    <option value="+224">🇬🇳 Guinée (+224)</option>
-                                                                    <option value="+245">🇬🇼 Guinée-Bissau (+245)</option>
-                                                                    <option value="+216">🇲🇷 Mauritanie (+216)</option>
-                                                                </select>
                                                                 <input type="text" class="form-control" name="emergency_contacts[0][phone]" 
-                                                                    value="{{ old('emergency_contacts.0.phone') }}" placeholder="Numéro de téléphone" required>
+                                                                value="{{ old('emergency_contacts.0.phone') }}" placeholder="Numéro de téléphone" required>
                                                             </div>
                                                         </div>
 
@@ -268,46 +251,29 @@
 
                                                             <label class="form-label mt-2">Téléphone de la Mère | Tutrice *</label>
                                                             <div class="input-group">
-                                                                <select class="form-select" name="emergency_contacts[1][country_code]" required>
-                                                                    <option value="+225">🇨🇮 Côte d'Ivoire (+225)</option>
-                                                                    <option value="+229">🇧🇯 Bénin (+229)</option>
-                                                                    <option value="+226">🇧🇫 Burkina Faso (+226)</option>
-                                                                    <option value="+223">🇲🇱 Mali (+223)</option>
-                                                                    <option value="+227">🇳🇪 Niger (+227)</option>
-                                                                    <option value="+234">🇳🇬 Nigéria (+234)</option>
-                                                                    <option value="+228">🇹🇬 Togo (+228)</option>
-                                                                    <option value="+220">🇬🇲 Gambie (+220)</option>
-                                                                    <option value="+221">🇸🇳 Sénégal (+221)</option>
-                                                                    <option value="+232">🇸🇱 Sierra Leone (+232)</option>
-                                                                    <option value="+233">🇬🇭 Ghana (+233)</option>
-                                                                    <option value="+231">🇱🇷 Libéria (+231)</option>
-                                                                    <option value="+224">🇬🇳 Guinée (+224)</option>
-                                                                    <option value="+245">🇬🇼 Guinée-Bissau (+245)</option>
-                                                                    <option value="+216">🇲🇷 Mauritanie (+216)</option>
-                                                                </select>
-                                                                <input type="text" class="form-control" name="emergency_contacts[1][phone]" 
-                                                                    value="{{ old('emergency_contacts.1.phone') }}" placeholder="Numéro de téléphone" required>
-                                                            </div>
+                                                            <input type="text" class="form-control" name="emergency_contacts[1][phone]" 
+                                                                value="{{ old('emergency_contacts.1.phone') }}" placeholder="Numéro de téléphone" required>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
 
-                                        </div>
-                                    </div>
-                                </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
 
-                                <!-- Boutons d'action -->
-                                <div class="text-end">
-                                    <button type="submit" class="btn btn-dark">Enregistrer</button>
-                                    <button type="reset" class="btn btn-outline-secondary ms-2">Réinitialiser</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                                                                                        <!-- Boutons d'action -->
+                                                                                        <div class="text-end">
+                                                                                            <button type="submit" class="btn btn-dark">Enregistrer</button>
+                                                                                            <button type="reset" class="btn btn-outline-secondary ms-2">Réinitialiser</button>
+                                                                                        </div>
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
     </main>
 
     <!-- Script pour l'aperçu de la photo -->

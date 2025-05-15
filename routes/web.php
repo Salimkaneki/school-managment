@@ -135,7 +135,7 @@ Route::middleware(['auth'])->group(function () {
 
             Route::post('/by-class', [StudentController::class, 'getStudentsByClass'])->name('students-by-class');
 
-            Route::post('/students-by-class', [StudentController::class, 'getStudentsByClass'])->name('students-by-class');
+            Route::post('/students-by-class', [StudentController::class, 'getStudentsByClass'])->name('student.students-by-class');
 
             Route::delete('/delete/{id}', [StudentController::class, 'destroy'])->name('student.delete');
 
@@ -219,7 +219,9 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('delete/{id}', [\App\Http\Controllers\CourseController::class, 'destroy'])->name('delete-course');
         Route::put('update/{id}', [\App\Http\Controllers\CourseController::class, 'update'])->name('update-course');
         });
-        Route::get('edit/{id}', [\App\Http\Controllers\CourseController::class, 'edit'])->name('edit-course');
+        // Route::get('edit/{id}', [\App\Http\Controllers\CourseController::class, 'edit'])->name('edit-course');
+        // Route::get('/{id}', [\App\Http\Controllers\CourseController::class, 'edit'])->name('edit-course');
+
 
 
 
@@ -283,7 +285,7 @@ Route::middleware(['auth'])->group(function () {
         
         // Route to show the list of events
         Route::get('/list', [SchoolEventController::class, 'index'])->name('event-list');
-        Route::get('/events', [SchoolEventController::class, 'index'])->name('event-list');
+        Route::get('/events', [SchoolEventController::class, 'index'])->name('events-list');
         
         // Route::get('/events/create', [SchoolEventController::class, 'create'])->name('events.create');
         Route::post('/events', [SchoolEventController::class, 'store'])->name('events.store');
@@ -299,12 +301,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/events/{event}', [SchoolEventController::class, 'show'])->name('events.show');
 
-    Route::get('/{id}/edit', [SchoolEventController::class, 'edit'])->name('edit-event');
+    // Route::get('/{id}/edit', [SchoolEventController::class, 'edit'])->name('edit-event');
 
     Route::prefix('edit')->group(function(){
         Route::get('/{id}', [SchoolEventController::class, 'edit'])->name('edit-event');
-
-                Route::get('edit/{id}', [\App\Http\Controllers\CourseController::class, 'edit'])->name('edit-course');
 
 
     });
@@ -325,9 +325,7 @@ Route::middleware(['auth'])->group(function () {
             return view('account-pages.signup');
         })->name('signup');
 
-        // Route::get('/sign-up', [RegisterController::class, 'create'])->name('sign-up');
-        // Route::post('/sign-up', [RegisterController::class, 'store']);
-
+        
         Route::get('/sign-in', [LoginController::class, 'create'])->name('sign-in');
         Route::post('/sign-in', [LoginController::class, 'store']);
 

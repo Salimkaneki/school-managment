@@ -48,7 +48,7 @@
                                                 <a href="{{ route('event-list') }}" class="btn btn-secondary me-2">
                                                     Retour
                                                 </a>
-                                                <a href="#" class="btn btn-primary me-2">
+                                                <a href="edit-event" class="btn btn-primary me-2">
                                                     <i class="fas fa-edit me-2"></i> Modifier
                                                 </a>
                                                 <form action="{{ route('delete-event', $event->id) }}" method="POST" class="d-inline">

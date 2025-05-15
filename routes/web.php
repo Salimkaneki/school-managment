@@ -173,7 +173,7 @@ Route::middleware(['auth'])->group(function () {
         // Route::get('/detail/{id}', [PaymentController::class, 'show'])->name('detail-payment');
 
         // // Route pour récupérer un paiement existant pour l'édition
-        // Route::get('/{id}/edit', [PaymentController::class, 'edit'])->name('payment.edit');
+        Route::get('/{id}/edit', [PaymentController::class, 'edit'])->name('payment.edit');
 
 
 
@@ -192,6 +192,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/current', [AcademicYearController::class, 'currentAcademicYear'])->name('current');
             Route::post('/{academicYear}/activate', [AcademicYearController::class, 'activate'])->name('activate');
         });
+
+        
 
         // Route::get('/{academicYear}/edit', [AcademicYearController::class, 'edit'])->name('edit');
         Route::get('/{academicYear}/edit', [AcademicYearController::class, 'edit'])->name('year.edit');
@@ -271,26 +273,43 @@ Route::middleware(['auth'])->group(function () {
                
     // Define the route prefix for events
     Route::prefix('event')->group(function () {
-
         // Route to show the form for creating a new event
         Route::get('/create', function () {
             return view('events.create');
         })->name('create-event');
-
+        
         // Route to handle form submission and store the event
         Route::post('/store', [SchoolEventController::class, 'store'])->name('store-event');
-
+        
         // Route to show the list of events
         Route::get('/list', [SchoolEventController::class, 'index'])->name('event-list');
-
         Route::get('/events', [SchoolEventController::class, 'index'])->name('event-list');
+        
         // Route::get('/events/create', [SchoolEventController::class, 'create'])->name('events.create');
         Route::post('/events', [SchoolEventController::class, 'store'])->name('events.store');
-        Route::delete('/delete-event/{id}', [SchoolEventController::class, 'destroy'])->name('delete-event');
+        
+        // Route de suppression d'un événement
+        Route::delete('/events/{event}', [SchoolEventController::class, 'destroy'])->name('delete-event');
+        
+        // Routes d'édition d'un événement
+        Route::put('/{id}/update', [SchoolEventController::class, 'update'])->name('update-event');
     });
+    
     Route::get('/create', [SchoolEventController::class, 'create'])->name('events.create');
 
     Route::get('/events/{event}', [SchoolEventController::class, 'show'])->name('events.show');
+
+    Route::get('/{id}/edit', [SchoolEventController::class, 'edit'])->name('edit-event');
+
+    Route::prefix('edit')->group(function(){
+        Route::get('/{id}', [SchoolEventController::class, 'edit'])->name('edit-event');
+
+                Route::get('edit/{id}', [\App\Http\Controllers\CourseController::class, 'edit'])->name('edit-course');
+
+
+    });
+
+    
 
 
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');

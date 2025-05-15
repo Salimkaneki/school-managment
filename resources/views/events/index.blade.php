@@ -48,20 +48,20 @@
                                         </td>
                                         <td class="align-middle bg-transparent border-bottom text-xs">
                                             <!-- Tronquer la description si elle est trop longue -->
-                                            {{ $event->description }}
+                                            {{ Str::limit($event->description, 100) }}
                                         </td>
                                         <td class="align-middle bg-transparent border-bottom text-xs text-center">
                                             {{ $event->event_date ? $event->event_date->format('d/m/Y') : 'N/A' }}
                                         </td>
                                         <td class="text-center align-middle bg-transparent border-bottom text-xs">
-                                            <a href="#" class="text-secondary font-weight-bold text-xs">
-                                                Modifier
+                                            <a href="{{ route('edit-event', $event->id) }}" class="text-secondary font-weight-bold text-xs">
+                                                <i class="fas fa-edit me-1"></i> Modifier
                                             </a>
-                                            <form action="{{route ('delete-event', $event->id)}}" method="POST" style="display:inline;">
+                                            <form action="{{ route('delete-event', $event->id) }}" method="POST" style="display:inline;" class="delete-event-form" data-event-title="{{ $event->title }}">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="text-danger font-weight-bold text-xs border-0 bg-transparent p-0 ms-2">
-                                                    Supprimer
+                                                    <i class="fas fa-trash me-1"></i> Supprimer
                                                 </button>
                                             </form>
                                         </td>
@@ -70,10 +70,35 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div class="card-footer">
+                            {{ $events->links() }}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <x-app.footer />
     </main>
+    
+    <!-- Script de confirmation de suppression -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sélectionner tous les formulaires de suppression
+            const deleteForms = document.querySelectorAll('.delete-event-form');
+            
+            deleteForms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const eventTitle = this.getAttribute('data-event-title');
+                    
+                    // Afficher une boîte de dialogue de confirmation
+                    if (confirm(`Êtes-vous sûr de vouloir supprimer l'événement "${eventTitle}" ? Cette action est irréversible.`)) {
+                        // Si l'utilisateur confirme, soumettre le formulaire
+                        this.submit();
+                    }
+                });
+            });
+        });
+    </script>
 </x-app-layout>

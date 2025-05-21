@@ -12,7 +12,7 @@
                                     <p class="text-sm text-muted mb-0">Modifier les informations du cours</p>
                                 </div>
                                 <div class="col-6 text-end">
-                                    <a href="{{ route('course-list') }}" class="btn btn-outline-secondary">
+                                    <a href="{{ route('course.list') }}" class="btn btn-outline-secondary">
                                         <i class="fas fa-list me-2"></i> Liste des Cours
                                     </a>
                                 </div>
@@ -31,7 +31,7 @@
                                 </div>
                             @endif
 
-                            <form action="{{ route('update-course', $course->id) }}" method="POST">
+                            <form action="{{ route('course.update', $course->id) }}" method="POST">
                                 @csrf
                                 @method('PUT')
 
@@ -91,7 +91,7 @@
                                     </div>
 
                                     <div class="col-md-12 d-flex justify-content-end gap-2 mt-3">
-                                        <a href="{{ route('course-list') }}" class="btn btn-outline-secondary">
+                                        <a href="{{ route('course.list') }}" class="btn btn-outline-secondary">
                                             <i class="fas fa-times me-2"></i>Annuler
                                         </a>
                                         <button type="submit" class="btn btn-primary">

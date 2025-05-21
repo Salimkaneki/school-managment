@@ -230,17 +230,26 @@ Route::middleware(['auth'])->group(function () {
         //     return view('academic-years.year-trimester');
         // })->name('year-trimester');
 
-        Route::prefix('course')->group(function (){
+        // Route::prefix('course')->group(function (){
 
-            Route::get('create', [\App\Http\Controllers\CourseController::class, 'create'])->name('create-course');
-            Route::post('store', [\App\Http\Controllers\CourseController::class, 'store'])->name('store-course');
-            Route::get('list', [\App\Http\Controllers\CourseController::class, 'index'])->name('course-list');
-            Route::delete('delete/{id}', [\App\Http\Controllers\CourseController::class, 'destroy'])->name('delete-course');
-        Route::put('update/{id}', [\App\Http\Controllers\CourseController::class, 'update'])->name('update-course');
-        });
+        //     Route::get('create', [\App\Http\Controllers\CourseController::class, 'create'])->name('create-course');
+        //     Route::post('store', [\App\Http\Controllers\CourseController::class, 'store'])->name('store-course');
+        //     Route::get('list', [\App\Http\Controllers\CourseController::class, 'index'])->name('course-list');
+        //     Route::delete('delete/{id}', [\App\Http\Controllers\CourseController::class, 'destroy'])->name('delete-course');
+        // Route::put('update/{id}', [\App\Http\Controllers\CourseController::class, 'update'])->name('update-course');
+        // });
         // Route::get('edit/{id}', [\App\Http\Controllers\CourseController::class, 'edit'])->name('edit-course');
         // Route::get('/{id}', [\App\Http\Controllers\CourseController::class, 'edit'])->name('edit-course');
 
+
+        Route::prefix('course')->name('course.')->group(function () {
+            Route::get('/list', [\App\Http\Controllers\CourseController::class, 'index'])->name('list');
+            Route::get('/create', [\App\Http\Controllers\CourseController::class, 'create'])->name('create');
+            Route::post('/store', [\App\Http\Controllers\CourseController::class, 'store'])->name('store');
+            Route::get('/{course}/edit', [\App\Http\Controllers\CourseController::class, 'edit'])->name('edit');
+            Route::put('/update/{course}', [\App\Http\Controllers\CourseController::class, 'update'])->name('update');
+            Route::delete('/delete/{course}', [\App\Http\Controllers\CourseController::class, 'destroy'])->name('delete');
+        });
 
 
 

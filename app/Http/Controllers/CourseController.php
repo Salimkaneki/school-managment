@@ -38,7 +38,7 @@ class CourseController extends Controller
 
         Course::create($validated);
 
-        return redirect()->route('course-list')->with('success', 'Le cours a été créé avec succès.');
+        return redirect()->route('course.list')->with('success', 'Le cours a été créé avec succès.');
     }
 
     // Afficher le formulaire d'édition d'un cours
@@ -63,7 +63,7 @@ class CourseController extends Controller
 
         $course->update($validated);
 
-        return redirect()->route('course-list')->with('success', 'Le cours a été modifié avec succès.');
+        return redirect()->route('course.list')->with('success', 'Le cours a été modifié avec succès.');
     }
 
     // Supprimer un cours
@@ -72,6 +72,6 @@ class CourseController extends Controller
         $course = Course::where('school_id', Auth::id())->findOrFail($id);
         $course->delete();
 
-        return redirect()->route('course-list')->with('success', 'Le cours a été supprimé avec succès.');
+        return redirect()->route('course.list')->with('success', 'Le cours a été supprimé avec succès.');
     }
 }

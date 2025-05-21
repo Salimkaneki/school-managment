@@ -273,7 +273,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="{{ route('create-course') }}">
+                            <a class="nav-link text-white" href="{{ route('course.create') }}">
                                 <span class="sidenav-mini-icon"> M </span>
                                 <span class="sidenav-normal">Matières</span>
                             </a>

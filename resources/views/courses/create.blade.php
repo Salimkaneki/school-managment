@@ -12,7 +12,7 @@
                                     <p class="text-sm text-muted mb-0">Veuillez remplir les informations ci-dessous</p>
                                 </div>
                                 <div class="col-6 text-end">
-                                    <a href="{{ route('course-list') }}" class="btn btn-outline-secondary">
+                                    <a href="{{ route('course.list') }}" class="btn btn-outline-secondary">
                                         <i class="fas fa-list me-2"></i> Liste des Cours
                                     </a>
                                 </div>
@@ -31,7 +31,7 @@
                                 </div>
                             @endif
 
-                            <form action="{{ route('store-course') }}" method="POST">
+                            <form action="{{ route('course.store') }}" method="POST">
                                 @csrf
 
                                 <div class="row g-3">
@@ -92,7 +92,7 @@
                                     </div>
 
                                     <div class="col-md-12 d-flex justify-content-end gap-2 mt-3">
-                                        <a href="{{ route('course-list') }}" class="btn btn-outline-secondary">
+                                        <a href="{{ route('course.list') }}" class="btn btn-outline-secondary">
                                             <i class="fas fa-times me-2"></i>Annuler
                                         </a>
                                         <button type="submit" class="btn btn-primary">

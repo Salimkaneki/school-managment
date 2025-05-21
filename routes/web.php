@@ -325,7 +325,7 @@ Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name
 
 
 
-
+    //A taffer 
     Route::prefix('schools')->name('schools.')->group(function () {
         // Liste des écoles
         Route::get('/', [SchoolController::class, 'index'])

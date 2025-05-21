@@ -12,14 +12,14 @@
                                     <p class="text-sm mb-0">Vous pouvez modifier les informations de l'événement ci-dessous</p>
                                 </div>
                                 <div class="col-6 text-end">
-                                    <a href="{{ route('event-list') }}" class="btn btn-light text-dark border-dark">
+                                    <a href="{{ route('event.list') }}" class="btn btn-light text-dark border-dark">
                                         <i class="fas fa-list me-2"></i> Liste des Événements
                                     </a>
                                 </div>
                             </div>
                         </div>
                         <div class="card-body px-4 py-4">
-                            <form action="{{ route('update-event', $event->id) }}" method="POST">
+                            <form action="{{ route('event.update', $event->id) }}" method="POST">
                                 @csrf
                                 @method('PUT')
 
@@ -60,7 +60,7 @@
                                             <button type="submit" class="btn btn-light text-dark border-dark">
                                                 <i class="fas fa-save me-1"></i> Enregistrer les modifications
                                             </button>
-                                            <a href="{{ route('event-list') }}" class="btn btn-secondary ms-2">
+                                            <a href="{{ route('event.list') }}" class="btn btn-secondary ms-2">
                                                 <i class="fas fa-times me-1"></i> Annuler
                                             </a>
                                         </div>

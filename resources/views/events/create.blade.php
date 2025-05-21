@@ -12,14 +12,14 @@
                                     <p class="text-sm mb-0">Veuillez remplir les informations ci-dessous</p>
                                 </div>
                                 <div class="col-6 text-end">
-                                    <a href="{{ route('event-list') }}" class="btn btn-light text-dark border-dark">
+                                    <a href="{{ route('event.list') }}" class="btn btn-light text-dark border-dark">
                                         <i class="fas fa-list me-2"></i> Liste des Événements
                                     </a>
                                 </div>
                             </div>
                         </div>
                         <div class="card-body px-4 py-4">
-                            <form action="{{ route('store-event') }}" method="POST">
+                            <form action="{{ route('event.store') }}" method="POST">
                                 @csrf
 
                                 <div class="row mb-3">
@@ -44,7 +44,7 @@
                                     <div class="col-md-12 d-flex align-items-end justify-content-end">
                                         <div class="d-flex">
                                             <button type="submit" class="btn btn-light text-dark border-dark">Créer l'Événement</button>
-                                            <a href="{{ route('event-list') }}" class="btn btn-secondary ms-2">Annuler</a>
+                                            <a href="{{ route('event.list') }}" class="btn btn-secondary ms-2">Annuler</a>
                                         </div>
                                     </div>
                                 </div>

@@ -13,7 +13,7 @@
                                 </div>
                                 <div class="ms-auto d-flex">
                                     <!-- Bouton pour ajouter un événement -->
-                                    <a href="{{ route('create-event') }}" class="btn btn-sm btn-dark btn-icon d-flex align-items-center me-2">
+                                    <a href="{{ route('event.create') }}" class="btn btn-sm btn-dark btn-icon d-flex align-items-center me-2">
                                         <span class="btn-inner--icon">
                                             <i class="fas fa-plus"></i>
                                         </span>
@@ -54,10 +54,10 @@
                                             {{ $event->event_date ? $event->event_date->format('d/m/Y') : 'N/A' }}
                                         </td>
                                         <td class="text-center align-middle bg-transparent border-bottom text-xs">
-                                            <a href="{{ route('edit-event', $event->id) }}" class="text-secondary font-weight-bold text-xs">
+                                            <a href="{{ route('event.edit', $event->id) }}" class="text-secondary font-weight-bold text-xs">
                                                 <i class="fas fa-edit me-1"></i> Modifier
                                             </a>
-                                            <form action="{{ route('delete-event', $event->id) }}" method="POST" style="display:inline;" class="delete-event-form" data-event-title="{{ $event->title }}">
+                                            <form action="{{ route('event.delete', $event->id) }}" method="POST" style="display:inline;" class="delete-event-form" data-event-title="{{ $event->title }}">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="text-danger font-weight-bold text-xs border-0 bg-transparent p-0 ms-2">
@@ -77,7 +77,6 @@
                 </div>
             </div>
         </div>
-        <x-app.footer />
     </main>
     
     <!-- Script de confirmation de suppression -->

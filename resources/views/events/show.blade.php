@@ -12,7 +12,7 @@
                                     <p class="text-sm mb-0">Informations complètes sur l'événement</p>
                                 </div>
                                 <div class="col-6 text-end">
-                                    <a href="{{ route('event-list') }}" class="btn btn-light text-dark border-dark">
+                                    <a href="{{ route('event.list') }}" class="btn btn-light text-dark border-dark">
                                         <i class="fas fa-list me-2"></i> Liste des Événements
                                     </a>
                                 </div>
@@ -45,13 +45,13 @@
 
                                         <div class="row">
                                             <div class="col-12 d-flex justify-content-end">
-                                                <a href="{{ route('event-list') }}" class="btn btn-secondary me-2">
+                                                <a href="{{ route('event.list') }}" class="btn btn-secondary me-2">
                                                     Retour
                                                 </a>
                                                 <a href="edit-event" class="btn btn-primary me-2">
                                                     <i class="fas fa-edit me-2"></i> Modifier
                                                 </a>
-                                                <form action="{{ route('delete-event', $event->id) }}" method="POST" class="d-inline">
+                                                <form action="{{ route('event.delete', $event->id) }}" method="POST" class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet événement ?')">

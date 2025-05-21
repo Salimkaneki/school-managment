@@ -64,36 +64,7 @@ Route::middleware(['auth'])->group(function () {
         return view('account-pages.profile');
     })->name('profile');
 
-        // Route::prefix('/teacher')->group(function () {
-
-        //     // Route::get('/create', function () {return view('teachers.create');})->name('create-teacher');
-
-        //     Route::get('/list', [TeacherController::class, 'index'])->name('index-teacher');
-
-
-
-
-        //     Route::post('/teachers', [TeacherController::class, 'store'])->name('teachers.store');
-        //     Route::get('/teachers', [TeacherController::class, 'index'])->name('teachers.index');
-
-        //     Route::get('/list', [TeacherController::class, 'index'])->name('index-teacher');
-        //     Route::get('/create', [TeacherController::class, 'create'])->name('create-teacher');
-        //     Route::post('/store', [TeacherController::class, 'store'])->name('store-teacher');
-        //     Route::get('/{teacher}', [TeacherController::class, 'show'])->name('show-teacher');
-        //     Route::put('/{teacher}', [TeacherController::class, 'update'])->name('update-teacher');
-        //     Route::delete('/{teacher}', [TeacherController::class, 'destroy'])->name('delete-teacher');
-            
-        //     // Routes pour les fonctionnalités supplémentaires
-        //     Route::get('/search', [TeacherController::class, 'search'])->name('search-teacher');
-        //     Route::get('/export', [TeacherController::class, 'export'])->name('export-teacher');
-        //     Route::get('/filter/{subject}', [TeacherController::class, 'filterBySubject'])->name('filter-teacher');
-        //     Route::patch('/{teacher}/toggle-status', [TeacherController::class, 'toggleStatus'])->name('toggle-status-teacher');
-
-        // });
-
-        // Route::get('/teachers-edit/{id}', [TeacherController::class, 'edit'])->name('edit-teacher');
-        // Route::put('/teachers/{id}', [TeacherController::class, 'update'])->name('teachers.update');
-
+        //Route des professeurs 
         Route::prefix('/teacher')->name('teacher.')->group(function () {
             Route::get('/list', [TeacherController::class, 'index'])->name('index');
             Route::get('/create', [TeacherController::class, 'create'])->name('create');
@@ -320,39 +291,49 @@ Route::middleware(['auth'])->group(function () {
         
                
     // Define the route prefix for events
-    Route::prefix('event')->group(function () {
-        // Route to show the form for creating a new event
-        Route::get('/create', function () {
-            return view('events.create');
-        })->name('create-event');
+    // Route::prefix('event')->group(function () {
+    //     // Route to show the form for creating a new event
+    //     Route::get('/create', function () {
+    //         return view('events.create');
+    //     })->name('create-event');
         
-        // Route to handle form submission and store the event
-        Route::post('/store', [SchoolEventController::class, 'store'])->name('store-event');
+    //     // Route to handle form submission and store the event
+    //     Route::post('/store', [SchoolEventController::class, 'store'])->name('store-event');
         
-        // Route to show the list of events
-        Route::get('/list', [SchoolEventController::class, 'index'])->name('event-list');
-        Route::get('/events', [SchoolEventController::class, 'index'])->name('events-list');
+    //     // Route to show the list of events
+    //     Route::get('/list', [SchoolEventController::class, 'index'])->name('event-list');
+    //     Route::get('/events', [SchoolEventController::class, 'index'])->name('events-list');
         
-        // Route::get('/events/create', [SchoolEventController::class, 'create'])->name('events.create');
-        Route::post('/events', [SchoolEventController::class, 'store'])->name('events.store');
+    //     // Route::get('/events/create', [SchoolEventController::class, 'create'])->name('events.create');
+    //     Route::post('/events', [SchoolEventController::class, 'store'])->name('events.store');
         
-        // Route de suppression d'un événement
-        Route::delete('/events/{event}', [SchoolEventController::class, 'destroy'])->name('delete-event');
+    //     // Route de suppression d'un événement
+    //     Route::delete('/events/{event}', [SchoolEventController::class, 'destroy'])->name('delete-event');
         
-        // Routes d'édition d'un événement
-        Route::put('/{id}/update', [SchoolEventController::class, 'update'])->name('update-event');
-    });
+    //     // Routes d'édition d'un événement
+    //     Route::put('/{id}/update', [SchoolEventController::class, 'update'])->name('update-event');
+    // });
     
-    Route::get('/create', [SchoolEventController::class, 'create'])->name('events.create');
+    // Route::get('/create', [SchoolEventController::class, 'create'])->name('events.create');
 
-    Route::get('/events/{event}', [SchoolEventController::class, 'show'])->name('events.show');
+    // Route::get('/events/{event}', [SchoolEventController::class, 'show'])->name('events.show');
 
-    // Route::get('/{id}/edit', [SchoolEventController::class, 'edit'])->name('edit-event');
+    // // Route::get('/{id}/edit', [SchoolEventController::class, 'edit'])->name('edit-event');
 
-    Route::prefix('edit')->group(function(){
-        Route::get('/{id}', [SchoolEventController::class, 'edit'])->name('edit-event');
+    // Route::prefix('edit')->group(function(){
+    //     Route::get('/{id}', [SchoolEventController::class, 'edit'])->name('edit-event');
 
 
+    // });
+
+    Route::prefix('event')->name('event.')->group(function () {
+        Route::get('/list', [SchoolEventController::class, 'index'])->name('list');
+        Route::get('/create', [SchoolEventController::class, 'create'])->name('create');
+        Route::post('/store', [SchoolEventController::class, 'store'])->name('store');
+        Route::get('/{event}', [SchoolEventController::class, 'show'])->name('show');
+        Route::get('/{event}/edit', [SchoolEventController::class, 'edit'])->name('edit');
+        Route::put('/{event}/update', [SchoolEventController::class, 'update'])->name('update');
+        Route::delete('/{event}', [SchoolEventController::class, 'destroy'])->name('delete');
     });
 
     

@@ -19,7 +19,7 @@
         <ul class="dropdown-menu dropdown-menu-end px-2 py-3 me-sm-n4" aria-labelledby="notificationDropdown">
             @forelse($recentEvents as $event)
                 <li class="mb-2">
-                    <a class="dropdown-item border-radius-md" href="{{ route('events.show', $event->id) }}">
+                    <a class="dropdown-item border-radius-md" href="{{ route('event.show', $event->id) }}">
                         <div class="d-flex py-1">
                             <div class="my-auto">
                                 <div class="avatar avatar-sm border-radius-sm bg-gradient-primary me-3 d-flex align-items-center justify-content-center">
@@ -88,7 +88,7 @@
     <ul class="dropdown-menu dropdown-menu-end px-2 py-3 me-sm-n4" aria-labelledby="notificationDropdown">
         @forelse($recentEvents as $event)
             <li class="mb-2">
-                <a class="dropdown-item border-radius-md" href="{{ route('events.show', $event->id) }}">
+                <a class="dropdown-item border-radius-md" href="{{ route('event.show', $event->id) }}">
                     <div class="d-flex py-1">
                         <div class="my-auto">
                             <div class="avatar avatar-sm border-radius-sm bg-gradient-primary me-3 d-flex align-items-center justify-content-center">

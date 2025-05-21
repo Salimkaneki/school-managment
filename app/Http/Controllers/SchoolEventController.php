@@ -33,7 +33,7 @@ class SchoolEventController extends Controller
 
         SchoolEvent::create($validatedData);
 
-        return redirect()->route('event-list')
+        return redirect()->route('event.list')
             ->with('success', 'Événement créé avec succès.');
     }
 
@@ -94,7 +94,7 @@ class SchoolEventController extends Controller
 
         $event->update($validatedData);
 
-        return redirect()->route('event-list')
+        return redirect()->route('event.list')
             ->with('success', 'Événement mis à jour avec succès.');
     }
 
@@ -106,7 +106,7 @@ class SchoolEventController extends Controller
 
         $event->delete();
         
-        return redirect()->route('event-list')
+        return redirect()->route('event.list')
             ->with('success', 'Événement supprimé avec succès.');
     }
 }

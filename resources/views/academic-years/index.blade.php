@@ -56,7 +56,7 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <a href="{{ route('year.edit', $year->id) }}" class="text-primary">Modifier</a>
+                                                <a href="{{ route('academic-years.edit', $year->id) }}" class="text-primary">Modifier</a>
                                                 <form action="{{ route('academic-years.destroy', $year->id) }}" method="POST" style="display:inline;" class="delete-form">
                                                     @csrf
                                                     @method('DELETE')

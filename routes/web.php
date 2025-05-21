@@ -179,37 +179,56 @@ Route::middleware(['auth'])->group(function () {
 
 
 
+        // Route::prefix('academic-years')->name('academic-years.')->group(function () {
+        //     // Routes de base CRUD
+        //     Route::get('/', [AcademicYearController::class, 'index'])->name('index');
+        //     Route::get('/create', [AcademicYearController::class, 'create'])->name('create');
+        //     Route::post('/', [AcademicYearController::class, 'store'])->name('store');
+        //     Route::get('/{academicYear}', [AcademicYearController::class, 'show'])->name('show');
+        //     Route::put('/{academicYear}', [AcademicYearController::class, 'update'])->name('update');
+        //     Route::delete('/{academicYear}', [AcademicYearController::class, 'destroy'])->name('destroy');
+            
+        //     // Routes additionnelles
+        //     Route::get('/current', [AcademicYearController::class, 'currentAcademicYear'])->name('current');
+        //     Route::post('/{academicYear}/activate', [AcademicYearController::class, 'activate'])->name('activate');
+        // });
+
         Route::prefix('academic-years')->name('academic-years.')->group(function () {
-            // Routes de base CRUD
             Route::get('/', [AcademicYearController::class, 'index'])->name('index');
             Route::get('/create', [AcademicYearController::class, 'create'])->name('create');
             Route::post('/', [AcademicYearController::class, 'store'])->name('store');
             Route::get('/{academicYear}', [AcademicYearController::class, 'show'])->name('show');
+            Route::get('/{academicYear}/edit', [AcademicYearController::class, 'edit'])->name('edit');
             Route::put('/{academicYear}', [AcademicYearController::class, 'update'])->name('update');
             Route::delete('/{academicYear}', [AcademicYearController::class, 'destroy'])->name('destroy');
             
             // Routes additionnelles
             Route::get('/current', [AcademicYearController::class, 'currentAcademicYear'])->name('current');
             Route::post('/{academicYear}/activate', [AcademicYearController::class, 'activate'])->name('activate');
+            
+            // Route pour les trimestres
+            Route::get('/list/trimesters', function() {
+                return view('academic-years.year-trimester');
+            })->name('year-trimester');
         });
 
         
 
-        // Route::get('/{academicYear}/edit', [AcademicYearController::class, 'edit'])->name('edit');
-        Route::get('/{academicYear}/edit', [AcademicYearController::class, 'edit'])->name('year.edit');
+        // // Route::get('/{academicYear}/edit', [AcademicYearController::class, 'edit'])->name('edit');
+        // Route::get('/{academicYear}/edit', [AcademicYearController::class, 'edit'])->name('year.edit');
 
 
-        Route::get('/detail/{id}', [PaymentController::class, 'show'])->name('detail-payment');
-        // Route pour récupérer un paiement existant pour l'édition
-        Route::get('/{id}/edit', [PaymentController::class, 'edit'])->name('payment.edit');
+        // Route::get('/detail/{id}', [PaymentController::class, 'show'])->name('detail-payment');
+        // // Route pour récupérer un paiement existant pour l'édition
+        // Route::get('/{id}/edit', [PaymentController::class, 'edit'])->name('payment.edit');
 
         
 
 
 
-        Route::get('list/trimesters', function() {
-            return view('academic-years.year-trimester');
-        })->name('year-trimester');
+        // Route::get('list/trimesters', function() {
+        //     return view('academic-years.year-trimester');
+        // })->name('year-trimester');
 
         Route::prefix('course')->group(function (){
 

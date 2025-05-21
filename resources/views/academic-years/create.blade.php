@@ -195,10 +195,7 @@
         </div>
       </div>
     </div>
-    <x-app.footer />
-  </main
-
->
+  </main>
 </x-app-layout>
 
 <script>

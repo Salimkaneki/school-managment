@@ -78,7 +78,6 @@
                 </div>
             </div>
         </div>
-        <x-app.footer />
     </main>
 
     <!-- Script pour la confirmation de suppression -->

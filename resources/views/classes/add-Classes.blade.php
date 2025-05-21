@@ -150,7 +150,6 @@
                 </div>
             </div>
         </div>
-        <x-app.footer />
     </main>
 
     <script>

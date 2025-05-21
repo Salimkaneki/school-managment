@@ -102,6 +102,5 @@
                 </div>
             </div>
         </div>
-        <x-app.footer />
     </main>
 </x-app-layout>

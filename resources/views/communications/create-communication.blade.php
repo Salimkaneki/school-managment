@@ -82,7 +82,6 @@
             </div>
         </div>
 
-        <x-app.footer />
     </main>
 
     @push('scripts')

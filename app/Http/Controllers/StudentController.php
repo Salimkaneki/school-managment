@@ -93,7 +93,7 @@ class StudentController extends Controller
             // Gérer les contacts d'urgence avec la nouvelle fonction
             $this->handleEmergencyContacts($student, $request->emergency_contacts);
             
-            return redirect()->route('student-list')->with('success', 'Élève ajouté avec succès.');
+            return redirect()->route('student.list')->with('success', 'Élève ajouté avec succès.');
         });
     }
 
@@ -164,7 +164,7 @@ class StudentController extends Controller
             // Utiliser la méthode unifiée pour gérer les contacts d'urgence
             $this->handleEmergencyContacts($student, $request->emergency_contacts);
             
-            return redirect()->route('student-list')->with('success', 'Élève modifié avec succès.');
+            return redirect()->route('student.list')->with('success', 'Élève modifié avec succès.');
         });
     }
 
@@ -235,7 +235,7 @@ class StudentController extends Controller
         // Puis supprimer l'étudiant
         $student->delete();
         
-        return redirect()->route('student-list')->with('success', 'Élève supprimé avec succès.');
+        return redirect()->route('student.list')->with('success', 'Élève supprimé avec succès.');
     }
 
     // Vérifier la capacité de la salle de classe

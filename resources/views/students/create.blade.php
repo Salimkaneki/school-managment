@@ -13,7 +13,7 @@
                                     <p class="text-sm text-muted mb-0">Tous les champs marqués * sont obligatoires</p>
                                 </div>
                                 <div class="col-6 text-end">
-                                    <a href="{{ route('student-list') }}" class="btn btn-light text-dark border-dark">
+                                    <a href="{{ route('student.list') }}" class="btn btn-light text-dark border-dark">
                                         <i class="fas fa-list me-2"></i> Liste des Élèves
                                     </a>
                                 </div>

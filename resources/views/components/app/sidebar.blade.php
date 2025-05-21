@@ -298,8 +298,8 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'student-list' ? 'active' : '' }}" 
-                   href="{{ route('student-list') }}">
+                <a class="nav-link {{ Route::currentRouteName() == 'student.list' ? 'active' : '' }}" 
+                   href="{{ route('student.list') }}">
                     <div class="icon icon-shape icon-sm px-0 text-center d-flex align-items-center justify-content-center">
                         <i class="fas fa-user-graduate text-white"></i>
                     </div>

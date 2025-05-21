@@ -12,7 +12,7 @@
                                     <p class="text-sm text-muted mb-0">Tous les champs marqués * sont obligatoires</p>
                                 </div>
                                 <div class="col-6 text-end">
-                                    <a href="{{ route('student-list') }}" class="btn btn-light text-dark border-dark">
+                                    <a href="{{ route('student.list') }}" class="btn btn-light text-dark border-dark">
                                         <i class="fas fa-list me-2"></i> Liste des Élèves
                                     </a>
                                 </div>
@@ -251,7 +251,7 @@
                                 <!-- Boutons d'action -->
                                 <div class="text-end">
                                     <button type="submit" class="btn btn-dark">Mettre à jour</button>
-                                    <a href="{{ route('student-list') }}" class="btn btn-outline-secondary ms-2">Annuler</a>
+                                    <a href="{{ route('student.list') }}" class="btn btn-outline-secondary ms-2">Annuler</a>
                                 </div>
                             </form>
                         </div>

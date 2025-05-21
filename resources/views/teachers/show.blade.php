@@ -12,7 +12,7 @@
                                     <p class="text-sm mb-0">Informations complètes</p>
                                 </div>
                                 <div class="col-6 text-end">
-                                    <a href="{{ route('index-teacher') }}" class="btn btn-light text-dark border-dark">
+                                    <a href="{{ route('teacher.index') }}" class="btn btn-light text-dark border-dark">
                                         <i class="fas fa-list me-2"></i> Liste des Professeurs
                                     </a>
                                     <a href="#" class="btn btn-primary ms-2">

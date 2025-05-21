@@ -64,37 +64,55 @@ Route::middleware(['auth'])->group(function () {
         return view('account-pages.profile');
     })->name('profile');
 
-    Route::prefix('/teacher')->group(function () {
+        // Route::prefix('/teacher')->group(function () {
 
-            // Route::get('/create', function () {return view('teachers.create');})->name('create-teacher');
+        //     // Route::get('/create', function () {return view('teachers.create');})->name('create-teacher');
 
-    Route::get('/list', [TeacherController::class, 'index'])->name('index-teacher');
-
-
+        //     Route::get('/list', [TeacherController::class, 'index'])->name('index-teacher');
 
 
-            Route::post('/teachers', [TeacherController::class, 'store'])->name('teachers.store');
-            Route::get('/teachers', [TeacherController::class, 'index'])->name('teachers.index');
 
-            Route::get('/list', [TeacherController::class, 'index'])->name('index-teacher');
-            Route::get('/create', [TeacherController::class, 'create'])->name('create-teacher');
-            Route::post('/store', [TeacherController::class, 'store'])->name('store-teacher');
-            Route::get('/{teacher}', [TeacherController::class, 'show'])->name('show-teacher');
-            Route::put('/{teacher}', [TeacherController::class, 'update'])->name('update-teacher');
-            Route::delete('/{teacher}', [TeacherController::class, 'destroy'])->name('delete-teacher');
+
+        //     Route::post('/teachers', [TeacherController::class, 'store'])->name('teachers.store');
+        //     Route::get('/teachers', [TeacherController::class, 'index'])->name('teachers.index');
+
+        //     Route::get('/list', [TeacherController::class, 'index'])->name('index-teacher');
+        //     Route::get('/create', [TeacherController::class, 'create'])->name('create-teacher');
+        //     Route::post('/store', [TeacherController::class, 'store'])->name('store-teacher');
+        //     Route::get('/{teacher}', [TeacherController::class, 'show'])->name('show-teacher');
+        //     Route::put('/{teacher}', [TeacherController::class, 'update'])->name('update-teacher');
+        //     Route::delete('/{teacher}', [TeacherController::class, 'destroy'])->name('delete-teacher');
             
-            // Routes pour les fonctionnalités supplémentaires
-            Route::get('/search', [TeacherController::class, 'search'])->name('search-teacher');
-            Route::get('/export', [TeacherController::class, 'export'])->name('export-teacher');
-            Route::get('/filter/{subject}', [TeacherController::class, 'filterBySubject'])->name('filter-teacher');
-            Route::patch('/{teacher}/toggle-status', [TeacherController::class, 'toggleStatus'])->name('toggle-status-teacher');
+        //     // Routes pour les fonctionnalités supplémentaires
+        //     Route::get('/search', [TeacherController::class, 'search'])->name('search-teacher');
+        //     Route::get('/export', [TeacherController::class, 'export'])->name('export-teacher');
+        //     Route::get('/filter/{subject}', [TeacherController::class, 'filterBySubject'])->name('filter-teacher');
+        //     Route::patch('/{teacher}/toggle-status', [TeacherController::class, 'toggleStatus'])->name('toggle-status-teacher');
 
+        // });
+
+        // Route::get('/teachers-edit/{id}', [TeacherController::class, 'edit'])->name('edit-teacher');
+        // Route::put('/teachers/{id}', [TeacherController::class, 'update'])->name('teachers.update');
+
+        Route::prefix('/teacher')->name('teacher.')->group(function () {
+            Route::get('/list', [TeacherController::class, 'index'])->name('index');
+            Route::get('/create', [TeacherController::class, 'create'])->name('create');
+            Route::post('/store', [TeacherController::class, 'store'])->name('store');
+            Route::get('/{teacher}', [TeacherController::class, 'show'])->name('show');
+            Route::get('/{teacher}/edit', [TeacherController::class, 'edit'])->name('edit');
+            Route::put('/{teacher}', [TeacherController::class, 'update'])->name('update');
+            Route::delete('/{teacher}', [TeacherController::class, 'destroy'])->name('delete');
+            
+            // Fonctionnalités supplémentaires
+            Route::get('/search', [TeacherController::class, 'search'])->name('search');
+            Route::get('/export', [TeacherController::class, 'export'])->name('export');
+            Route::get('/filter/{subject}', [TeacherController::class, 'filterBySubject'])->name('filter');
+            Route::patch('/{teacher}/toggle-status', [TeacherController::class, 'toggleStatus'])->name('toggle-status');
         });
+                
 
-        Route::get('/teachers-edit/{id}', [TeacherController::class, 'edit'])->name('edit-teacher');
-        Route::put('/teachers/{id}', [TeacherController::class, 'update'])->name('teachers.update');
 
-        
+
 
             // Routes préfixées avec /class
             Route::prefix('/class')->group(function () {

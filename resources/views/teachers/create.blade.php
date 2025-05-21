@@ -14,7 +14,7 @@
                                     <p class="text-sm text-muted mb-0">Veuillez remplir les informations ci-dessous</p>
                                 </div>
                                 <div class="col-6 text-end">
-                                    <a href="{{ route('index-teacher') }}" class="btn btn-outline-secondary">
+                                    <a href="{{ route('teacher.index') }}" class="btn btn-outline-secondary">
                                         <i class="fas fa-list me-2 text-black"></i> Liste des Professeurs
                                     </a>
                                 </div>
@@ -35,7 +35,7 @@
                                 </div>
                             @endif
 
-                            <form action="{{ route('teachers.store') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('teacher.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
 
                                 <div class="row g-3">
@@ -258,7 +258,7 @@
                                     </div>
 
                                     <div class="col-md-12 d-flex justify-content-end gap-2 mt-3">
-                                        <a href="{{ route('index-teacher') }}" class="btn btn-outline-secondary">
+                                        <a href="{{ route('teacher.index') }}" class="btn btn-outline-secondary">
                                             <i class="fas fa-times me-2 text-black"></i>Annuler
                                         </a>
                                         <button type="submit" class="btn btn-primary">

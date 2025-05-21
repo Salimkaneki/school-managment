@@ -289,7 +289,7 @@
 
             <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'index-teacher' ? 'active' : '' }}" 
-                   href="{{ route('index-teacher') }}">
+                   href="{{ route('teacher.create') }}">
                     <div class="icon icon-shape icon-sm px-0 text-center d-flex align-items-center justify-content-center">
                         <i class="fas fa-user-tie text-white"></i>
                     </div>

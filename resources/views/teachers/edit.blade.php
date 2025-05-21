@@ -12,8 +12,8 @@
                                     <p class="text-sm mb-0">Modification des informations de {{ $teacher->first_name }} {{ $teacher->last_name }}</p>
                                 </div>
                                 <div class="col-6 text-end">
-                                    <a href="{{ route('show-teacher', $teacher) }}" class="btn btn-light text-dark border-dark">
-                                        <i class="fas fa-arrow-left me-2"></i> Retour aux détails
+                                    <a href="{{ route('teacher.index', $teacher) }}" class="btn btn-light text-dark border-dark">
+                                        <i class="fas fa-arrow-left me-2"></i> Liste des professeurs
                                     </a>
                                 </div>
                             </div>
@@ -29,7 +29,7 @@
                                 </div>
                             @endif
 
-                            <form action="{{ route('update-teacher', $teacher) }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('teacher.update', $teacher) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                 
@@ -223,7 +223,7 @@
 
                                 <div class="row">
                                     <div class="col-12 d-flex justify-content-end gap-2">
-                                        <a href="{{ route('show-teacher', $teacher) }}" class="btn btn-secondary">Annuler</a>
+                                        <a href="{{ route('teacher.show', $teacher) }}" class="btn btn-secondary">Annuler</a>
                                         <button type="submit" class="btn btn-primary">
                                             <i class="fas fa-save me-2"></i> Enregistrer les modifications
                                         </button>

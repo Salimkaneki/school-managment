@@ -49,7 +49,7 @@ class TeacherController extends Controller
     
        Teacher::create($validatedData);
        
-       return redirect()->route('index-teacher')
+       return redirect()->route('teacher.index')
            ->with('success', 'Enseignant ajouté avec succès.');
     }
 
@@ -103,7 +103,7 @@ class TeacherController extends Controller
     
         $teacher->update($validated);
     
-        return redirect()->route('teachers.index')
+        return redirect()->route('teacher.index')
             ->with('success', 'Les informations du professeur ont été mises à jour avec succès.');
     }
 
@@ -115,7 +115,7 @@ class TeacherController extends Controller
 
         $teacher->delete();
         
-        return redirect()->route('index-teacher')
+        return redirect()->route('teacher.index')
             ->with('success', 'Enseignant supprimé avec succès.');
     }
 }

@@ -30,7 +30,7 @@
                                             <span class="btn-inner--text">Actions</span>
                                         </button>
                                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="actionMenu">
-                                            <a href="{{ route('create-student') }}" class="dropdown-item">Ajouter un Élève</a>
+                                            <a href="{{ route('student.create') }}" class="dropdown-item">Ajouter un Élève</a>
                                             <a href="#" class="dropdown-item">Élèves par Classe</a>
                                             <a href="{{ route('attendances.create') }}" class="dropdown-item">Enregistrer une Absence</a>
                                             <a href="{{ route('attendances.index') }}" class="dropdown-item">Liste des Absences</a>

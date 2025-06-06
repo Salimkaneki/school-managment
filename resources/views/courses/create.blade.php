@@ -35,6 +35,32 @@
                                 @csrf
 
                                 <div class="row g-3">
+
+                                    <div class="col-md-6">
+    <label for="academic_year_id" class="form-label">
+        <i class="fas fa-calendar-alt me-2 text-primary"></i>Année Académique
+    </label>
+    <select 
+        class="form-select @error('academic_year_id') is-invalid @enderror" 
+        id="academic_year_id" 
+        name="academic_year_id" 
+        required
+    >
+        <option value="" selected disabled>Choisissez une année académique</option>
+        @foreach($academicYears as $year)
+            <option 
+                value="{{ $year->id }}"
+                {{ old('academic_year_id', isset($course) ? $course->academic_year_id : '') == $year->id ? 'selected' : '' }}
+            >
+                {{ $year->start_year }}-{{ $year->end_year }}
+                @if($year->is_active) (Active) @endif
+            </option>
+        @endforeach
+    </select>
+    @error('academic_year_id')
+        <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
+</div>
                                     <div class="col-md-6">
                                         <label for="name" class="form-label">
                                             <i class="fas fa-tag me-2 text-primary"></i>Nom du Cours
@@ -76,19 +102,6 @@
                                         @error('teacher_id')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
-                                    </div>
-
-                                    <div class="col-md-12">
-                                        <label for="description" class="form-label">
-                                            <i class="fas fa-comment-dots me-2 text-primary"></i>Description (Optionnel)
-                                        </label>
-                                        <textarea 
-                                            class="form-control" 
-                                            id="description" 
-                                            name="description" 
-                                            rows="3" 
-                                            placeholder="Décrivez brièvement le cours"
-                                        >{{ old('description') }}</textarea>
                                     </div>
 
                                     <div class="col-md-12 d-flex justify-content-end gap-2 mt-3">

@@ -22,10 +22,10 @@ class ArchiveController extends Controller
         'timetables' => ['label' => 'Emplois du temps', 'has_academic_year' => true],
         'timetable_courses' => ['label' => 'Cours d\'emploi du temps', 'has_academic_year' => true],
         'attendances' => ['label' => 'Présences', 'has_academic_year' => true],
-        'teacher_classes' => ['label' => 'Classes des enseignants', 'has_academic_year' => true],
-        'teacher_courses' => ['label' => 'Cours des enseignants', 'has_academic_year' => true],
-        'class_courses' => ['label' => 'Cours des classes', 'has_academic_year' => true],
-        'class_classroom' => ['label' => 'Classes-Salles', 'has_academic_year' => true],
+        // 'teacher_classes' => ['label' => 'Classes des enseignants', 'has_academic_year' => true],
+        // 'teacher_courses' => ['label' => 'Cours des enseignants', 'has_academic_year' => true],
+        // 'class_courses' => ['label' => 'Cours des classes', 'has_academic_year' => true],
+        // 'class_classroom' => ['label' => 'Classes-Salles', 'has_academic_year' => true],
         'teachers' => ['label' => 'Enseignants', 'has_academic_year' => true],
         'student_emergency_contacts' => ['label' => 'Contacts d\'urgence', 'has_academic_year' => true],
         'school_events' => ['label' => 'Événements scolaires', 'has_academic_year' => true],
@@ -73,12 +73,12 @@ class ArchiveController extends Controller
         }
 
         // Dans index(), avant le return
-        dd([
-            'academicYears' => $academicYears->count(),
-            'yearStats' => $yearStats,
-            'payments_count' => DB::table('payments')->count(),
-            'archives_count' => Archive::count()
-        ]);
+        // dd([
+        //     'academicYears' => $academicYears->count(),
+        //     'yearStats' => $yearStats,
+        //     'payments_count' => DB::table('payments')->count(),
+        //     'archives_count' => Archive::count()
+        // ]);
 
         return view('archives.index', compact('academicYears', 'yearStats'));
     }

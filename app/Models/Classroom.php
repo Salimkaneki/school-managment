@@ -13,14 +13,15 @@ class Classroom extends Model
         'name',
         'capacity',
         'class_model_id',
-        'school_id'
+        'school_id',
+        'academic_year_id'
     ];
 
 
 
     public function classModel()
     {
-        return $this->belongsTo(ClassModel::class, 'class_id');
+        return $this->belongsTo(ClassModel::class, 'class_model_id'); // Changez 'class_id' en 'class_model_id'
     }
 
     public function students()
@@ -29,7 +30,12 @@ class Classroom extends Model
     }
     
     public function classes()
-{
-    return $this->belongsToMany(ClassModel::class, 'class_classroom', 'class_id');
-}
+    {
+        return $this->belongsToMany(ClassModel::class, 'class_classroom', 'classroom_id', 'class_model_id');
+    }
+
+    public function academicYear()
+    {
+        return $this->belongsTo(AcademicYear::class);
+    }
 }

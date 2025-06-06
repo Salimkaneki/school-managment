@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ClassModel;
 use App\Models\Classroom;
+use App\Models\AcademicYear; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -19,12 +20,20 @@ class ClassController extends Controller
         return view('classes.class-list', compact('classes'));
     }
 
+public function create()
+{
+    $academicYears = AcademicYear::all(); 
+    return view('classes.add-Classes', compact('academicYears'));
+}
+
+
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'fees' => 'required|numeric|min:0',
+            'academic_year_id' => 'required|exists:academic_years,id',
             'classrooms.*.name' => 'required|string|max:255',
             'classrooms.*.capacity' => 'required|integer|min:1',
         ]);
@@ -37,6 +46,7 @@ class ClassController extends Controller
                 'description' => $request->description,
                 'fees' => $request->fees,
                 'school_id' => Auth::guard('web')->user()->id,
+                'academic_year_id' => $request->academic_year_id, // Add this line
             ]);
 
             if ($request->has('classrooms') && count($request->classrooms) > 0) {
@@ -46,7 +56,8 @@ class ClassController extends Controller
                         'capacity' => $classroom['capacity'],
                         'class_model_id' => $classModel->id,
                         'school_id' => Auth::guard('web')->user()->id,
-                    ]);
+                        'academic_year_id' => $request->academic_year_id,
+                ]);
                 }
             }
 
@@ -63,8 +74,10 @@ class ClassController extends Controller
         $class = ClassModel::where('school_id', Auth::guard('web')->user()->id)
             ->with('classrooms')
             ->findOrFail($id);
+        
+        $academicYears = AcademicYear::all(); // Récupère toutes les années académiques
 
-        return view('classes.edit-class', compact('class'));
+        return view('classes.edit-class', compact('class', 'academicYears'));
     }
 
     public function update(Request $request, $id)
@@ -73,6 +86,7 @@ class ClassController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'fees' => 'required|numeric|min:0',
+            'academic_year_id' => 'required|exists:academic_years,id',
             'classrooms.*.name' => 'required|string|max:255',
             'classrooms.*.capacity' => 'required|integer|min:1',
         ]);

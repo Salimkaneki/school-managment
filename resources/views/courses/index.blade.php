@@ -32,7 +32,7 @@
                                             Professeur
                                         </th>
                                         <th class="text-center text-secondary text-xs font-weight-semibold opacity-7">
-                                            Description
+                                            Année Académique
                                         </th>
                                         <th class="text-center text-secondary text-xs font-weight-semibold opacity-7">
                                             Actions
@@ -52,11 +52,26 @@
                                                 {{ $course->teacher ? $course->teacher->first_name.' '.$course->teacher->last_name : 'Non assigné' }}
                                             </td>
                                             <td class="align-middle bg-transparent border-bottom text-xs">
-                                                {{ $course->description }}
+                                                @if($course->academicYear)
+                                                    {{ $course->academicYear->start_year }}-{{ $course->academicYear->end_year }}
+                                                    @if($course->academicYear->is_active)
+                                                        <span class="badge bg-success ms-1">Active</span>
+                                                    @endif
+                                                @elseif($course->academic_year_id)
+                                                    <span class="text-danger">
+                                                        <i class="fas fa-exclamation-triangle me-1"></i>
+                                                        Année introuvable (ID: {{ $course->academic_year_id }})
+                                                    </span>
+                                                @else
+                                                    <span class="text-muted">
+                                                        <i class="fas fa-minus me-1"></i>
+                                                        Aucune année assignée
+                                                    </span>
+                                                @endif
                                             </td>
                                             <td class="align-middle text-center">
                                                 <div class="d-flex justify-content-center gap-2">
-                                                    <a href="{{ route('course.edit', $course->id) }}" class="btn btn-link text-warning px-3 mb-0">
+                                                    <a href="{{ route('course.edit', $course->id) }}" class="btn btn-link text-warning px-3 mb-0" title="Modifier">
                                                         <svg width="14" height="14" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                             <path d="M11.2201 2.02495C10.8292 1.63482 10.196 1.63545 9.80585 2.02636C9.41572 2.41727 9.41635 3.05044 9.80726 3.44057L11.2201 2.02495ZM12.5572 6.18502C12.9481 6.57516 13.5813 6.57453 13.9714 6.18362C14.3615 5.79271 14.3609 5.15954 13.97 4.7694L12.5572 6.18502ZM11.6803 1.56839L12.3867 2.2762L12.3867 2.27619L11.6803 1.56839ZM14.4302 4.31284L15.1367 5.02065L15.1367 5.02064L14.4302 4.31284ZM3.72198 15V16C3.98686 16 4.24091 15.8949 4.42839 15.7078L3.72198 15ZM0.999756 15H0C0 15.5523 0.447715 16 0.999756 16L0.999756 15ZM0.999756 12.2279L0.293346 11.5201C0.105383 11.7077 0 11.9624 0 12.2279H0.999756ZM9.80726 3.44057L12.5572 6.18502L13.97 4.7694L11.2201 2.02495L9.80726 3.44057ZM12.3867 2.27619C12.7557 1.90794 13.3549 1.90794 13.7238 2.27619L15.1367 0.860593C13.9869 -0.286864 12.1236 -0.286864 10.9739 0.860593L12.3867 2.27619ZM13.7238 2.27619C14.0917 2.64337 14.0917 3.23787 13.7238 3.60504L15.1367 5.02064C16.2875 3.8721 16.2875 2.00913 15.1367 0.860593L13.7238 2.27619ZM13.7238 3.60504L3.01557 14.2922L4.42839 15.7078L15.1367 5.02065L13.7238 3.60504ZM3.72198 14H0.999756V16H3.72198V14ZM1.99951 15V12.2279H0V15H1.99951ZM1.70617 12.9357L12.3867 2.2762L10.9739 0.86059L0.293346 11.5201L1.70617 12.9357Z" fill="#FF8600"/>
                                                         </svg>
@@ -66,6 +81,7 @@
                                                         @method('DELETE')
                                                         <button type="submit" 
                                                                 class="btn btn-link text-danger px-3 mb-0"
+                                                                title="Supprimer"
                                                                 onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce cours ?')">
                                                             <svg width="14" height="14" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                 <path d="M1.98314 3.33333H14.0165" stroke="#FF0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -83,39 +99,56 @@
                             </table>
                         </div>
 
+                        @if($courses->isEmpty())
+                            <div class="text-center py-4">
+                                <div class="mb-3">
+                                    <i class="fas fa-book fa-3x text-muted"></i>
+                                </div>
+                                <h6 class="text-muted">Aucun cours enregistré</h6>
+                                <p class="text-sm text-muted">Commencez par ajouter votre premier cours</p>
+                                <a href="{{ route('course.create') }}" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-plus me-2"></i>Ajouter un cours
+                                </a>
+                            </div>
+                        @endif
+
                         <!-- Pagination personnalisée -->
-                        <div class="border-top py-3 px-3 d-flex align-items-center">
-                            <!-- Bouton Previous -->
-                            @if ($courses->onFirstPage())
-                                <button class="btn btn-sm btn-white d-sm-block d-none mb-0" disabled>Previous</button>
-                            @else
-                                <a href="{{ $courses->previousPageUrl() }}" class="btn btn-sm btn-white d-sm-block d-none mb-0">Previous</a>
-                            @endif
+                        @if($courses->hasPages())
+                            <div class="border-top py-3 px-3 d-flex align-items-center">
+                                <!-- Bouton Previous -->
+                                @if ($courses->onFirstPage())
+                                    <button class="btn btn-sm btn-white d-sm-block d-none mb-0" disabled>Previous</button>
+                                @else
+                                    <a href="{{ $courses->previousPageUrl() }}" class="btn btn-sm btn-white d-sm-block d-none mb-0">Previous</a>
+                                @endif
 
-                            <!-- Pagination -->
-                            <nav aria-label="Pagination" class="ms-auto">
-                                <ul class="pagination pagination-light mb-0">
-                                    @foreach ($courses->links()->elements[0] as $page => $url)
-                                        @if ($page == $courses->currentPage())
-                                            <li class="page-item active" aria-current="page">
-                                                <span class="page-link font-weight-bold">{{ $page }}</span>
-                                            </li>
-                                        @else
-                                            <li class="page-item">
-                                                <a class="page-link border-0 font-weight-bold" href="{{ $url }}">{{ $page }}</a>
-                                            </li>
+                                <!-- Pagination -->
+                                <nav aria-label="Pagination" class="ms-auto">
+                                    <ul class="pagination pagination-light mb-0">
+                                        @if(isset($courses->links()->elements[0]))
+                                            @foreach ($courses->links()->elements[0] as $page => $url)
+                                                @if ($page == $courses->currentPage())
+                                                    <li class="page-item active" aria-current="page">
+                                                        <span class="page-link font-weight-bold">{{ $page }}</span>
+                                                    </li>
+                                                @else
+                                                    <li class="page-item">
+                                                        <a class="page-link border-0 font-weight-bold" href="{{ $url }}">{{ $page }}</a>
+                                                    </li>
+                                                @endif
+                                            @endforeach
                                         @endif
-                                    @endforeach
-                                </ul>
-                            </nav>
+                                    </ul>
+                                </nav>
 
-                            <!-- Bouton Next -->
-                            @if ($courses->hasMorePages())
-                                <a href="{{ $courses->nextPageUrl() }}" class="btn btn-sm btn-white d-sm-block d-none mb-0 ms-auto">Next</a>
-                            @else
-                                <button class="btn btn-sm btn-white d-sm-block d-none mb-0 ms-auto" disabled>Next</button>
-                            @endif
-                        </div>
+                                <!-- Bouton Next -->
+                                @if ($courses->hasMorePages())
+                                    <a href="{{ $courses->nextPageUrl() }}" class="btn btn-sm btn-white d-sm-block d-none mb-0 ms-auto">Next</a>
+                                @else
+                                    <button class="btn btn-sm btn-white d-sm-block d-none mb-0 ms-auto" disabled>Next</button>
+                                @endif
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>

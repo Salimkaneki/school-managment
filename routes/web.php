@@ -86,20 +86,18 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-            // Routes préfixées avec /class
-            Route::prefix('/class')->group(function () {
-                Route::get('/create-class', function () {
-                    return view('classes.add-Classes');
-                })->name('create-class');
+        Route::prefix('/class')->group(function () {
+            // Fix: Use the controller method instead of direct view return
+            Route::get('/create-class', [ClassController::class, 'create'])->name('create-class');
 
-                Route::get('/class-list', [ClassController::class, 'index'])->name('class-list');
-                
-                Route::post('/store-class', [ClassController::class, 'store'])->name('store-class');
-
-                Route::put('/update-class/{id}', [ClassController::class, 'update'])->name('update-class');
+            Route::get('/class-list', [ClassController::class, 'index'])->name('class-list');
             
-                Route::delete('/delete-class/{id}', [ClassController::class, 'destroy'])->name('delete-class');
-            });
+            Route::post('/store-class', [ClassController::class, 'store'])->name('store-class');
+
+            Route::put('/update-class/{id}', [ClassController::class, 'update'])->name('update-class');
+
+            Route::delete('/delete-class/{id}', [ClassController::class, 'destroy'])->name('delete-class');
+        });
 
             // Route edit-class (en dehors du préfixe /class pour maintenir la structure exacte)
             Route::get('/edit-class/{id}', [ClassController::class, 'edit'])->name('edit-class');

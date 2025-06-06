@@ -38,10 +38,6 @@ class Teacher extends Model
         return $this->belongsToMany(Course::class, 'teacher_course');
     }
 
-    // public function academicYear()
-    // {
-    //     return $this->belongsTo(AcademicYear::class);
-    // }
 
     public function academicYear()
     {

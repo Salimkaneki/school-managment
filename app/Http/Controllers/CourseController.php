@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Course;
+use App\Models\AcademicYear;
 use App\Models\Teacher;
 
 class CourseController extends Controller
@@ -13,17 +14,18 @@ class CourseController extends Controller
     public function index()
     {
         $courses = Course::where('school_id', Auth::id())
-                         ->with('teacher')
-                         ->paginate(10);
+                        ->with(['teacher', 'academicYear'])
+                        ->paginate(10);
 
         return view('courses.index', compact('courses'));
     }
 
-    // Afficher le formulaire de création d'un cours
     public function create()
     {
         $teachers = Teacher::where('school_id', Auth::id())->get();
-        return view('courses.create', compact('teachers'));
+        $academicYears = AcademicYear::all();
+        
+        return view('courses.create', compact('teachers', 'academicYears'));
     }
 
     // Enregistrer un nouveau cours
@@ -32,6 +34,8 @@ class CourseController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'teacher_id' => 'required|exists:teachers,id',
+            'academic_year_id' => 'required|exists:academic_years,id',
+            // 'description' => 'nullable|string', // Commenté temporairement
         ]);
 
         $validated['school_id'] = Auth::id();
@@ -46,11 +50,11 @@ class CourseController extends Controller
     {
         $course = Course::where('school_id', Auth::id())->findOrFail($id);
         $teachers = Teacher::where('school_id', Auth::id())->get();
+        $academicYears = AcademicYear::all();
 
-        return view('courses.edit', compact('course', 'teachers'));
+        return view('courses.edit', compact('course', 'teachers', 'academicYears'));
     }
 
-    // Mettre à jour un cours existant
     public function update(Request $request, $id)
     {
         $course = Course::where('school_id', Auth::id())->findOrFail($id);
@@ -58,7 +62,8 @@ class CourseController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'teacher_id' => 'required|exists:teachers,id',
-            'description' => 'nullable|string',
+            'academic_year_id' => 'required|exists:academic_years,id',
+            // 'description' => 'nullable|string', // Commenté temporairement
         ]);
 
         $course->update($validated);

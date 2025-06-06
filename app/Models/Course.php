@@ -9,7 +9,7 @@ class Course extends Model
 {
     use HasFactory;
 
-        /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
@@ -17,7 +17,9 @@ class Course extends Model
     protected $fillable = [
         'name',
         'teacher_id',
-        'school_id'
+        'school_id',
+        'academic_year_id',  // Assurez-vous que c'est ici
+        // 'description'
     ];
 
     public function subject()
@@ -47,7 +49,7 @@ class Course extends Model
 
     public function academicYear()
     {
-        return $this->belongsTo(AcademicYear::class);
+        return $this->belongsTo(AcademicYear::class, 'academic_year_id'); // Spécifiez explicitement la clé étrangère
     }
 
     public function trimester()

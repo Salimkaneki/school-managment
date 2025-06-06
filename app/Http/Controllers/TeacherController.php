@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use App\Models\Teacher;
+use App\Models\AcademicYear;
 use Illuminate\Support\Facades\Auth;
 
 class TeacherController extends Controller
@@ -13,14 +14,19 @@ class TeacherController extends Controller
     public function index()
     {
         $teachers = Teacher::where('school_id', Auth::id())
+            ->where('academic_year_id')
             ->orderBy('last_name', 'asc')
             ->paginate(10);
-        return view('teachers.index', ['teachers' => $teachers]);
+        return view('teachers.index', ['teachers' => $teachers,
+            'academicYears' => AcademicYear::all()
+        ]);
     }
 
     public function create()
     {
-        return view('teachers.create');
+        $academicYears = AcademicYear::all(); // Assurez-vous d'importer le modèle AcademicYear
+
+        return view('teachers.create', compact('academicYears'));
     }
 
     public function store(Request $request)
@@ -38,6 +44,8 @@ class TeacherController extends Controller
            'birthday' => 'required|date',
            'marital_status' => 'required|in:single,married,divorced,widowed',
            'address' => 'required|string|max:255',
+            'academic_year_id' => 'required|exists:academic_years,id',
+
        ]);
     
        $validatedData['school_id'] = Auth::id();
@@ -64,7 +72,9 @@ class TeacherController extends Controller
     public function edit($id)
     {
         $teacher = Teacher::findOrFail($id);
-        return view('teachers.edit', compact('teacher'));
+        $academicYears = AcademicYear::all();
+
+        return view('teachers.edit', compact('teacher', 'academicYears'));
     }
     
     public function update(Request $request, $id)
@@ -88,6 +98,8 @@ class TeacherController extends Controller
             'birthday' => 'required|date',
             'marital_status' => 'required|in:single,married,divorced,widowed',
             'address' => 'required|string|max:255',
+            'academic_year_id' => 'required|exists:academic_years,id',
+
         ]);
     
         $validated['school_id'] = Auth::id();

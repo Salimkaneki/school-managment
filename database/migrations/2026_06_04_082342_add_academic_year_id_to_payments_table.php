@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('attendances', function (Blueprint $table) {
+        Schema::table('payments', function (Blueprint $table) {
             //
-            $table->foreignId('school_id')->after('class_id')->constrained('schools')->onDelete('cascade');
+            $table->foreignId('academic_year_id')
+            ->nullable()->constrained('academic_years')->onDelete('set null');
         });
     }
 
@@ -22,10 +23,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('attendances', function (Blueprint $table) {
+        Schema::table('payments', function (Blueprint $table) {
             //
-            $table->dropForeign(['school_id']);
-            $table->dropColumn('school_id');
+            $table->dropForeign(['academic_year_id']);
+            $table->dropColumn('academic_year_id');
         });
     }
 };

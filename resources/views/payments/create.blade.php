@@ -54,6 +54,16 @@
             <option value="" disabled selected>Choisir un élève</option>
         </select>
     </div>
+        <div class="col-md-4">
+        <label for="academic_year_id" class="form-label">Année Académique</label>
+        <select class="form-select" id="academic_year_id" name="academic_year_id" required>
+            <option value="" disabled selected>Choisir une année</option>
+            @foreach($academicYears as $year)
+                <option value="{{ $year->id }}">{{ $year->name }}</option>
+            @endforeach
+        </select>
+    </div>
+
 </div>
 
                             <!-- Section récapitulative similaire à celle de la page d'édition -->
@@ -290,5 +300,28 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// Ajoutez cette fonction pour mettre à jour le champ caché
+document.getElementById('academic_year_id').addEventListener('change', function() {
+    document.getElementById('hidden_academic_year_id').value = this.value;
+});
+
+// Modifiez la fonction filterStudents pour inclure l'année académique
+function filterStudents(classSelect) {
+    const academicYearId = document.getElementById('academic_year_id').value;
+    if (!academicYearId) {
+        alert('Veuillez d\'abord sélectionner une année académique');
+        return;
+    }
+    
+    // ... reste du code existant ...
+    
+    // Modifiez l'URL de l'API pour inclure l'année académique
+    fetch(`/getStudentsByClass/${classId}?academic_year_id=${academicYearId}`)
+        .then(response => response.json())
+        .then(students => {
+            // ... traitement des données ...
+        });
+}
     </script>
 </x-app-layout>

@@ -151,7 +151,7 @@
             </div>
 
             <!-- Graphiques principaux -->
-            <div class="row mb-4">
+            <!-- <div class="row mb-4">
                 <div class="col-lg-8">
                     <div class="card shadow-xs border h-100">
                         <div class="card-header pb-0">
@@ -211,7 +211,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <!-- Tableau et activité récente -->
             <div class="row mb-4">
@@ -441,7 +441,7 @@
             </div>
 
             <!-- Dernière rangée - Statistiques complémentaires -->
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-lg-6 mb-4">
                     <div class="card shadow-xs border">
                         <div class="card-header pb-0">
@@ -573,7 +573,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <!-- Footer avec rappels et tâches à venir -->
             <div class="row mt-2">

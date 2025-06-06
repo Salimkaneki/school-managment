@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+
+
 
 class AcademicYearController extends Controller
 {
@@ -36,6 +39,7 @@ class AcademicYearController extends Controller
         return view('academic-years.create');
     }
 
+
     /**
      * Enregistre une nouvelle année académique
      */
@@ -51,11 +55,12 @@ class AcademicYearController extends Controller
                 AcademicYear::where('is_active', true)->update(['is_active' => false]);
             }
 
-            // Créer l'année académique
+            // Créer l'année académique avec school_id
             $academicYear = AcademicYear::create([
                 'start_year' => $validated['start_year'],
                 'end_year' => $validated['end_year'],
                 'is_active' => $validated['is_active'],
+                'school_id' => Auth::id(), // ✅ Ajout du school_id
             ]);
 
             // Créer les trimestres
@@ -115,6 +120,59 @@ class AcademicYearController extends Controller
     /**
      * Met à jour une année académique
      */
+    // public function update(Request $request, AcademicYear $academicYear)
+    // {
+    //     $validated = $this->validateAcademicYear($request, $academicYear);
+
+    //     try {
+    //         DB::beginTransaction();
+
+    //         // Désactiver les autres années académiques si celle-ci est active
+    //         if ($validated['is_active']) {
+    //             AcademicYear::where('id', '!=', $academicYear->id)
+    //                 ->where('is_active', true)
+    //                 ->update(['is_active' => false]);
+    //         }
+
+    //         // Mettre à jour l'année académique
+    //         $academicYear->update([
+    //             'start_year' => $validated['start_year'],
+    //             'end_year' => $validated['end_year'],
+    //             'is_active' => $validated['is_active'],
+    //         ]);
+
+    //         // Supprimer les anciens trimestres
+    //         $academicYear->trimesters()->delete();
+
+    //         // Créer les nouveaux trimestres
+    //         foreach ($validated['trimesters'] as $trimesterData) {
+    //             $academicYear->trimesters()->create([
+    //                 'name' => $trimesterData['name'],
+    //                 'start_date' => $trimesterData['start_date'],
+    //                 'end_date' => $trimesterData['end_date'],
+    //             ]);
+    //         }
+
+    //         DB::commit();
+
+    //         return redirect()
+    //             ->route('academic-years.index')
+    //             ->with('success', 'Année académique mise à jour avec succès.');
+
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
+    //         Log::error('Erreur mise à jour année académique: ' . $e->getMessage());
+            
+    //         return redirect()
+    //             ->back()
+    //             ->with('error', 'Une erreur est survenue lors de la mise à jour de l\'année académique.')
+    //             ->withInput();
+    //     }
+    // }
+
+     /**
+     * Met à jour une année académique
+     */
     public function update(Request $request, AcademicYear $academicYear)
     {
         $validated = $this->validateAcademicYear($request, $academicYear);
@@ -134,6 +192,7 @@ class AcademicYearController extends Controller
                 'start_year' => $validated['start_year'],
                 'end_year' => $validated['end_year'],
                 'is_active' => $validated['is_active'],
+                // school_id reste inchangé lors de la mise à jour
             ]);
 
             // Supprimer les anciens trimestres

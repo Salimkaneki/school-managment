@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Payment;
 use App\Models\ClassModel;
 use App\Models\Student;
+use App\Models\AcademicYear; // Ajoutez cette ligne
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +18,8 @@ class PaymentController extends Controller
         $schoolId = Auth::id();
         
         // Récupérer uniquement les classes de l'école
-        $classes = ClassModel::where('school_id', $schoolId)->get();
+    $classes = ClassModel::where('school_id', $schoolId)->get();
+    $academicYears = AcademicYear::where('school_id', $schoolId)->get();
         
         // Récupérer les élèves avec leurs paiements et leur classe
         $students = Student::with(['payments', 'class'])
@@ -40,7 +42,7 @@ class PaymentController extends Controller
                 ];
             });
 
-        return view('payments.create', compact('classes', 'students'));
+        return view('payments.create', compact('classes', 'students', 'academicYears'));
     }
 
     // public function store(Request $request)
@@ -110,7 +112,9 @@ class PaymentController extends Controller
                 'student_id' => 'required|exists:students,id',
                 'total_fees' => 'required|numeric|min:0',
                 'amount_paid' => 'required|numeric|min:0',
-                'remaining_balance' => 'nullable|numeric|min:0'
+                'remaining_balance' => 'nullable|numeric|min:0',
+                'academic_year_id' => 'required|exists:academic_years,id'
+
             ]);
     
             // Vérifier si l'étudiant existe
@@ -136,7 +140,9 @@ class PaymentController extends Controller
                 $existingPayment->update([
                     'amount_paid' => $newAmountPaid,
                     'remaining_balance' => $newRemainingBalance,
-                    'updated_at' => now() // Mettre à jour la date pour refléter le nouveau paiement
+                    'updated_at' => now(), // Mettre à jour la date pour refléter le nouveau paiement
+                    'academic_year_id' => $validated['academic_year_id']
+
                 ]);
     
                 $payment = $existingPayment;
@@ -149,7 +155,9 @@ class PaymentController extends Controller
                     'school_id' => $schoolId,
                     'amount_due' => $validated['total_fees'],
                     'amount_paid' => $validated['amount_paid'],
-                    'remaining_balance' => $remainingBalance
+                    'remaining_balance' => $remainingBalance,
+                    'academic_year_id' => $validated['academic_year_id']
+
                 ]);
             }
     
@@ -170,7 +178,7 @@ class PaymentController extends Controller
     public function index()
     {
         $schoolId = Auth::id();
-        $payments = Payment::with(['student.class'])
+        $payments = Payment::with(['student.class', 'academicYear'])
             ->where('school_id', $schoolId)
             ->latest()
             ->paginate(10);

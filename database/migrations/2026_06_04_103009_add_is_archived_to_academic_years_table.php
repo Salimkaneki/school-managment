@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('attendances', function (Blueprint $table) {
-            //
-            $table->foreignId('school_id')->after('class_id')->constrained('schools')->onDelete('cascade');
+        Schema::table('academic_years', function (Blueprint $table) {
+            $table->boolean('is_archived')->default(false)->after('is_active');
         });
     }
 
@@ -22,10 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('attendances', function (Blueprint $table) {
-            //
-            $table->dropForeign(['school_id']);
-            $table->dropColumn('school_id');
+        Schema::table('academic_years', function (Blueprint $table) {
+            $table->dropColumn('is_archived');
         });
     }
 };

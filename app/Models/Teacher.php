@@ -23,7 +23,9 @@ class Teacher extends Model
         'birthday',
         'marital_status',
         'address',
-        'school_id', 
+        'school_id',
+        'academic_year_id'
+
     ];
 
     public function school()
@@ -34,5 +36,10 @@ class Teacher extends Model
     public function course()
     {
         return $this->belongsToMany(Course::class, 'teacher_course');
+    }
+
+    public function academicYear()
+    {
+        return $this->belongsTo(AcademicYear::class);
     }
 }

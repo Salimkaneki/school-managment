@@ -24,6 +24,7 @@ use PHPUnit\Framework\Attributes\Group;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\SchoolLoginController;
+use App\Http\Controllers\ArchiveController;
 
 
 
@@ -267,6 +268,26 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/{event}', [SchoolEventController::class, 'destroy'])->name('delete');
     });
 
+    // Page principale des archives
+    Route::get('/archives', [ArchiveController::class, 'index'])->name('archives.index');
+    
+    // Voir les archives d'une année académique
+    Route::get('/archives/year/{academicYear}', [ArchiveController::class, 'show'])->name('archives.show');
+    
+    // Archiver une table spécifique
+    Route::post('/archives/table', [ArchiveController::class, 'archiveTable'])->name('archives.table');
+    
+    // Archiver toute une année académique
+    Route::post('/archives/year', [ArchiveController::class, 'archiveYear'])->name('archives.year');
+    
+    // Restaurer un enregistrement depuis les archives
+    Route::post('/archives/{archive}/restore', [ArchiveController::class, 'restore'])->name('archives.restore');
+    
+    // Supprimer définitivement une archive
+    Route::delete('/archives/{archive}', [ArchiveController::class, 'delete'])->name('archives.delete');
+
+    
+    
     
 
 
@@ -355,6 +376,8 @@ Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name
         Route::delete('/{school}', [SchoolController::class, 'destroy'])
             ->name('destroy');
     });
+
+
 
 
     // use App\Http\Controllers\CommunicationController;

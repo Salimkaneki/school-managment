@@ -18,6 +18,7 @@ class Payment extends Model
         'balance',
         'payment_date',
         'remaining_balance',
+        'academic_year_id',
         'is_paid_off',
     ];
 
@@ -50,4 +51,9 @@ class Payment extends Model
     {
         return $this->belongsTo(School::class);
     }
+
+    public function academicYear()
+{
+    return $this->belongsTo(AcademicYear::class);
+}
 }

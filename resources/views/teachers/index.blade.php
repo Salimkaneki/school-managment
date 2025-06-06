@@ -53,6 +53,8 @@
                                                     <th class="text-secondary text-xs font-weight-semibold opacity-7">Nationalité</th>
                                                     <th class="text-center text-secondary text-xs font-weight-semibold opacity-7">Contacts</th>
                                                     <th class="text-center text-secondary text-xs font-weight-semibold opacity-7">Matière</th>
+                                                    <!-- Nouvelle colonne pour l'année académique -->
+                                                    <th class="text-center text-secondary text-xs font-weight-semibold opacity-7">Année Acad.</th>
                                                     <th class="text-center text-secondary text-xs font-weight-semibold opacity-7">Actions</th>
                                                 </tr>
                                             </thead>
@@ -87,6 +89,11 @@
                                                         <td class="align-middle text-center">
                                                             <span class="text-secondary text-sm font-weight-normal">{{ $teacher->subject }}</span>
                                                         </td>
+                                                            <td class="align-middle text-center">
+                                                                <span class="text-secondary text-sm font-weight-normal">
+                                                                    {{ $teacher->academicYear->name ?? 'N/A' }}
+                                                                </span>
+                                                            </td>
                                                         <td class="align-middle text-center">
                                                             <div class="d-flex justify-content-center gap-2">
 
@@ -184,6 +191,7 @@
                                                                                                         'divorced' => 'Divorcé(e)',
                                                                                                         'widowed' => 'Veuf(ve)'
                                                                                                     ][$teacher->marital_status] ?? 'Non renseigné'],
+                                                                                                    ['icon' => 'calendar-alt', 'label' => 'Année académique', 'value' => $teacher->academicYear->name ?? 'Non renseignée'],
                                                                                                 ];
                                                                                                 @endphp
 

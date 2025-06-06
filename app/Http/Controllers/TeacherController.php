@@ -14,9 +14,10 @@ class TeacherController extends Controller
     public function index()
     {
         $teachers = Teacher::where('school_id', Auth::id())
-            ->where('academic_year_id')
+            ->with('academicYear')
             ->orderBy('last_name', 'asc')
             ->paginate(10);
+
         return view('teachers.index', ['teachers' => $teachers,
             'academicYears' => AcademicYear::all()
         ]);

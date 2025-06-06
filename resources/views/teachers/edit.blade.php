@@ -205,6 +205,27 @@
                                 </div>
 
                                 <div class="row mb-3">
+    <div class="col-md-12">
+        <label for="academic_year_id" class="form-label">Année académique</label>
+        <select class="form-control @error('academic_year_id') is-invalid @enderror" 
+                id="academic_year_id" 
+                name="academic_year_id" 
+                required>
+            <option value="" disabled>Choisissez une année académique</option>
+            @foreach($academicYears as $year)
+                <option value="{{ $year->id }}" 
+                    {{ old('academic_year_id', $teacher->academic_year_id) == $year->id ? 'selected' : '' }}>
+                    {{ $year->name }}
+                </option>
+            @endforeach
+        </select>
+        @error('academic_year_id')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
+</div>
+
+                                <div class="row mb-3">
                                     <div class="col-md-12">
                                         <label for="photo" class="form-label">
                                             Nouvelle photo

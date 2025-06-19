@@ -15,15 +15,39 @@ use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
 {
-    // Liste des élèves d'une école spécifique
-    public function index()
+    // Liste des élèves d'une école spécifique avec recherche
+    public function index(Request $request)
     {
         $schoolId = Auth::id();
-        $students = Student::where('school_id', $schoolId)
-            ->with('classModel', 'academicYear', 'classroom')
-            ->orderBy('last_name', 'asc')
-            ->paginate(10);
-        return view('students.index', compact('students'));
+        $search = $request->input('search');
+        
+        $query = Student::where('students.school_id', $schoolId)
+            ->with('classModel', 'academicYear', 'classroom');
+        
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('students.first_name', 'LIKE', '%' . $search . '%')
+                ->orWhere('students.last_name', 'LIKE', '%' . $search . '%')
+                ->orWhere('students.email', 'LIKE', '%' . $search . '%')
+                ->orWhere('students.phone_number', 'LIKE', '%' . $search . '%')
+                ->orWhereHas('classModel', function ($classQuery) use ($search) {
+                    $classQuery->where('class_models.name', 'LIKE', '%' . $search . '%');
+                })
+                ->orWhereHas('academicYear', function ($yearQuery) use ($search) {
+                    // Utilisation des colonnes existantes au lieu de 'name'
+                    $yearQuery->where('start_year', 'LIKE', '%' . $search . '%')
+                            ->orWhere('end_year', 'LIKE', '%' . $search . '%');
+                });
+            });
+        }
+        
+        $students = $query->orderBy('students.last_name', 'asc')->paginate(10);
+        
+        if ($search) {
+            $students->appends(['search' => $search]);
+        }
+        
+        return view('students.index', compact('students', 'search'));
     }
 
     // Affichage du formulaire d'ajout
@@ -295,5 +319,37 @@ class StudentController extends Controller
         }
     
         return response()->json($students);
+    }
+
+    // Méthode pour recherche AJAX (optionnelle - pour recherche en temps réel sans rechargement)
+    public function searchStudents(Request $request)
+    {
+        $schoolId = Auth::id();
+        $search = $request->input('search');
+        
+        if (strlen($search) < 2) {
+            return response()->json(['students' => []]);
+        }
+        
+        $students = Student::where('students.school_id', $schoolId)
+            ->with(['classModel', 'academicYear', 'classroom'])
+            ->where(function ($q) use ($search) {
+                $q->where('students.first_name', 'LIKE', '%' . $search . '%')
+                ->orWhere('students.last_name', 'LIKE', '%' . $search . '%')
+                ->orWhere('students.email', 'LIKE', '%' . $search . '%')
+                ->orWhere('students.phone_number', 'LIKE', '%' . $search . '%')
+                ->orWhereHas('classModel', function ($classQuery) use ($search) {
+                    $classQuery->where('class_models.name', 'LIKE', '%' . $search . '%');
+                })
+                ->orWhereHas('academicYear', function ($yearQuery) use ($search) {
+                    $yearQuery->where('start_year', 'LIKE', '%' . $search . '%')
+                            ->orWhere('end_year', 'LIKE', '%' . $search . '%');
+                });
+            })
+            ->orderBy('students.last_name', 'asc')
+            ->limit(10)
+            ->get();
+        
+        return response()->json(['students' => $students]);
     }
 }

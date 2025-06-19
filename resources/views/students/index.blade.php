@@ -4,8 +4,43 @@
         <div class="container-fluid py-4">
             <div class="row">
                 <div class="col-12">
+<!-- Input de recherche en dehors du cadre -->
+<div class="mb-4">
+    <form id="searchForm" method="GET" action="{{ route('student.list') }}">
+        <div class="input-group">
+            <span class="input-group-text">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                </svg>
+            </span>
+            <input type="text" 
+                   class="form-control" 
+                   id="searchStudent" 
+                   name="search"
+                   value="{{ $search ?? '' }}"
+                   placeholder="Rechercher un élève par nom, prénom, email, téléphone ou classe...">
+            @if(isset($search) && $search)
+                <button type="button" class="btn btn-outline-secondary" id="resetSearch" title="Effacer la recherche">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                    </svg>
+                </button>
+            @endif
+        </div>
+    </form>
+    
+    @if(isset($search) && $search)
+        <div class="mt-2">
+            <small class="text-muted">
+                Résultats pour : <strong>"{{ $search }}"</strong>
+                <span class="badge bg-primary ms-1">{{ $students->total() }} élève(s) trouvé(s)</span>
+            </small>
+        </div>
+    @endif
+</div>
                     <div class="card border shadow-xs mb-4">
                         <div class="card-header border-bottom pb-0">
+                            
                             <div class="d-sm-flex align-items-center">
                                 <div>
                                     <h6 class="font-weight-semibold text-lg mb-0">Liste des Élèves</h6>
@@ -38,6 +73,7 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
 
                         <div class="card-body px-0 py-0">
@@ -314,4 +350,56 @@
             </div>
         </div>
     </main>
+
+    // Script à ajouter dans votre vue students/index.blade.php
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchStudent');
+            const searchForm = document.getElementById('searchForm');
+            const resetSearch = document.getElementById('resetSearch');
+            let searchTimeout;
+
+            // Fonction pour soumettre le formulaire
+            function submitSearchForm() {
+                searchForm.submit();
+            }
+
+            // Gestion de la recherche en temps réel
+            if (searchInput) {
+                searchInput.addEventListener('input', function() {
+                    clearTimeout(searchTimeout);
+                    
+                    const searchTerm = searchInput.value.trim();
+                    if (searchTerm.length === 0) {
+                        // Soumettre le formulaire si le champ est vide
+                        submitSearchForm();
+                        return;
+                    }
+
+                    if (searchTerm.length < 2) {
+                        return; // Minimum 2 caractères
+                    }
+
+                    searchTimeout = setTimeout(submitSearchForm, 500);
+                });
+
+                // Gestion de la touche Entrée
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        clearTimeout(searchTimeout);
+                        submitSearchForm();
+                    }
+                });
+            }
+
+            // Gestion du bouton de réinitialisation
+            if (resetSearch) {
+                resetSearch.addEventListener('click', function() {
+                    searchInput.value = '';
+                    submitSearchForm();
+                });
+            }
+        });
+    </script>
 </x-app-layout>

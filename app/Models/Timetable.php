@@ -48,4 +48,9 @@ class Timetable extends Model
         return $this->belongsTo(Classroom::class);
     }
 
+    public function academicYear()
+    {
+        return $this->belongsTo(AcademicYear::class ,);
+    }
+
 }

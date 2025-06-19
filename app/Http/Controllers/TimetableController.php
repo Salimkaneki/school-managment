@@ -8,6 +8,7 @@ use App\Models\Timetable;
 use App\Models\Course;
 use App\Models\Teacher;
 use App\Models\TimeSlot;
+use App\Models\AcademicYear;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,20 +16,28 @@ use Illuminate\Support\Facades\Auth;
 class TimetableController extends Controller
 {
     // Voir la liste des emplois du temps
-    public function index()
-    {
-        $timetables = Timetable::with('class', 'classroom')
-                              ->where('school_id', Auth::id())
-                              ->paginate(5);
-        return view('timetables.index', compact('timetables'));
-    }
+// In your TimetablesController
+public function index()
+{
+    $timetables = Timetable::with(['class', 'classroom', 'academicYear'])
+        ->when(request('academic_year_id'), function($query) {
+            $query->where('academic_year_id', request('academic_year_id'));
+        })
+        ->paginate(10);
+    
+    $academicYears = AcademicYear::all();
+    
+    return view('timetables.index', compact('timetables', 'academicYears'));
+}
 
     // Afficher le formulaire pour créer un emploi du temps
     public function create()
     {
         $classes = ClassModel::where('school_id', Auth::id())->get();
         $classrooms = Classroom::where('school_id', Auth::id())->get();
-        return view('timetables.create', compact('classes', 'classrooms'));
+        $academicYears = AcademicYear::where('school_id', Auth::id())->get();
+        
+        return view('timetables.create', compact('classes', 'classrooms', 'academicYears'));
     }
 
     // Stocker un nouvel emploi du temps
@@ -37,12 +46,42 @@ class TimetableController extends Controller
         $request->validate([
             'class_id' => 'required|exists:class_models,id',
             'classroom_id' => 'required|exists:classrooms,id',
+            'academic_year_id' => 'required|exists:academic_years,id',
         ]);
+
+        // Vérifier que l'année académique appartient à l'école connectée
+        $academicYear = AcademicYear::where('id', $request->academic_year_id)
+                                   ->where('school_id', Auth::id())
+                                   ->first();
+                                   
+        if (!$academicYear) {
+            return redirect()->back()->withErrors(['academic_year_id' => 'Année académique invalide.']);
+        }
+
+        // Vérifier que la classe appartient à l'école connectée
+        $class = ClassModel::where('id', $request->class_id)
+                          ->where('school_id', Auth::id())
+                          ->first();
+                          
+        if (!$class) {
+            return redirect()->back()->withErrors(['class_id' => 'Classe invalide.']);
+        }
+
+        // Vérifier que la salle de classe appartient à l'école connectée
+        $classroom = Classroom::where('id', $request->classroom_id)
+                             ->where('school_id', Auth::id())
+                             ->first();
+                             
+        if (!$classroom) {
+            return redirect()->back()->withErrors(['classroom_id' => 'Salle de classe invalide.']);
+        }
 
         $timetable = Timetable::create([
             'class_id' => $request->class_id,
             'classroom_id' => $request->classroom_id,
+            'academic_year_id' => $request->academic_year_id,
             'school_id' => Auth::id(),
+            'description' => $request->description,
         ]);
 
         return redirect()->route('timetables.index')->with('success', 'Emploi du temps créé avec succès.');
@@ -67,7 +106,10 @@ class TimetableController extends Controller
 
     public function showAddCourseForm($id, Request $request)
     {
-        $timetable = Timetable::where('school_id', Auth::id())->with(['class', 'classroom'])->findOrFail($id);
+        $timetable = Timetable::where('school_id', Auth::id())
+                             ->with(['class', 'classroom', 'academicYear'])
+                             ->findOrFail($id);
+                             
         $courses = Course::where('school_id', Auth::id())->get();
         $teachers = Teacher::where('school_id', Auth::id())->get();
         $classrooms = Classroom::where('school_id', Auth::id())->get();
@@ -97,7 +139,7 @@ class TimetableController extends Controller
             'course_id' => 'required|exists:courses,id',
             'teacher_id' => 'required|exists:teachers,id',
             'time_slot_id' => 'required|exists:time_slots,id',
-            'day' => 'required|in:Lundi,Mardi,Mercredi,Jeudi,Vendredi',
+            'day' => 'required|in:Lundi,Mardi,Mercredi,Jeudi,Vendredi,Samedi',
             'classroom_id' => 'required|exists:classrooms,id',
         ]);
     
@@ -138,41 +180,6 @@ class TimetableController extends Controller
         return redirect()->route('timetables.index')->with('success', 'Cours ajouté avec succès.');
     }
 
-    // Voir un emploi du temps spécifique
-    public function view($id)
-    {
-        $timetable = Timetable::with('class', 'classroom', 'course', 'teacher')
-                              ->where('id', $id)
-                              ->where('school_id', Auth::id())
-                              ->first();
-    
-        if (!$timetable) {
-            abort(404, 'Emploi du temps non trouvé.');
-        }
-    
-        // Assurez-vous que les données sont correctement organisées
-        $timetableSlots = $this->getTimetableSlots($timetable);
-        $daysOfWeek = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
-    
-        return view('timetables.view', compact('timetableSlots', 'daysOfWeek'));
-    }
-    
-    private function getTimetableSlots($timetable)
-    {
-        // Implémentez cette méthode pour organiser les créneaux horaires et les cours
-        // Exemple de retour de tableau
-        return [
-            (object)[
-                'time_range' => '08:00 - 09:00',
-                'courses' => [
-                    'Monday' => ['course_name' => 'Mathématiques', 'teacher_name' => 'Dupont'],
-                    // Ajoutez d'autres jours si nécessaire
-                ]
-            ],
-            // Ajoutez d'autres créneaux horaires
-        ];
-    }
-
     // Supprimer un emploi du temps
     public function destroy($id)
     {
@@ -184,31 +191,30 @@ class TimetableController extends Controller
     public function weeklyView($timetable_id)
     {
         // Vérifier que l'emploi du temps appartient à l'école connectée
-        $timetable = Timetable::where('school_id', Auth::id())->findOrFail($timetable_id);
+        $timetable = Timetable::with(['academicYear', 'class', 'classroom'])
+                             ->where('school_id', Auth::id())
+                             ->findOrFail($timetable_id);
         
         // Jours de la semaine
         $daysOfWeek = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
     
-        // Créneaux horaires
+        // Créneaux horaires actifs pour cette école
         $timeSlots = TimeSlot::where('is_active', true)
              ->where('school_id', Auth::id())
              ->orderBy('start_time')
-             ->get()
-             ->map(function($slot) {
-                 return sprintf('%s - %s', 
-                     date('H:i', strtotime($slot->start_time)), 
-                     date('H:i', strtotime($slot->end_time))
-                 );
-             });
+             ->get();
+
+        // Debug : vérifier si des créneaux horaires existent
+        \Log::info('Nombre de créneaux horaires trouvés: ' . $timeSlots->count());
     
-        // Récupérer les cours spécifiques à cet emploi du temps et à la salle de classe
+        // Récupérer les cours spécifiques à cet emploi du temps
         $timetableCourses = DB::table('timetable_courses')
             ->join('courses', 'timetable_courses.course_id', '=', 'courses.id')
             ->join('teachers', 'timetable_courses.teacher_id', '=', 'teachers.id')
             ->join('classrooms', 'timetable_courses.classroom_id', '=', 'classrooms.id')
             ->join('timetables', 'timetable_courses.timetable_id', '=', 'timetables.id')
             ->where('timetable_courses.timetable_id', $timetable_id)
-            ->where('timetables.school_id', Auth::id()) // Filtrer par école
+            ->where('timetables.school_id', Auth::id())
             ->select(
                 'timetable_courses.*',
                 'courses.name as course_name',
@@ -216,48 +222,49 @@ class TimetableController extends Controller
                 'teachers.last_name as teacher_last_name',
                 'classrooms.name as classroom_name'
             )
-            ->get()
-            ->groupBy(function ($timetable) {
-                return date('H:i', strtotime($timetable->start_time)) . ' - ' . date('H:i', strtotime($timetable->end_time));
-            });
+            ->get();
+
+        // Debug : vérifier si des cours existent
+        \Log::info('Nombre de cours trouvés: ' . $timetableCourses->count());
+        \Log::info('Courses data: ' . json_encode($timetableCourses));
     
         // Formatage des données pour la vue
         $formattedTimetables = [];
+        
         foreach ($timeSlots as $timeSlot) {
-            $formattedTimetables[$timeSlot] = [];
+            $timeSlotKey = sprintf('%s - %s', 
+                date('H:i', strtotime($timeSlot->start_time)), 
+                date('H:i', strtotime($timeSlot->end_time))
+            );
+            
+            $formattedTimetables[$timeSlotKey] = [];
     
             foreach ($daysOfWeek as $day) {
-                if (isset($timetableCourses[$timeSlot])) {
-                    $course = $timetableCourses[$timeSlot]->firstWhere('day', $day);
-                } else {
-                    $course = null;
-                }
+                $course = $timetableCourses->where('day', $day)
+                    ->where('start_time', $timeSlot->start_time)
+                    ->where('end_time', $timeSlot->end_time)
+                    ->first();
     
                 if ($course) {
-                    $formattedTimetables[$timeSlot][$day] = [
+                    $formattedTimetables[$timeSlotKey][$day] = [
                         'course_name' => $course->course_name,
-                        'teacher_name' => $course->teacher_first_name . ' ' . $course->teacher_last_name,
+                        'teacher_name' => trim($course->teacher_first_name . ' ' . $course->teacher_last_name),
                         'classroom_name' => $course->classroom_name,
                     ];
                 } else {
-                    $formattedTimetables[$timeSlot][$day] = null;
+                    $formattedTimetables[$timeSlotKey][$day] = null;
                 }
             }
         }
     
-        // Récupérer les informations de la salle et de la classe
-        $classroomName = Classroom::where('school_id', Auth::id())
-                                 ->where('id', $timetable->classroom_id)
-                                 ->value('name');
-        $className = ClassModel::where('school_id', Auth::id())
-                             ->where('id', $timetable->class_id)
-                             ->value('name');
-    
         return view('timetables.weekly-view', [
             'daysOfWeek' => $daysOfWeek,
             'formattedTimetables' => $formattedTimetables,
-            'classroomName' => $classroomName,
-            'className' => $className,
+            'timetable' => $timetable,
+            'classroomName' => $timetable->classroom->name ?? 'N/A',
+            'className' => $timetable->class->name ?? 'N/A',
+            'timeSlots' => $timeSlots,
+            'courses' => $timetableCourses,
         ]);
     }
 }

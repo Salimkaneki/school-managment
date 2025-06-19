@@ -32,10 +32,45 @@
                             </div>
                         </div>
 
+                        <!-- Section de filtre -->
+                        <div class="card-body border-bottom pb-3">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="academic_year_filter" class="form-label text-sm font-weight-semibold">Filtrer par année académique</label>
+                                        <select class="form-select" id="academic_year_filter" onchange="filterByAcademicYear(this)">
+                                            <option value="">Toutes les années</option>
+                                            @foreach($academicYears as $year)
+                                                <option value="{{ $year->id }}" {{ request('academic_year_id') == $year->id ? 'selected' : '' }}>
+                                                    {{ $year->start_year ?? 'N/A' }} - {{ $year->end_year ?? 'N/A' }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-8 d-flex align-items-end">
+                                    @if(request('academic_year_id'))
+                                        <a href="{{ route('timetables.index') }}" class="btn btn-sm btn-outline-secondary">
+                                            <svg width="14" height="14" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="me-1">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                            Effacer le filtre
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="card-body px-0 py-0">
                             @if($timetables->isEmpty())
-                                <div class="text-center py-2">
+                                <div class="text-center py-5">
+                                    <svg width="48" height="48" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="mx-auto mb-3 text-secondary">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                    </svg>
                                     <p class="font-weight-semibold text-lg mb-0">Aucun emploi du temps enregistré</p>
+                                    @if(request('academic_year_id'))
+                                        <p class="text-sm text-secondary">Aucun emploi du temps trouvé pour l'année académique sélectionnée</p>
+                                    @endif
                                 </div>
                             @else
                                 <div class="table-responsive p-0">
@@ -45,6 +80,7 @@
                                                 <th class="text-secondary text-xs font-weight-semibold opacity-7">ID</th>
                                                 <th class="text-secondary text-xs font-weight-semibold opacity-7 ps-2">Classe</th>
                                                 <th class="text-center text-secondary text-xs font-weight-semibold opacity-7">Salle de Classe</th>
+                                                <th class="text-secondary text-xs font-weight-semibold opacity-7 ps-2">Année Académique</th>
                                                 <th class="text-center text-secondary text-xs font-weight-semibold opacity-7">Actions</th>
                                             </tr>
                                         </thead>
@@ -52,21 +88,29 @@
                                             @foreach ($timetables as $timetable)
                                                 <tr>
                                                     <td class="text-sm font-weight-semibold">{{ $timetable->id }}</td>
-                                                    <td class="text-sm">{{ $timetable->class->name }}</td>
-                                                    <td class="text-sm">{{ $timetable->classroom->name }}</td>
+                                                    <td class="text-sm">{{ optional($timetable->class)->name ?? 'N/A' }}</td>
+                                                    <td class="text-sm">{{ optional($timetable->classroom)->name ?? 'N/A' }}</td>
+                                                    <td class="text-sm">
+                                                        @if($timetable->academicYear)
+                                                            {{ $timetable->academicYear->start_year }} - {{ $timetable->academicYear->end_year }}
+                                                        @else
+                                                            N/A
+                                                        @endif
+                                                    </td>
                                                     <td class="align-middle text-center">
                                                         <div class="d-flex justify-content-center gap-2">
                                                             <!-- Icône Voir -->
                                                             <a href="{{ route('timetables.weekly-view', $timetable->id) }}" 
-                                                            class="btn btn-link text-secondary px-3 mb-0">
+                                                            class="btn btn-link text-secondary px-3 mb-0" title="Voir l'emploi du temps">
                                                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                     <path d="M12 5.25C4.5 5.25 1.5 12 1.5 12C1.5 12 4.5 18.75 12 18.75C19.5 18.75 22.5 12 22.5 12C22.5 12 19.5 5.25 12 5.25Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                                                     <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                                                 </svg>
                                                             </a>
 
+                                                            <!-- Icône Ajouter un cours -->
                                                             <a href="{{ route('timetables.addCourse', ['id' => $timetable->id, 'classroom_id' => $timetable->classroom_id]) }}" 
-                                                                class="btn btn-link text-primary px-3 mb-0">
+                                                                class="btn btn-link text-primary px-3 mb-0" title="Ajouter un cours">
                                                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                     <path d="M12 7V17M7 12H17" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                                                     <path d="M3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12Z" stroke="#3B82F6" stroke-width="2"/>
@@ -79,6 +123,7 @@
                                                                 @method('DELETE')
                                                                 <button type="submit" 
                                                                         class="btn btn-link text-danger px-3 mb-0"
+                                                                        title="Supprimer l'emploi du temps"
                                                                         onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet emploi du temps ?')">
                                                                     <svg width="14" height="14" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                         <path d="M1.98314 3.33333H14.0165" stroke="#FF0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -102,29 +147,31 @@
                                     @if ($timetables->onFirstPage())
                                         <button class="btn btn-sm btn-white d-sm-block d-none mb-0" disabled>Previous</button>
                                     @else
-                                        <a href="{{ $timetables->previousPageUrl() }}" class="btn btn-sm btn-white d-sm-block d-none mb-0">Previous</a>
+                                        <a href="{{ $timetables->appends(request()->query())->previousPageUrl() }}" class="btn btn-sm btn-white d-sm-block d-none mb-0">Previous</a>
                                     @endif
 
                                     <!-- Pagination -->
                                     <nav aria-label="Pagination" class="ms-auto">
                                         <ul class="pagination pagination-light mb-0">
-                                            @foreach ($timetables->links()->elements[0] as $page => $url)
-                                                @if ($page == $timetables->currentPage())
-                                                    <li class="page-item active" aria-current="page">
-                                                        <span class="page-link font-weight-bold">{{ $page }}</span>
-                                                    </li>
-                                                @else
-                                                    <li class="page-item">
-                                                        <a class="page-link border-0 font-weight-bold" href="{{ $url }}">{{ $page }}</a>
-                                                    </li>
-                                                @endif
-                                            @endforeach
+                                            @if($timetables->links()->elements && count($timetables->links()->elements) > 0)
+                                                @foreach ($timetables->appends(request()->query())->links()->elements[0] as $page => $url)
+                                                    @if ($page == $timetables->currentPage())
+                                                        <li class="page-item active" aria-current="page">
+                                                            <span class="page-link font-weight-bold">{{ $page }}</span>
+                                                        </li>
+                                                    @else
+                                                        <li class="page-item">
+                                                            <a class="page-link border-0 font-weight-bold" href="{{ $url }}">{{ $page }}</a>
+                                                        </li>
+                                                    @endif
+                                                @endforeach
+                                            @endif
                                         </ul>
                                     </nav>
 
                                     <!-- Bouton Next -->
                                     @if ($timetables->hasMorePages())
-                                        <a href="{{ $timetables->nextPageUrl() }}" class="btn btn-sm btn-white d-sm-block d-none mb-0 ms-auto">Next</a>
+                                        <a href="{{ $timetables->appends(request()->query())->nextPageUrl() }}" class="btn btn-sm btn-white d-sm-block d-none mb-0 ms-auto">Next</a>
                                     @else
                                         <button class="btn btn-sm btn-white d-sm-block d-none mb-0 ms-auto" disabled>Next</button>
                                     @endif
@@ -136,4 +183,22 @@
             </div>
         </div>
     </main>
+
+    <script>
+    function filterByAcademicYear(select) {
+        const yearId = select.value;
+        let url = new URL(window.location.href);
+        
+        if (yearId) {
+            url.searchParams.set('academic_year_id', yearId);
+        } else {
+            url.searchParams.delete('academic_year_id');
+        }
+        
+        // Supprimer le paramètre page pour revenir à la première page
+        url.searchParams.delete('page');
+        
+        window.location.href = url.toString();
+    }
+    </script>
 </x-app-layout>

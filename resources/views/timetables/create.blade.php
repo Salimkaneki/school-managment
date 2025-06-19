@@ -67,6 +67,34 @@
                         @csrf
                         <div class="row g-3">
                             <div class="col-md-6">
+    <div class="form-group">
+        <label for="academic_year_id" class="form-label">
+            <i class="fas fa-calendar me-2 text-primary"></i>Année Académique
+        </label>
+        <select 
+            class="form-select @error('academic_year_id') is-invalid @enderror" 
+            name="academic_year_id" 
+            id="academic_year_id" 
+            required
+            data-placeholder="Sélectionnez une année académique"
+        >
+            <option value="" disabled selected>Choisissez une année académique</option>
+            @foreach($academicYears as $year)
+                <option 
+                    value="{{ $year->id }}"
+                    {{ old('academic_year_id') == $year->id ? 'selected' : '' }}
+                >
+                    {{ $year->start_year }} - {{ $year->end_year }}
+                    @if($year->is_active) (Active) @endif
+                </option>
+            @endforeach
+        </select>
+        @error('academic_year_id')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
+</div>
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="class_id" class="form-label">
                                         <i class="fas fa-graduation-cap me-2 text-primary"></i>Classe

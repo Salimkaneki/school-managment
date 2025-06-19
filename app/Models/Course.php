@@ -18,9 +18,8 @@ class Course extends Model
         'name',
         'teacher_id',
         'school_id',
-        'academic_year_id',  // Assurez-vous que c'est ici
-        // 'description'
-    ];
+        'academic_year_id'
+        ];
 
     public function subject()
     {
@@ -49,7 +48,7 @@ class Course extends Model
 
     public function academicYear()
     {
-        return $this->belongsTo(AcademicYear::class, 'academic_year_id'); // Spécifiez explicitement la clé étrangère
+        return $this->belongsTo(AcademicYear::class, 'academic_year_id');
     }
 
     public function trimester()

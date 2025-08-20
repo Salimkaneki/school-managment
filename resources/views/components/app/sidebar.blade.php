@@ -254,7 +254,7 @@
                     <span class="nav-link-text ms-1">Année Académique</span>
                 </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'archives.index' ? 'active' : '' }}" 
                    href="{{ route('archives.index') }}">
                     <div class="icon icon-shape icon-sm px-0 text-center d-flex align-items-center justify-content-center">
@@ -262,7 +262,7 @@
                     </div>
                     <span class="nav-link-text ms-1">Archive</span>
                 </a>
-            </li>
+            </li> -->
 
             <!-- <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('archives.*') ? 'active bg-gradient-primary' : '' }}" 

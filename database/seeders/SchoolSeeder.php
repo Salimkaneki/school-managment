@@ -80,7 +80,7 @@ class SchoolSeeder extends Seeder
             'city' => 'Lomé',
             'postal_code' => '11111',
             'username' => 'ecolelumiere',
-            'password' => Hash::make('EcoleLumiere2025#'),
+            'password' => Hash::make('EcoleLumiere2025#EcoleLumiere2025#'),
             'has_sports_equipment' => true,
             'has_library' => true,
             'has_computer_room' => true,

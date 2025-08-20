@@ -254,28 +254,6 @@
                     <span class="nav-link-text ms-1">Année Académique</span>
                 </a>
             </li>
-            <!-- <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == '' ? 'active' : '' }}" 
-                   href="{{ route('') }}">
-                    <div class="icon icon-shape icon-sm px-0 text-center d-flex align-items-center justify-content-center">
-                        <i class="fas fa-calendar text-white"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Archive</span>
-                </a>
-            </li> -->
-
-            <!-- <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('archives.*') ? 'active bg-gradient-primary' : '' }}" 
-                href="{{ route('') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">archive</i>
-                    </div>
-                    <span class="nav-link-text ms-1">Gestion des Archives</span>
-                    @if(App\Models\Archive::count() > 0)
-                        <span class="badge badge-sm bg-gradient-info ms-auto">{{ App\Models\Archive::count() }}</span>
-                    @endif
-                </a>
-            </li> -->
 
             <!-- Menu Classes avec sous-menu -->
             <li class="nav-item">

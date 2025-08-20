@@ -255,8 +255,8 @@
                 </a>
             </li>
             <!-- <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'archives.index' ? 'active' : '' }}" 
-                   href="{{ route('archives.index') }}">
+                <a class="nav-link {{ Route::currentRouteName() == '' ? 'active' : '' }}" 
+                   href="{{ route('') }}">
                     <div class="icon icon-shape icon-sm px-0 text-center d-flex align-items-center justify-content-center">
                         <i class="fas fa-calendar text-white"></i>
                     </div>
@@ -266,7 +266,7 @@
 
             <!-- <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('archives.*') ? 'active bg-gradient-primary' : '' }}" 
-                href="{{ route('archives.index') }}">
+                href="{{ route('') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">archive</i>
                     </div>

@@ -14,9 +14,16 @@ return new class extends Migration
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('teacher_id')->constrained('teachers')->onDelete('cascade');
-            
-            $table->foreign('school_id')->references('id')->on('users')->onDelete('cascade');
+
+            // Relation avec teacher
+            $table->foreignId('teacher_id')
+                  ->constrained('teachers')
+                  ->onDelete('cascade');
+
+            // Relation avec school
+            $table->foreignId('school_id')
+                  ->constrained('schools') // ⚠️ si tu veux lier aux écoles
+                  ->onDelete('cascade');
 
             $table->timestamps();
         });
